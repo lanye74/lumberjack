@@ -2,14 +2,24 @@
 Log where you are, instantly
 
 
-# todo list
+## todo list
 1. chores
 	- [x] set up git
 	- [ ] figure out how to spin up a server on appdev (or perhaps another vm? i quite like the ubuntu vm)
 	- [ ] reach out about getting a domain
 2. think about architecture
 	- [ ] set up supabase
-	- figure this out
+	- [ ] primary table will be the timestamped logs
+		- timestamp, location, user id
+		- probably something else i'll realize i'm missing after reaching step 8... talk to josh
+	- [ ] need another table for user profiles
+		- [ ] USE SSO. --> no need for turnstile or anything like that if we validate their email domain
+		- points, user settings (also cache settings locally ofc)
+		- could even add auxiliary data like time of their last log
+	- do we need to cache leaderboard rankings? because it’s so small can just pull it all client side
+		- points should probably reset weekly/monthly... maybe we do need a leaderboard service anyway
+		- can i make ranked splits? hahahaha
+		- see 9.1
 3. set up database, and implement the base functions that will access it
 	- [ ] probably need a supabasemanager that exposes methods
 4. bind these methods to buttons in a highly minimal, just-usable ui
@@ -28,8 +38,21 @@ Log where you are, instantly
 7. turn the design into the app
 	- [ ] test a sveltekit project to make sure i'm not crazy
 	- [ ] build the app
+		- this is a tiny bullet point but it will probably take up the majority of the time
 8. iterate
 9. think long-term
 	- [ ] possibly we can host our own supabase instance
 		- it'd be even funnier if i just wrote the database software myself
 		- not for any good reason. just because i can
+
+
+## stlp
+stuff that's not important for getting the app off of the ground, but ideal for an stlp project
+
+- [ ] admin panel to view/export statistics
+
+
+
+
+holy SHIT i just realized that steps 1–7 need to be done within the next month
+i'm not gonna have time for literally anything else...
