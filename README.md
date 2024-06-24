@@ -8,7 +8,7 @@ Log where you are, instantly
 	- [ ] figure out how to spin up a server on appdev (or perhaps another vm? i quite like the ubuntu vm)
 	- [ ] reach out about getting a domain
 2. think about architecture
-	- [ ] set up supabase
+	- [x] set up supabase
 	- [ ] primary table will be the timestamped logs
 		- timestamp, location, user id
 		- probably something else i'll realize i'm missing after reaching step 8... talk to josh
