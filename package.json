@@ -1,0 +1,14 @@
+{
+	"name": "clock-app",
+	"version": "1.0.0",
+	"description": "Log where you are, instantly",
+	"main": "src/main.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "UNLICENSED",
+	"devDependencies": {
+		"@supabase/supabase-js": "^2.43.5"
+	}
+}
