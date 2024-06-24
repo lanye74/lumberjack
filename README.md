@@ -1,2 +1,35 @@
 # clock-app
 Log where you are, instantly
+
+
+# todo list
+1. chores
+	- [x] set up git
+	- [ ] figure out how to spin up a server on appdev (or perhaps another vm? i quite like the ubuntu vm)
+	- [ ] reach out about getting a domain
+2. think about architecture
+	- [ ] set up supabase
+	- figure this out
+3. set up database, and implement the base functions that will access it
+	- [ ] probably need a supabasemanager that exposes methods
+4. bind these methods to buttons in a highly minimal, just-usable ui
+	- [ ] make sure it all works from a raw data standpoint
+5. investigate pwas
+	- [ ] figure out how to set up a pwa
+	- [ ] bind this pwa to the domain and test if it works
+		- can use my github io if domain is taking a while
+	- [ ] ensure that there’s some amount of hot-reloading available on the pwa
+6. design the app
+	- [ ] i probably want a tab system at the bottom
+		- do i need to make my own icons? should i? probably can just ~~rob~~ borrow material icons
+	- [ ] bottom bar will probably consist of clock, points/leaderboard, settings
+	- [ ] learn figma for designs/mockups?
+		- it'd be silly
+7. turn the design into the app
+	- [ ] test a sveltekit project to make sure i'm not crazy
+	- [ ] build the app
+8. iterate
+9. think long-term
+	- [ ] possibly we can host our own supabase instance
+		- it'd be even funnier if i just wrote the database software myself
+		- not for any good reason. just because i can
