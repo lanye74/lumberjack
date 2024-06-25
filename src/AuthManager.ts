@@ -6,10 +6,15 @@ export default class AuthManager {
 	client: SupabaseClient;
 	user: User | null = null;
 	authState: AuthState = "SIGNED_OUT";
+	// hsl(130, 70%, 35%)
+	logPrefix = ["%c[Auth Manager]", "color: #1b9830; font-weight: 900;"];
 
 	constructor(client: SupabaseClient) {
 		// reference to supabasemanager's client
 		this.client = client;
+
+		// this will run synchronously, but i cba to make an init method
+		this.verifyState();
 	}
 
 	async signIn() {
@@ -71,9 +76,13 @@ export default class AuthManager {
 	}
 
 	private setAuthState(state: AuthState, user?: User) {
+		console.trace()
 		if(state === this.authState) {
-			console.log("State unchanged");
+			this.log(`State unchanged (${this.authState})`);
+		} else {
+			this.log(`Changing state from ${this.authState} to ${state}`);
 		}
+
 
 		this.authState = state;
 		this.user = (state === "SIGNED_IN") ? user as User : null;
@@ -82,9 +91,13 @@ export default class AuthManager {
 	}
 
 	private error(source: string, error: AuthError) {
-		console.error(`Error while ${source}:`, error);
+		console.error(...this.logPrefix, `Error while ${source}:`, error);
 
 		return error;
+	}
+
+	private log(...content: any[]) {
+		console.log(...this.logPrefix, ...content);
 	}
 }
 

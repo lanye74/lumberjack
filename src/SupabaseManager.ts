@@ -8,6 +8,7 @@ export default class SupabaseManager {
 	clientData: ClientInitOptions;
 	client: SupabaseClient<any, "public", any>
 	auth: AuthManager;
+	// signInClickListener:
 
 	constructor(clientData: ClientInitOptions) {
 		this.clientData = clientData;
@@ -15,7 +16,14 @@ export default class SupabaseManager {
 		this.client = supabase.createClient(clientData.url, clientData.key);
 
 		this.auth = new AuthManager(this.client);
-		this.auth.verifyState();
+	}
+
+	bindSignInTo(element: HTMLButtonElement) {
+		element.addEventListener("click", () => this.auth.signIn.bind(this));
+	}
+
+	bindSignOutTo(element: HTMLButtonElement) {
+		element.addEventListener("click", () => this.auth.signOut.bind(this));
 	}
 }
 

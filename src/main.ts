@@ -10,6 +10,12 @@ const key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZi
 const manager = new SupabaseManager({url, key});
 
 
+const signInButton = document.getElementById("google-sso") as HTMLButtonElement;
+const signOutButton = document.getElementById("sign-out") as HTMLButtonElement;
+
+manager.bindSignInTo(signInButton);
+manager.bindSignOutTo(signOutButton);
+
 
 async function signInWithGoogle() {
 	const state = await manager.auth.signIn();
@@ -25,8 +31,6 @@ async function signOut() {
 
 
 
-const signInButton = document.getElementById("google-sso") as HTMLButtonElement;
-const signOutButton = document.getElementById("sign-out") as HTMLButtonElement;
 
 signInButton.addEventListener("click", signInWithGoogle);
 signOutButton.addEventListener("click", signOut)

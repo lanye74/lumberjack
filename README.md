@@ -9,12 +9,13 @@ Log where you are, instantly
 	- [ ] reach out about getting a domain
 2. think about architecture
 	- [x] set up supabase
-	- [x] set up sso
+	- [x] set up oauth
+		- [ ] move oauth to whatever service account we have instead of this temporary one
 	- [ ] primary table will be the timestamped logs
 		- timestamp, location, user id
 		- probably something else i'll realize i'm missing after reaching step 8... talk to josh
 	- [ ] need another table for user profiles
-		- [ ] USE SSO. --> no need for turnstile or anything like that if we validate their email domain
+		- [ ] USE OAUTH. --> no need for turnstile or anything like that if we validate their email domain
 		- points, user settings (also cache settings locally ofc)
 		- could even add auxiliary data like time of their last log
 	- do we need to cache leaderboard rankings? because it’s so small can just pull it all client side
@@ -23,6 +24,8 @@ Log where you are, instantly
 		- see 9.1
 3. set up database, and implement the base functions that will access it
 	- [ ] probably need a supabasemanager that exposes methods
+		- [x] oauth methods exposed
+		- [ ] database methods exposed
 4. bind these methods to buttons in a highly minimal, just-usable ui
 	- [ ] make sure it all works from a raw data standpoint
 5. investigate pwas
