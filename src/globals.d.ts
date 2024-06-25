@@ -1,8 +1,8 @@
-// install types with npm w/ --save-dev
-import * as supabaseImport from "@supabase/supabase-js";
+// install types with npm i --save-dev    v
+import * as SupabaseImport from "@supabase/supabase-js";
 
 
 
 declare global {
-	const supabase: typeof supabaseImport;
+	const supabase: typeof SupabaseImport;
 }

@@ -20,3 +20,7 @@ async function signInWithGoogle() {
 		console.log(`Data received! ${data}`);
 	}
 }
+
+
+
+console.log("hey");
