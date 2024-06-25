@@ -12,18 +12,14 @@ const manager = new SupabaseManager({url, key});
 
 
 async function signInWithGoogle() {
-	await manager.auth.signIn();
-
-	const state = await manager.auth.updateState();
-	console.log("State logging in:", state);
+	const state = await manager.auth.signIn();
+	console.log("State after logging in:", state);
 }
 
 
 
 async function signOut() {
-	await manager.auth.signOut();
-
-	const state = await manager.auth.updateState();
+	const state = await manager.auth.signOut();
 	console.log("State after signing out:", state);
 }
 
@@ -40,6 +36,6 @@ console.log("hey");
 
 
 (async () => {
-	const state = await manager.auth.updateState();
+	const state = await manager.auth.verifyState();
 	console.log("State on page load:", state);
 })();

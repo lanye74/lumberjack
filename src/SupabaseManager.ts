@@ -13,6 +13,7 @@ export default class SupabaseManager {
 		this.client = supabase.createClient(clientData.url, clientData.key);
 
 		this.auth = new AuthManager(this.client);
+		this.auth.verifyState();
 	}
 }
 
@@ -20,9 +21,8 @@ export default class SupabaseManager {
 
 class AuthManager {
 	client: SupabaseClient;
-	state: AuthState = "SIGNED_OUT";
-	error: AuthError | null = null;
 	user: User | null = null;
+	authState: AuthState = "SIGNED_OUT";
 
 	constructor(client: SupabaseClient) {
 		// reference to supabasemanager's client
@@ -30,72 +30,78 @@ class AuthManager {
 	}
 
 	async signIn() {
-		const {error} = await this.client.auth.signInWithOAuth({provider: "google"});
+		const {error: signInError} = await this.client.auth.signInWithOAuth({provider: "google"});
 
-		if(error !== null) {
-			console.error("Error logging in!:", error);
-			return error;
+		if(signInError !== null) {
+			// figure out a better way to write this. should i have a separate signin/signout err method that returns the state?
+			this.error("logging in", signInError);
+			return this.authState;
 		}
+
 
 		const {data, error: userError} = await this.client.auth.getUser();
 
-		// figure out what to do with this
 		if(userError !== null) {
-			console.error("Error getting user status!:", error);
-
-			this.state = "SIGNED_OUT";
-			this.user = null;
-
-			return this.state;
+			this.error("getting user status", userError);
+			return this.setAuthState("SIGNED_OUT");
 		}
 
+
 		this.user = data.user;
+		return this.authState;
 	}
 
 	async signOut() {
 		const {error} = await this.client.auth.signOut();
 
 		if(error !== null) {
-			console.error("Error logging out!:", error);
-			return error;
+			this.error("signing out", error);
+			return this.authState;
 		}
 
 		// is it better to call updateState here? i don't want to flood my quotas
-		this.user = null;
-		this.state = "SIGNED_OUT";
+		return this.setAuthState("SIGNED_OUT");
 	}
 
-	async updateState() {
+	async verifyState() {
+		// TODO: possibly store this if it's important
 		const session = await this.client.auth.getSession();
 
 		// meh
 		if(session.data.session === null) {
 			// console.log("No session found");
-
-			// TODO: possibly an internal setState method
-			this.state = "SIGNED_OUT";
-			this.user = null;
-
-			return this.state;
+			return this.setAuthState("SIGNED_OUT");
 		}
+
 
 		// possibly promise.all this?
 		const {data, error} = await this.client.auth.getUser();
 
 		if(error !== null) {
-			console.error("Error getting user status!:", error);
-
-			this.state = "SIGNED_OUT";
-			this.user = null;
-
-			return this.state;
+			this.error("getting user status", error);
+			return this.setAuthState("SIGNED_OUT");
 		}
 
-		// console.log("Successfully got user status", data);
-		this.state = "SIGNED_IN";
-		this.user = data.user;
 
-		return this.state;
+		// console.log("Successfully got user status", data);
+		return this.setAuthState("SIGNED_IN", data.user);
+	}
+
+	private setAuthState(state: AuthState, user?: User) {
+		if(state === this.authState) {
+			console.log("State unchanged");
+		}
+
+		this.authState = state;
+		this.user = (state === "SIGNED_IN") ? user as User : null;
+
+		return this.authState;
+	}
+
+	private error(source: string, error: AuthError) {
+		console.error(`Error while ${source}:`, error);
+
+		return error;
 	}
 }
 
@@ -104,6 +110,6 @@ class AuthManager {
 type ClientData = {
 	url: string;
 	key: string;
-}
+};
 
 type AuthState = "SIGNED_IN" | "SIGNED_OUT";
