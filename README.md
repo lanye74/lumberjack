@@ -9,6 +9,7 @@ Log where you are, instantly
 	- [ ] reach out about getting a domain
 2. think about architecture
 	- [x] set up supabase
+	- [x] set up sso
 	- [ ] primary table will be the timestamped logs
 		- timestamp, location, user id
 		- probably something else i'll realize i'm missing after reaching step 8... talk to josh

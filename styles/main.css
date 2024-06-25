@@ -10,7 +10,47 @@ body {
 
 
 
+#container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 2em;
+
+	padding: 2em 4em;
+
+	border: 2px solid #0a0a0a;
+	box-sizing: border-box;
+	border-radius: 1em;
+	box-shadow: 0.5em 0.5em 2em 1em #0006;
+}
+
+#buttons {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 0.25em;
+}
+
+
+
 p {
-	font: normal bold 2em system-ui, arial;
+	font: 2em system-ui, arial;
 	color: #eee;
+	margin: 0;
+}
+
+
+
+button {
+	background: none;
+	border: none;
+	color: #eee;
+	font: normal bold 1em system-ui, arial;
+}
+
+button:hover {
+	text-decoration: underline;
+	cursor: pointer;
 }
