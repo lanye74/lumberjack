@@ -1,4 +1,4 @@
-import AuthManager from "./AuthManager.js";
+import AuthManager, {type AuthState} from "./AuthManager.js";
 
 import type {SupabaseClient} from "@supabase/supabase-js";
 
@@ -19,11 +19,15 @@ export default class SupabaseManager {
 	}
 
 	bindSignInTo(element: HTMLButtonElement) {
-		element.addEventListener("click", () => this.auth.signIn.bind(this));
+		element.addEventListener("click", () => this.auth.signIn.apply(this.auth));
 	}
 
 	bindSignOutTo(element: HTMLButtonElement) {
-		element.addEventListener("click", () => this.auth.signOut.bind(this));
+		element.addEventListener("click", () => this.auth.signOut.apply(this.auth));
+	}
+
+	bindAuthStateChangeCallback(callback: (state: AuthState) => any) {
+		this.auth.authStateCallback = callback;
 	}
 }
 

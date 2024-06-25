@@ -4,8 +4,11 @@ import type {AuthError, SupabaseClient, User} from "@supabase/supabase-js";
 
 export default class AuthManager {
 	client: SupabaseClient;
+
 	user: User | null = null;
 	authState: AuthState = "SIGNED_OUT";
+	authStateCallback?: (state: AuthState) => any;
+
 	// hsl(130, 70%, 35%)
 	logPrefix = ["%c[Auth Manager]", "color: #1b9830; font-weight: 900;"];
 
@@ -76,16 +79,19 @@ export default class AuthManager {
 	}
 
 	private setAuthState(state: AuthState, user?: User) {
-		console.trace()
-		if(state === this.authState) {
-			this.log(`State unchanged (${this.authState})`);
-		} else {
-			this.log(`Changing state from ${this.authState} to ${state}`);
-		}
-
+		const isAuthStateUnchanged = this.authState === state;
 
 		this.authState = state;
 		this.user = (state === "SIGNED_IN") ? user as User : null;
+
+
+		if(isAuthStateUnchanged) {
+			this.log(`State unchanged (${this.authState})`);
+		} else {
+			this.log(`Changing state from ${this.authState} to ${state}`);
+			this.authStateCallback?.(state);
+		}
+
 
 		return this.authState;
 	}
@@ -103,4 +109,4 @@ export default class AuthManager {
 
 
 
-type AuthState = "SIGNED_IN" | "SIGNED_OUT";
+export type AuthState = "SIGNED_IN" | "SIGNED_OUT";
