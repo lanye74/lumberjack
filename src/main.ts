@@ -33,6 +33,6 @@ function onAuthStateChange(state: AuthState) {
 
 
 (async () => {
-	const state = await manager.auth.verifyState();
-	console.log("State on page load:", state);
+	const session = await manager.auth.getSession();
+	console.log("Session on page load:", session);
 })();

@@ -1,4 +1,4 @@
-import type {AuthError, SupabaseClient, User} from "@supabase/supabase-js";
+import type {AuthError, Session, SupabaseClient, User} from "@supabase/supabase-js";
 
 
 
@@ -8,6 +8,7 @@ export default class AuthManager {
 	user: User | null = null;
 	authState: AuthState = "SIGNED_OUT";
 	authStateCallback?: (state: AuthState) => any;
+	session?: Session;
 
 	// hsl(130, 70%, 35%)
 	logPrefix = ["%c[Auth Manager]", "color: #1b9830; font-weight: 900;"];
@@ -15,31 +16,25 @@ export default class AuthManager {
 	constructor(client: SupabaseClient) {
 		// reference to supabasemanager's client
 		this.client = client;
-
-		// this will run synchronously, but i cba to make an init method
-		this.verifyState();
 	}
 
 	async signIn() {
 		const {error: signInError} = await this.client.auth.signInWithOAuth({provider: "google"});
 
 		if(signInError !== null) {
-			// figure out a better way to write this. should i have a separate signin/signout err method that returns the state?
 			this.error("logging in", signInError);
 			return this.authState;
 		}
 
 
-		const {data, error: userError} = await this.client.auth.getUser();
+		const session = await this.getSession();
 
-		if(userError !== null) {
-			this.error("getting user status", userError);
+		if(!session) {
 			return this.setAuthState("SIGNED_OUT");
 		}
 
 
-		this.user = data.user;
-		return this.authState;
+		return this.setAuthState("SIGNED_IN", session.user);
 	}
 
 	async signOut() {
@@ -54,28 +49,26 @@ export default class AuthManager {
 		return this.setAuthState("SIGNED_OUT");
 	}
 
-	async verifyState() {
+	async getSession() {
 		// TODO: possibly store this if it's important
-		const session = await this.client.auth.getSession();
+		const {data, error} = await this.client.auth.getSession();
 
 		// meh
-		if(session.data.session === null) {
-			// console.log("No session found");
-			return this.setAuthState("SIGNED_OUT");
-		}
-
-
-		// possibly promise.all this?
-		const {data, error} = await this.client.auth.getUser();
-
 		if(error !== null) {
-			this.error("getting user status", error);
-			return this.setAuthState("SIGNED_OUT");
+			// console.log("No session found");
+			this.error("checking state", error);
+			return;
+		}
+
+		if(!data.session) {
+			return;
 		}
 
 
-		// console.log("Successfully got user status", data);
-		return this.setAuthState("SIGNED_IN", data.user);
+		this.session = data.session;
+		this.setAuthState("SIGNED_IN", data.session.user);
+
+		return data.session;
 	}
 
 	private setAuthState(state: AuthState, user?: User) {
