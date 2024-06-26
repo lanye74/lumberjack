@@ -34,7 +34,7 @@ export default class AuthManager {
 		}
 
 
-		return this.setAuthState("SIGNED_IN", session.user);
+		return this.setAuthState("SIGNED_IN", session);
 	}
 
 	async signOut() {
@@ -67,18 +67,16 @@ export default class AuthManager {
 		}
 
 
-		this.session = data.session;
-		this.setAuthState("SIGNED_IN", data.session.user);
-
 		return data.session;
 	}
 
 	// called with ("SIGNED_IN", user) or ("SIGNED_OUT")
-	private setAuthState(state: AuthState, user: User | null = null) {
+	private setAuthState(state: AuthState, session: Session | null = null) {
 		const isAuthStateUnchanged = this.authState === state;
 
 		this.authState = state;
-		this.user = user;
+		this.session = session;
+		this.user = session?.user ?? null;
 
 
 		if(isAuthStateUnchanged) {
