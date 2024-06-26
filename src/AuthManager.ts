@@ -27,14 +27,7 @@ export default class AuthManager {
 		}
 
 
-		const session = await this.getSession();
-
-		if(!session) {
-			return this.setAuthState("SIGNED_OUT");
-		}
-
-
-		return this.setAuthState("SIGNED_IN", session);
+		return await this.updateAuthState();
 	}
 
 	async signOut() {
@@ -46,8 +39,9 @@ export default class AuthManager {
 		}
 
 		// is it better to call updateState here? i don't want to flood my quotas
-		return this.setAuthState("SIGNED_OUT");
+		return await this.updateAuthState();
 	}
+
 
 	async getSession() {
 		// TODO: possibly store this if it's important
@@ -60,30 +54,34 @@ export default class AuthManager {
 			return null;
 		}
 
-		if(!data.session) {
-			this.session = null;
-			this.setAuthState("SIGNED_OUT");
-			return null;
+
+		return data.session ?? null;
+	}
+
+	async updateAuthState() {
+		const session = await this.getSession();
+
+		if(!session) {
+			return this.setAuthState("SIGNED_OUT");
 		}
 
 
-		return data.session;
+		return this.setAuthState("SIGNED_IN", session);
 	}
 
-	// called with ("SIGNED_IN", user) or ("SIGNED_OUT")
-	private setAuthState(state: AuthState, session: Session | null = null) {
-		const isAuthStateUnchanged = this.authState === state;
+	// called with ("SIGNED_IN", session) or ("SIGNED_OUT")
+	private setAuthState(newAuthState: AuthState, session?: Session) {
+		this.log(`State update BEFORE ${this.authState} AFTER ${newAuthState}`);
+		const isAuthStateUnchanged = this.authState === newAuthState;
 
-		this.authState = state;
-		this.session = session;
+
+		this.authState = newAuthState;
+		this.session = session ?? null;
 		this.user = session?.user ?? null;
 
 
-		if(isAuthStateUnchanged) {
-			this.log(`State unchanged (${this.authState})`);
-		} else {
-			this.log(`Changing state from ${this.authState} to ${state}`);
-			this.authStateCallback?.(state);
+		if(!isAuthStateUnchanged) {
+			this.authStateCallback?.(newAuthState);
 		}
 
 

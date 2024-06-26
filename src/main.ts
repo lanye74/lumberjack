@@ -42,5 +42,5 @@ function onAuthStateChange(state: AuthState) {
 
 
 (async () => {
-	await manager.auth.getSession();
+	await manager.auth.updateAuthState();
 })();
