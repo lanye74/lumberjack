@@ -29,7 +29,7 @@ body {
 
 
 
-#buttons, #text {
+#buttons, #log-location {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -37,8 +37,12 @@ body {
 	gap: 0.25em;
 }
 
-#text {
-	gap: 0.75em;
+#log-location {
+	flex-direction: row;
+
+	font: 1em system-ui, arial;
+	color: #eee;
+	gap: 0.5em;
 }
 
 
@@ -67,4 +71,26 @@ button {
 button:hover {
 	text-decoration: underline;
 	cursor: pointer;
+}
+
+button:disabled {
+	cursor: default;
+	text-decoration: none;
+	color: #aaa;
+}
+
+
+
+#location-input {
+	background-color: transparent;
+	border: none;
+	border-bottom: 1px solid #eee;
+
+	font: 1em system-ui, arial;
+	color: #eee;
+	text-align: center;
+}
+
+#location-input:focus-visible {
+	outline: none;
 }

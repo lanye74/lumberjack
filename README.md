@@ -14,17 +14,19 @@ Log where you are, instantly
 	- [x] primary table will be the timestamped logs
 		- timestamp, location, user id
 		- probably something else i'll realize i'm missing after reaching step 8... talk to josh
-	- [ ] need another table for user profiles
-		- [ ] USE OAUTH. --> no need for turnstile or anything like that if we validate their email domain
+	- [x] need another table for user profiles
 		- points, user settings (also cache settings locally ofc)
 	- do we need to cache leaderboard rankings? because it’s so small can just pull it all client side
 		- points should probably reset weekly/monthly... maybe we do need a leaderboard service anyway
 		- can i make ranked splits? hahahaha
 		- see 9.1
 3. set up database, and implement the base functions that will access it
-	- [ ] probably need a supabasemanager that exposes methods
-		- [x] oauth methods exposed
-		- [ ] database methods exposed
+	- [x] probably need a supabasemanager that exposes methods
+	- [x] oauth methods exposed
+	- database methods exposed:
+		- [x] log location
+		- [ ] update/view your logs
+		- [ ] points system
 4. bind these methods to buttons in a highly minimal, just-usable ui
 	- [ ] make sure it all works from a raw data standpoint
 5. investigate pwas

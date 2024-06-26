@@ -14,30 +14,34 @@ const signInButton = document.getElementById("google-sso") as HTMLButtonElement;
 const signOutButton = document.getElementById("sign-out") as HTMLButtonElement;
 const welcomeHeader = document.getElementById("welcome-header") as HTMLHeadingElement;
 const authStateSpan = document.getElementById("auth-state") as HTMLSpanElement;
+const submitLocation = document.getElementById("submit-location") as HTMLButtonElement;
+const locationInput = document.getElementById("location-input") as HTMLInputElement;
 
 manager.bindSignInTo(signInButton);
 manager.bindSignOutTo(signOutButton);
 manager.bindAuthStateChangeCallback(onAuthStateChange);
+manager.bindSubmitLocation(locationInput, submitLocation);
 
 
 function onAuthStateChange(state: AuthState) {
-	authStateSpan.textContent = state;
-
 	if(state === "SIGNED_IN") {
 		welcomeHeader.textContent = `Welcome, ${manager.auth.user!.user_metadata.full_name}`;
+		// todo: possibly put signIn and signOutButton in auth manager (though this is only temporary so it doesn't reaaaallly matter)
+		// plus when i switch to svelte i should be able to just set disabled = state === "SIGNED_IN";
+		// ...not that this ui is permanent
+		signInButton.disabled = true;
+		signOutButton.disabled = false;
+		submitLocation.disabled = false;
 	} else {
 		welcomeHeader.textContent = "Welcome";
+		signInButton.disabled = false;
+		signOutButton.disabled = true;
+		submitLocation.disabled = true;
 	}
 }
 
 
 
 (async () => {
-	const session = await manager.auth.getSession();
-
-	if(session !== null) {
-		await manager.client.from("location_logs").insert([
-			{location: "EJMS"}
-		]);
-	}
+	await manager.auth.getSession();
 })();

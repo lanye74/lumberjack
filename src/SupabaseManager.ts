@@ -17,12 +17,22 @@ export default class SupabaseManager {
 		this.auth = new AuthManager(this.client);
 	}
 
-	bindSignInTo(element: HTMLButtonElement) {
-		element.addEventListener("click", () => this.auth.signIn.apply(this.auth));
+	async submitLocation(where: string) {
+		await this.client.from("location_logs").insert([
+			{location: where}
+		]);
 	}
 
-	bindSignOutTo(element: HTMLButtonElement) {
-		element.addEventListener("click", () => this.auth.signOut.apply(this.auth));
+	bindSubmitLocation(input: HTMLInputElement, button: HTMLButtonElement) {
+		button.addEventListener("click", () => this.submitLocation.call(this, input.value));
+	}
+
+	bindSignInTo(button: HTMLButtonElement) {
+		button.addEventListener("click", () => this.auth.signIn.apply(this.auth));
+	}
+
+	bindSignOutTo(button: HTMLButtonElement) {
+		button.addEventListener("click", () => this.auth.signOut.apply(this.auth));
 	}
 
 	bindAuthStateChangeCallback(callback: (state: AuthState) => any) {
