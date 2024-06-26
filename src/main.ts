@@ -13,7 +13,6 @@ const manager = new SupabaseManager({url, key});
 const signInButton = document.getElementById("google-sso") as HTMLButtonElement;
 const signOutButton = document.getElementById("sign-out") as HTMLButtonElement;
 const welcomeHeader = document.getElementById("welcome-header") as HTMLHeadingElement;
-const authStateSpan = document.getElementById("auth-state") as HTMLSpanElement;
 const submitLocation = document.getElementById("submit-location") as HTMLButtonElement;
 const locationInput = document.getElementById("location-input") as HTMLInputElement;
 

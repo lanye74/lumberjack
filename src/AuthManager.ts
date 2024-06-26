@@ -6,7 +6,7 @@ export default class AuthManager {
 	client: SupabaseClient;
 
 	authState: AuthState = "SIGNED_OUT";
-	authStateCallback?: (state: AuthState) => any;
+	authStateCallback?: (state: AuthState) => unknown;
 	session: Session | null = null;
 	user: User | null = null;
 

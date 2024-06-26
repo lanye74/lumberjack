@@ -35,7 +35,7 @@ export default class SupabaseManager {
 		button.addEventListener("click", () => this.auth.signOut.apply(this.auth));
 	}
 
-	bindAuthStateChangeCallback(callback: (state: AuthState) => any) {
+	bindAuthStateChangeCallback(callback: (state: AuthState) => unknown) {
 		this.auth.authStateCallback = callback;
 	}
 }
