@@ -1,4 +1,4 @@
-# clock-app
+# lumberjack
 Log where you are, instantly
 
 

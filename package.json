@@ -1,5 +1,5 @@
 {
-	"name": "clock-app",
+	"name": "lumberjack",
 	"version": "1.0.0",
 	"description": "Log where you are, instantly",
 	"main": "src/main.js",
