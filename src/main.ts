@@ -34,5 +34,10 @@ function onAuthStateChange(state: AuthState) {
 
 (async () => {
 	const session = await manager.auth.getSession();
-	console.log("Session on page load:", session);
+
+	if(session !== null) {
+		await manager.client.from("location_logs").insert([
+			{location: "EJMS"}
+		]);
+	}
 })();

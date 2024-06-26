@@ -5,10 +5,10 @@ import type {AuthError, Session, SupabaseClient, User} from "@supabase/supabase-
 export default class AuthManager {
 	client: SupabaseClient;
 
-	user: User | null = null;
 	authState: AuthState = "SIGNED_OUT";
 	authStateCallback?: (state: AuthState) => any;
-	session?: Session;
+	session: Session | null = null;
+	user: User | null = null;
 
 	// hsl(130, 70%, 35%)
 	logPrefix = ["%c[Auth Manager]", "color: #1b9830; font-weight: 900;"];
@@ -57,11 +57,13 @@ export default class AuthManager {
 		if(error !== null) {
 			// console.log("No session found");
 			this.error("checking state", error);
-			return;
+			return null;
 		}
 
 		if(!data.session) {
-			return;
+			this.session = null;
+			this.setAuthState("SIGNED_OUT");
+			return null;
 		}
 
 
@@ -71,11 +73,12 @@ export default class AuthManager {
 		return data.session;
 	}
 
-	private setAuthState(state: AuthState, user?: User) {
+	// called with ("SIGNED_IN", user) or ("SIGNED_OUT")
+	private setAuthState(state: AuthState, user: User | null = null) {
 		const isAuthStateUnchanged = this.authState === state;
 
 		this.authState = state;
-		this.user = (state === "SIGNED_IN") ? user as User : null;
+		this.user = user;
 
 
 		if(isAuthStateUnchanged) {

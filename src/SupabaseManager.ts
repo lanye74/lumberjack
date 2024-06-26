@@ -8,7 +8,6 @@ export default class SupabaseManager {
 	clientData: ClientInitOptions;
 	client: SupabaseClient<any, "public", any>
 	auth: AuthManager;
-	// signInClickListener:
 
 	constructor(clientData: ClientInitOptions) {
 		this.clientData = clientData;

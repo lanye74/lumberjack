@@ -11,13 +11,12 @@ Log where you are, instantly
 	- [x] set up supabase
 	- [x] set up oauth
 		- [ ] move oauth to whatever service account we have instead of this temporary one
-	- [ ] primary table will be the timestamped logs
+	- [x] primary table will be the timestamped logs
 		- timestamp, location, user id
 		- probably something else i'll realize i'm missing after reaching step 8... talk to josh
 	- [ ] need another table for user profiles
 		- [ ] USE OAUTH. --> no need for turnstile or anything like that if we validate their email domain
 		- points, user settings (also cache settings locally ofc)
-		- could even add auxiliary data like time of their last log
 	- do we need to cache leaderboard rankings? because it’s so small can just pull it all client side
 		- points should probably reset weekly/monthly... maybe we do need a leaderboard service anyway
 		- can i make ranked splits? hahahaha
