@@ -26,7 +26,6 @@ export default class AuthManager {
 			return this.authState;
 		}
 
-
 		return await this.updateAuthState();
 	}
 
@@ -38,19 +37,15 @@ export default class AuthManager {
 			return this.authState;
 		}
 
-		// is it better to call updateState here? i don't want to flood my quotas
 		return await this.updateAuthState();
 	}
 
-
 	async getSession() {
-		// TODO: possibly store this if it's important
 		const {data, error} = await this.client.auth.getSession();
 
 		// meh
 		if(error !== null) {
-			// console.log("No session found");
-			this.error("checking state", error);
+			this.error("fetching session", error);
 			return null;
 		}
 
@@ -72,15 +67,14 @@ export default class AuthManager {
 	// called with ("SIGNED_IN", session) or ("SIGNED_OUT")
 	private setAuthState(newAuthState: AuthState, session?: Session) {
 		this.log(`State update BEFORE ${this.authState} AFTER ${newAuthState}`);
-		const isAuthStateUnchanged = this.authState === newAuthState;
-
+		const authStateChanged = this.authState !== newAuthState;
 
 		this.authState = newAuthState;
 		this.session = session ?? null;
 		this.user = session?.user ?? null;
 
 
-		if(!isAuthStateUnchanged) {
+		if(authStateChanged) {
 			this.authStateCallback?.(newAuthState);
 		}
 
