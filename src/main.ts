@@ -19,12 +19,12 @@ const locationInput = document.getElementById("location-input") as HTMLInputElem
 manager.bindSignInTo(signInButton);
 manager.bindSignOutTo(signOutButton);
 manager.bindSubmitLocation(locationInput, submitLocation);
-manager.auth.authStateCallback = onAuthStateChange;
+manager.authManager.authStateCallback = onAuthStateChange;
 
 
 function onAuthStateChange(state: AuthState) {
 	if(state === "SIGNED_IN") {
-		welcomeHeader.textContent = `Welcome, ${manager.auth.user!.user_metadata.full_name}`;
+		welcomeHeader.textContent = `Welcome, ${manager.authManager.user!.user_metadata.full_name}`;
 		// todo: possibly put signIn and signOutButton in auth manager (though this is only temporary so it doesn't reaaaallly matter)
 		// plus when i switch to svelte i should be able to just set disabled = state === "SIGNED_IN";
 		// ...not that this ui is permanent
@@ -42,5 +42,5 @@ function onAuthStateChange(state: AuthState) {
 
 
 (async () => {
-	await manager.auth.updateAuthState();
+	await manager.authManager.updateAuthState();
 })();
