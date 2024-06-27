@@ -2,16 +2,21 @@ import type {AuthError, Session, SupabaseClient, User} from "@supabase/supabase-
 
 
 
+// TODO: find a **nice** way to cleanly handle the types of authState, session, and user
+// perhaps wrapping them in their own object...?
+// i played with generics on the class but it just felt painful honestly
+
 export default class AuthManager {
 	client: SupabaseClient;
 
-	authState: AuthState = "SIGNED_OUT";
 	authStateCallback?: (state: AuthState) => unknown;
+
+	authState: AuthState = "SIGNED_OUT";
 	session: Session | null = null;
 	user: User | null = null;
 
-	// hsl(130, 70%, 35%)
-	logPrefix = ["%c[Auth Manager]", "color: #1b9830; font-weight: 900;"];
+	// oklch(60% 0.2 150) in SRGB space
+	logPrefix = ["%c[AuthManager]", "color: #009a46; font-weight: 900;"];
 
 	constructor(client: SupabaseClient) {
 		// reference to supabasemanager's client
@@ -19,10 +24,10 @@ export default class AuthManager {
 	}
 
 	async signIn() {
-		const {error: signInError} = await this.client.auth.signInWithOAuth({provider: "google"});
+		const {error} = await this.client.auth.signInWithOAuth({provider: "google"});
 
-		if(signInError !== null) {
-			this.error("logging in", signInError);
+		if(error !== null) {
+			this.error("logging in", error);
 			return this.authState;
 		}
 
@@ -33,7 +38,7 @@ export default class AuthManager {
 		const {error} = await this.client.auth.signOut();
 
 		if(error !== null) {
-			this.error("signing out", error);
+			this.error("Error while signing out:", error);
 			return this.authState;
 		}
 
@@ -43,23 +48,20 @@ export default class AuthManager {
 	async getSession() {
 		const {data, error} = await this.client.auth.getSession();
 
-		// meh
 		if(error !== null) {
-			this.error("fetching session", error);
+			this.error("Error while fetching session:", error);
 			return null;
 		}
 
-
-		return data.session ?? null;
+		return data.session;
 	}
 
 	async updateAuthState() {
 		const session = await this.getSession();
 
-		if(!session) {
+		if(!session) { // longing for an if-let pattern or zig-style if (expr) |capture|...
 			return this.setAuthState("SIGNED_OUT");
 		}
-
 
 		return this.setAuthState("SIGNED_IN", session);
 	}
@@ -82,8 +84,8 @@ export default class AuthManager {
 		return this.authState;
 	}
 
-	private error(source: string, error: AuthError) {
-		console.error(...this.logPrefix, `Error while ${source}:`, error);
+	private error(message: string, error: AuthError) {
+		console.error(...this.logPrefix, message, error);
 
 		return error;
 	}

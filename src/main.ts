@@ -18,8 +18,8 @@ const locationInput = document.getElementById("location-input") as HTMLInputElem
 
 manager.bindSignInTo(signInButton);
 manager.bindSignOutTo(signOutButton);
-manager.bindAuthStateChangeCallback(onAuthStateChange);
 manager.bindSubmitLocation(locationInput, submitLocation);
+manager.auth.authStateCallback = onAuthStateChange;
 
 
 function onAuthStateChange(state: AuthState) {
