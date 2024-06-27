@@ -2,57 +2,43 @@ body {
 	margin: 0;
 	height: 100vh;
 
-	display: grid;
-	place-items: center;
+	--bg-color: #222;
+	/* great variable naming scheme here */
+	--text-white: #eee;
+	--white-darker: #aaa;
+	--white-darkest: #777;
 
-	background-color: #222;
+	background-color: var(--bg-color);
 }
 
-
-
 #container {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	gap: 2.5em;
+	padding: 2em 2em;
+	width: 100%;
+	height: 100%;
 
-	padding: 2em 4em;
-	width: min(500px, 80vw);
-	height: min(300px, 80vh);
-
-	border: 2px solid #0a0a0a;
 	box-sizing: border-box;
-	border-radius: 1em;
-	box-shadow: 0.5em 0.5em 2em 1em #0006;
 }
 
 
 
 #buttons, #log-location {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	align-items: center;
-	justify-content: center;
-	gap: 0.25em;
+	gap: 0.5em;
 }
 
 #log-location {
-	flex-direction: row;
-
 	font: 1em system-ui, arial;
-	color: #eee;
-	gap: 0.5em;
+	color: var(--text-white);
 }
 
 
 
 h1, p {
 	font: 2em system-ui, arial;
-	color: #eee;
+	color: var(--text-white);
 	margin: 0;
-
-	text-align: center;
 }
 
 #state {
@@ -63,20 +49,30 @@ h1, p {
 
 button {
 	background: none;
-	border: none;
-	color: #eee;
 	font: normal bold 1em system-ui, arial;
+	color: var(--text-white);
+
+	border: 1px solid var(--white-darker);
+	box-sizing: border-box;
+	border-radius: 4px;
 }
 
 button:hover {
 	text-decoration: underline;
 	cursor: pointer;
+
+	background-color: var(--text-white);
+	color: var(--bg-color);
 }
 
 button:disabled {
 	cursor: default;
 	text-decoration: none;
-	color: #aaa;
+	color: var(--white-darker);
+}
+
+button:disabled:hover {
+	background-color: transparent;
 }
 
 
@@ -84,13 +80,27 @@ button:disabled {
 #location-input {
 	background-color: transparent;
 	border: none;
-	border-bottom: 1px solid #eee;
+	border-bottom: 1px solid var(--text-white);
 
 	font: 1em system-ui, arial;
-	color: #eee;
-	text-align: center;
+	color: var(--text-white);
+	text-align: left;
 }
 
 #location-input:focus-visible {
 	outline: none;
+}
+
+
+/* spacing fun time */
+
+h1 {
+	/* I LOVE RELATIVE UNITS!!!! I LOVE RELATIVE UNITS!!!!! */
+	margin-bottom: 0.5em;
+}
+
+#buttons {
+	/* 0.5EM THERE AND 2EM HERE!!!! */
+	/* TODO: please just use rem */
+	margin-bottom: 2em;
 }

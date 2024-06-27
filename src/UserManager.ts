@@ -11,7 +11,7 @@ export default class UserManager {
 	currentPoints: number | null = null;
 
 	// oklch(60% 0.2 30) in SRGB space
-	logPrefix = ["%c[SupabaseManager]", "color: #de3e2d; font-weight: 900;"];
+	logPrefix = ["%c[UserManager]", "color: #de3e2d; font-weight: 900;"];
 
 	constructor(client: SupabaseClient, authManager: AuthManager) {
 		this.client = client;
