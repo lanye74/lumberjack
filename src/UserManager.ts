@@ -9,6 +9,7 @@ export default class UserManager {
 	authManager: AuthManager;
 
 	currentPoints: number | null = null;
+	pointsUpdateCallback?: (points: number) => unknown;
 
 	// oklch(60% 0.2 30) in SRGB space
 	logPrefix = ["%c[UserManager]", "color: #de3e2d; font-weight: 900;"];
@@ -24,14 +25,12 @@ export default class UserManager {
 			return;
 		}
 
-		const userId = this.authManager.user!.id;
-
 
 		// TODO: implement some semblance of good error handling patterns here
 		const submitLocationError = await this.submitLocation(location);
 		if(submitLocationError) return;
 
-		const incrementPointsError = await this.incrementPoints(userId, 1000);
+		const incrementPointsError = await this.incrementPoints(1000);
 		if(incrementPointsError) return;
 	}
 
@@ -49,13 +48,18 @@ export default class UserManager {
 	}
 
 	// this whole mess should really be done server-side if possible
-	async getPoints(userId: string) {
+	async getPoints() {
 		this.log("Fetching points");
 
+		// possibly this is bad but when i implement leaderboard resets,
+		// this should only ever ruin everything if someone... has the open as it resets
+		// and if that's the case i can probably force them to reload
 		if(this.currentPoints !== null) {
 			return this.currentPoints;
 		}
 
+
+		const userId = this.authManager.user!.id;
 
 		const {data, error} = await this.client
 			.from("user_data")
@@ -68,7 +72,9 @@ export default class UserManager {
 			// only error out if we actually ran into something bad
 			if(error.code !== "PGRST116") {
 				this.error("Error while fetching stored points value", error);
-				return;
+				// TODO: better error handle this (please)
+				// this shouldn't ever happen but PLEASE fix it
+				return Number.NEGATIVE_INFINITY;
 			}
 
 			this.log("User data row doesn't exist, creating");
@@ -76,14 +82,19 @@ export default class UserManager {
 
 
 		// if nothing was read (i.e. row DNE), set it to 0
-		return data?.points ?? 0;
+		const points = (data?.points ?? 0) as number;
+		this.pointsUpdateCallback?.(points);
+
+		return points;
 	}
 
-	async incrementPoints(userId: string, value: number) {
-		const fetchedPointsValue = await this.getPoints(userId);
+	async incrementPoints(value: number) {
+		const fetchedPointsValue = await this.getPoints();
 		const newPointsValue = fetchedPointsValue + value;
 
 		this.log(`Stored points value is ${fetchedPointsValue}, updating`);
+
+		const userId = this.authManager.user!.id;
 
 		const {error} = await this.client
 			.from("user_data")
@@ -98,6 +109,8 @@ export default class UserManager {
 
 		// everything is ok, probably, so
 		this.currentPoints = newPointsValue;
+
+		this.pointsUpdateCallback?.(this.currentPoints);
 	}
 
 	// TODO: add a logger class that abstracts these away

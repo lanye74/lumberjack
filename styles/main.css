@@ -28,21 +28,17 @@ body {
 	gap: 0.5em;
 }
 
-#log-location {
+#log-location, #container {
 	font: 1em system-ui, arial;
 	color: var(--text-white);
 }
 
 
 
-h1, p {
+h1 {
 	font: 2em system-ui, arial;
 	color: var(--text-white);
 	margin: 0;
-}
-
-#state {
-	font-size: 1.5em;
 }
 
 
@@ -77,6 +73,14 @@ button:disabled:hover {
 
 
 
+#points {
+	font-style: italic;
+}
+
+
+
+
+
 #location-input {
 	background-color: transparent;
 	border: none;
@@ -99,7 +103,7 @@ h1 {
 	margin-bottom: 0.5em;
 }
 
-#buttons {
+#buttons, #points {
 	/* 0.5EM THERE AND 2EM HERE!!!! */
 	/* TODO: please just use rem */
 	margin-bottom: 2em;

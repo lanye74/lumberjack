@@ -1,6 +1,7 @@
 import SupabaseManager from "./SupabaseManager.js";
 
 import type {AuthState} from "./AuthManager.js";
+import UserManager from "./UserManager.js";
 
 
 
@@ -10,9 +11,10 @@ const key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZi
 const manager = new SupabaseManager({url, key});
 
 
+const welcomeHeader = document.getElementById("welcome-header") as HTMLHeadingElement;
 const signInButton = document.getElementById("google-sso") as HTMLButtonElement;
 const signOutButton = document.getElementById("sign-out") as HTMLButtonElement;
-const welcomeHeader = document.getElementById("welcome-header") as HTMLHeadingElement;
+const pointsText = document.getElementById("points") as HTMLParagraphElement;
 const submitLocation = document.getElementById("submit-location") as HTMLButtonElement;
 const locationInput = document.getElementById("location-input") as HTMLInputElement;
 
@@ -20,6 +22,7 @@ manager.bindSignInTo(signInButton);
 manager.bindSignOutTo(signOutButton);
 manager.bindSubmitLocation(locationInput, submitLocation);
 manager.authManager.authStateCallback = onAuthStateChange;
+manager.userManager.pointsUpdateCallback = onPointsUpdate;
 
 
 function onAuthStateChange(state: AuthState) {
@@ -30,17 +33,27 @@ function onAuthStateChange(state: AuthState) {
 		// ...not that this ui is permanent
 		signInButton.disabled = true;
 		signOutButton.disabled = false;
+
 		submitLocation.disabled = false;
 	} else {
 		welcomeHeader.textContent = "Welcome";
 		signInButton.disabled = false;
 		signOutButton.disabled = true;
 		submitLocation.disabled = true;
+
+		pointsText.textContent = "Your points will show up here";
 	}
+}
+
+
+
+function onPointsUpdate(points: number) {
+	pointsText.textContent = `You currently have ${points} points`;
 }
 
 
 
 (async () => {
 	await manager.authManager.updateAuthState();
+	await manager.userManager.getPoints();
 })();

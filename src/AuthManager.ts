@@ -67,7 +67,7 @@ export default class AuthManager {
 	}
 
 	// called with ("SIGNED_IN", session) or ("SIGNED_OUT")
-	private setAuthState(newAuthState: AuthState, session?: Session) {
+	private async setAuthState(newAuthState: AuthState, session?: Session) {
 		this.log(`State update BEFORE ${this.authState} AFTER ${newAuthState}`);
 		const authStateChanged = this.authState !== newAuthState;
 
