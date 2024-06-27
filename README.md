@@ -26,7 +26,8 @@ Log where you are, instantly
 	- database methods exposed:
 		- [x] log location
 		- [ ] update/view your logs
-		- [ ] points system
+		- [x] points system
+			- it's the most primitive thing ever right now but whatever i really cba
 4. bind these methods to buttons in a highly minimal, just-usable ui
 	- [ ] make sure it all works from a raw data standpoint
 5. investigate pwas

@@ -53,15 +53,21 @@ export default class SupabaseManager {
 			.single();
 
 		if(fetchedPointsError !== null) {
-			this.error("Error while fetching stored points value", fetchedPointsError);
-			return;
+			// PGRST116 = no rows found, so data hasn't been initialized
+			// only error out if we actually ran into something bad
+			if(fetchedPointsError.code !== "PGRST116") {
+				this.error("Error while fetching stored points value", fetchedPointsError);
+				return;
+			}
+
+			this.log("User data row doesn't exist, creating");
 		}
 
 		// if nothing was read, set it to 0
 		const fetchedPointsValue = (data?.points ?? 0) as number;
 
 
-		this.log(`Fetched with value ${fetchedPointsValue}, updating`);
+		this.log(`Stored points value is ${fetchedPointsValue}, updating`);
 
 		const {error: defaultPointsValueError} = await this.client
 			.from("user_data")
