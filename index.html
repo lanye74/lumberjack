@@ -5,6 +5,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Lumberjack</title>
 
+		<link rel="manifest" href="manifest.json">
+
 		<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 		<script type="module" src="js/main.js"></script>
@@ -21,7 +23,8 @@
 
 			<p id="points">Your points will show up here</p>
 
-			<form id="log-location">
+			<!-- the voices -->
+			<form id="log-location" onsubmit="return false;">
 				Log location:
 				<input type="text" id="location-input">
 				<button type="submit" id="submit-location" disabled>Submit</button>

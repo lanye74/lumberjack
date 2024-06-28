@@ -1,7 +1,6 @@
 import SupabaseManager from "./SupabaseManager.js";
 
 import type {AuthState} from "./AuthManager.js";
-import UserManager from "./UserManager.js";
 
 
 

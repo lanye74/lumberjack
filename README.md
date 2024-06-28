@@ -31,7 +31,7 @@ Log where you are, instantly
 4. bind these methods to buttons in a highly minimal, just-usable ui
 	- [ ] make sure it all works from a raw data standpoint
 5. investigate pwas
-	- [ ] figure out how to set up a pwa
+	- [x] figure out how to set up a pwa
 	- [ ] bind this pwa to the domain and test if it works
 		- can use my github io if domain is taking a while
 	- [ ] ensure that there’s some amount of hot-reloading available on the pwa

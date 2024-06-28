@@ -1,0 +1,23 @@
+{
+	"short_name": "Lumberjack",
+	"name": "JCS Lumberjack",
+	"description": "Log where you are, instantly",
+
+	"icons": [
+		{
+			"src": "assets/icons/lumberjack-512.png",
+			"type": "image/png",
+			"sizes": "512x512",
+			"icon": "any maskable"
+		},
+		{
+			"src": "assets/icons/lumberjack-192.png",
+			"type": "image/png",
+			"sizes": "192x192",
+			"icon": "any maskable"
+		}
+	],
+
+	"display": "standalone",
+	"start_url": "/"
+}
