@@ -1,18 +1,15 @@
 {
+	"extends": "./.svelte-kit/tsconfig.json",
+
 	"compilerOptions": {
-		"target": "ESNext",
-		"module": "ESNext",
-		"moduleResolution": "Node10",
 		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		"moduleResolution": "bundler",
 
-		"strict": true,
-		"alwaysStrict": true,
+		"forceConsistentCasingInFileNames": true,
+		"sourceMap": true,
+		"skipLibCheck": true,
 
-		"lib": ["ESNext", "DOM"],
-
-		"outDir": "./js"
-	},
-
-	"include": ["src/"],
-	"exclude": []
+		"strict": true
+	}
 }
