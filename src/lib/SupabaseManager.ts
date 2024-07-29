@@ -1,7 +1,8 @@
+import * as supabase from "@supabase/supabase-js";
+import type {SupabaseClient} from "@supabase/supabase-js";
+
 import AuthManager from "./AuthManager.js";
 import UserManager from "./UserManager.js";
-
-import type {SupabaseClient} from "@supabase/supabase-js";
 
 
 
@@ -27,18 +28,6 @@ export default class SupabaseManager {
 		// i wish that javascript was a little bet less nebulous about how data is passed around
 		// missing rust references...
 		this.userManager = new UserManager(this.client, this.authManager);
-	}
-
-	bindSubmitLocation(input: HTMLInputElement, button: HTMLButtonElement) {
-		button.addEventListener("click", () => this.userManager.addLogToTracker.call(this.userManager, input.value));
-	}
-
-	bindSignInTo(button: HTMLButtonElement) {
-		button.addEventListener("click", () => this.authManager.signIn.apply(this.authManager));
-	}
-
-	bindSignOutTo(button: HTMLButtonElement) {
-		button.addEventListener("click", () => this.authManager.signOut.apply(this.authManager));
 	}
 
 	/* private error(message: string, error?: PostgrestError) {

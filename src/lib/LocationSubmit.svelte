@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
     import {enhance} from "$app/forms";
-
+	import {manager} from "$lib/main.js";
 </script>
 
 <style>
@@ -57,8 +57,8 @@
 	}
 </style>
 
-<form id="log-location" method="POST" use:enhance>
+<form id="log-location" method="POST" use:enhance action="?/submitLocation">
 	Log location:
-	<input type="text" id="location-input">
-	<button type="submit" id="submit-location" disabled>Submit</button>
+	<input type="text" id="location-input" name="location">
+	<button type="submit" id="submit-location" disabled={manager.authManager.authState === "SIGNED_OUT"}>Submit</button>
 </form>

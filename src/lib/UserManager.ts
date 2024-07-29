@@ -9,7 +9,6 @@ export default class UserManager {
 	authManager: AuthManager;
 
 	currentPoints: number | null = null;
-	pointsUpdateCallback?: (points: number) => unknown;
 
 	// oklch(60% 0.2 30) in SRGB space
 	logPrefix = ["%c[UserManager]", "color: #de3e2d; font-weight: 900;"];
@@ -58,6 +57,10 @@ export default class UserManager {
 			return this.currentPoints;
 		}
 
+		if(this.authManager.authState === "SIGNED_OUT") {
+			return -1;
+		}
+
 
 		const userId = this.authManager.user!.id;
 
@@ -83,7 +86,8 @@ export default class UserManager {
 
 		// if nothing was read (i.e. row DNE), set it to 0
 		const points = (data?.points ?? 0) as number;
-		this.pointsUpdateCallback?.(points);
+
+		this.log(`Points fetched successfully: ${points}`);
 
 		return points;
 	}
@@ -109,8 +113,6 @@ export default class UserManager {
 
 		// everything is ok, probably, so
 		this.currentPoints = newPointsValue;
-
-		this.pointsUpdateCallback?.(this.currentPoints);
 	}
 
 	// TODO: add a logger class that abstracts these away

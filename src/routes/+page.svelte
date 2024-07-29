@@ -1,8 +1,20 @@
-<script>
-    import AuthButtons from "$lib/AuthButtons.svelte";
-    import LocationSubmit from "$lib/LocationSubmit.svelte";
+<script lang="ts">
+	import AuthButtons from "$lib/AuthButtons.svelte";
+	import LocationSubmit from "$lib/LocationSubmit.svelte";
+	import {manager} from "$lib/main.js";
 
+	$: welcomeHeader = manager.authManager.authState === "SIGNED_IN" ? `Welcome, ${manager.authManager.user!.user_metadata.full_name}` : "Welcome";
+
+	// $: pointsText = manager.userManager.getPoints() !== -1 ? `You have ${manager.userManager.getPoints()} points ` : "Your points will show up here";
+
+	const pointsText = "Your points will show up here";
+
+	(async () => {
+		await manager.authManager.updateAuthState();
+		await manager.userManager.getPoints();
+	})();
 </script>
+
 <style>
 	:global(body) {
 		margin: 0;
@@ -49,11 +61,11 @@
 
 
 <div id="container">
-	<h1 id="welcome-header">Welcome</h1>
+	<h1>{welcomeHeader}</h1>
 
 	<AuthButtons />
 
-	<p id="points">Your points will show up here</p>
+	<p id="points">{pointsText}</p>
 
 	<LocationSubmit />
 </div>

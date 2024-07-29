@@ -1,3 +1,7 @@
+<script lang="ts">
+    import {manager} from "$lib/main.js";
+</script>
+
 <style>
 	button {
 		background: none;
@@ -33,7 +37,10 @@
 	}
 </style>
 
+
+
 <div id="auth-buttons">
-	<button id="google-sso">Sign in with Google</button>
-	<button id="sign-out" disabled>Sign out</button>
+	<!-- need to figure out how to make these reactive, and how to restructure the project entirely -->
+	<button id="google-sso" disabled={manager.authManager.authState === "SIGNED_IN"} on:click={() => manager.authManager.signIn()}>Sign in with Google</button>
+	<button id="sign-out" disabled={manager.authManager.authState === "SIGNED_OUT"} on:click={() => manager.authManager.signOut()}>Sign out</button>
 </div>
