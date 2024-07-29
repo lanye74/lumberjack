@@ -1,4 +1,3 @@
-// install types with npm i --save-dev    v
 import * as SupabaseImport from "@supabase/supabase-js";
 
 
