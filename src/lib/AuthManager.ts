@@ -16,7 +16,7 @@ export default class AuthManager {
 	user: User | null = null;
 
 	// oklch(60% 0.2 150) in SRGB space
-	logPrefix = ["%c[AuthManager]", "color: #009a46; font-weight: 900;"];
+	logPrefix = ["%c[AuthManager]", "color: #009e36; font-weight: 900;"];
 
 	constructor(client: SupabaseClient) {
 		// reference to supabasemanager's client
