@@ -50,6 +50,10 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 		return redirect(303, "/auth");
 	}
 
+	if(requestEvent.locals.session && requestEvent.url.pathname === "/auth") {
+		return redirect(303, "/home");
+	}
+
 
 	return resolve(requestEvent);
 }
