@@ -1,11 +1,12 @@
-import {type Cookies} from "@sveltejs/kit";
-import {type CookieMethodsServer, createServerClient} from "@supabase/ssr";
 import {PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL} from "$env/static/public";
 
+import {type Cookies, type Handle, redirect} from "@sveltejs/kit";
+import {type CookieMethodsServer, createServerClient} from "@supabase/ssr";
+import {sequence} from "@sveltejs/kit/hooks";
 
 
 
-export async function handle({event: requestEvent, resolve}) {
+const supabaseHandle: Handle = async({event: requestEvent, resolve}) => {
 	requestEvent.locals.supabase = createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 		cookies: generateSupabaseClientCookieMethods(requestEvent.cookies)
 	});
@@ -36,6 +37,25 @@ export async function handle({event: requestEvent, resolve}) {
 
 
 
+const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
+	const sessionData = await requestEvent.locals.safeGetSession();
+
+	[requestEvent.locals.session, requestEvent.locals.user] = [sessionData.session, sessionData.user];
+
+
+	// whatever idc i'll rename them later (kappa)
+	const authDependentPaths = ["/home", "/logger", "/scoreboard", "/profile"];
+
+	if(!requestEvent.locals.session && authDependentPaths.includes(requestEvent.url.pathname)) {
+		return redirect(303, "/auth");
+	}
+
+
+	return resolve(requestEvent);
+}
+
+
+
 function generateSupabaseClientCookieMethods(cookies: Cookies): CookieMethodsServer {
 	return {
 		getAll: () => cookies.getAll(),
@@ -47,3 +67,7 @@ function generateSupabaseClientCookieMethods(cookies: Cookies): CookieMethodsSer
 		}
 	}
 }
+
+
+
+export const handle: Handle = sequence(supabaseHandle, authGuardHandle);
