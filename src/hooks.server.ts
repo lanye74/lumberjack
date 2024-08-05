@@ -50,14 +50,15 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 	const {locals: {session}, url} = requestEvent;
 
 	// whatever idc i'll rename them later (kappa)
-	const authDependentPaths = ["/home", "/logger", "/scoreboard", "/profile"];
+	const authDependentPaths = ["/", "/logger", "/scoreboard", "/profile"];
 
 	if(!session && authDependentPaths.includes(url.pathname)) {
 		return redirect(303, "/auth");
 	}
 
 	if(session && url.pathname === "/auth") {
-		return redirect(303, "/home");
+		console.log(session)
+		return redirect(303, "/");
 	}
 
 

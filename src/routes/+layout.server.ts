@@ -1,6 +1,6 @@
-export async function load(loadEvent) {
+export async function load({cookies, locals}) {
 	return {
-		session: loadEvent.locals.session,
-		cookies: loadEvent.cookies.getAll()
+		cookies: cookies.getAll(),
+		session: locals.session
 	};
 }

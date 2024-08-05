@@ -1,15 +1,6 @@
-<script lang="ts">
-	import * as envVars from "$env/static/public";
+<h1>home</h1>
 
-	console.log({...envVars});
-</script>
 
-<style>
-	:global(body) {
-		background-color: #0F171F;
-	}
-</style>
-
-<div>
-
-</div>
+<form action="/auth/logout" method="POST">
+	<button type="submit">log out</button>
+</form>
