@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import * as envVars from "$env/static/public";
 
 	console.log({...envVars});

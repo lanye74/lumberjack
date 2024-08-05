@@ -11,15 +11,18 @@ const supabaseHandle: Handle = async({event: requestEvent, resolve}) => {
 		cookies: generateSupabaseClientCookieMethods(requestEvent.cookies)
 	});
 
+	// i don't trust javascript setting stuff by reference so i'm destructuring it after setting
+	const {locals: {supabase}} = requestEvent;
+
 
 	requestEvent.locals.safeGetSession = async () => {
 		// check for the existence of a session
-		const {data: {session}} = await requestEvent.locals.supabase.auth.getSession();
+		const {data: {session}} = await supabase.auth.getSession();
 		if(!session) return {session: null, user: null};
 
 
 		// validate the session
-		const {data: {user}, error} = await requestEvent.locals.supabase.auth.getUser();
+		const {data: {user}, error} = await supabase.auth.getUser();
 		if(error) return {session: null, user: null};
 
 
@@ -43,14 +46,17 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 	[requestEvent.locals.session, requestEvent.locals.user] = [sessionData.session, sessionData.user];
 
 
+	// perhaps to no great surprise, i still have trust issues approximately 30 lines later
+	const {locals: {session}, url} = requestEvent;
+
 	// whatever idc i'll rename them later (kappa)
 	const authDependentPaths = ["/home", "/logger", "/scoreboard", "/profile"];
 
-	if(!requestEvent.locals.session && authDependentPaths.includes(requestEvent.url.pathname)) {
+	if(!session && authDependentPaths.includes(url.pathname)) {
 		return redirect(303, "/auth");
 	}
 
-	if(requestEvent.locals.session && requestEvent.url.pathname === "/auth") {
+	if(session && url.pathname === "/auth") {
 		return redirect(303, "/home");
 	}
 
