@@ -7,9 +7,15 @@ export const actions = {
 		const {locals} = requestEvent;
 
 
+		const redirectLocation = new URL("/auth/callback", requestEvent.url);
+
+		console.log(redirectLocation)
 
 		const {data, error} = await locals.supabase.auth.signInWithOAuth({
-			provider: "google"
+			provider: "google",
+			options: {
+				redirectTo: redirectLocation.toString()
+			}
 		});
 
 
@@ -22,7 +28,6 @@ export const actions = {
 			console.error("No redirect url???!");
 			return redirect(303, "/auth/error");
 		}
-
 
 
 		return redirect(303, data.url);

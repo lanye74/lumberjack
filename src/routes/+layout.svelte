@@ -13,6 +13,8 @@
 		const {data} = supabase.auth.onAuthStateChange((_authEvent, newSession) => {
 			// we just got a session and the server needs to pull it to provide in all future requests
 			// (i think)
+			console.log("state change", _authEvent, newSession)
+
 			if(newSession?.expires_at !== session?.expires_at) {
 				invalidate("supabase:auth");
 			}
