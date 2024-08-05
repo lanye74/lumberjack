@@ -1,3 +1,4 @@
+import {authStateLogPrefix} from "$lib/consoleColorPrefixes.js";
 import {redirect} from "@sveltejs/kit";
 
 
@@ -9,7 +10,6 @@ export const actions = {
 
 		const redirectLocation = new URL("/auth/callback", requestEvent.url);
 
-		console.log(redirectLocation)
 
 		const {data, error} = await locals.supabase.auth.signInWithOAuth({
 			provider: "google",
@@ -20,12 +20,12 @@ export const actions = {
 
 
 		if(error) {
-			console.error(error);
+			console.error(...authStateLogPrefix, "Error logging in:", error);
 			return redirect(303, "/auth/error");
 		}
 
 		if(!data.url) {
-			console.error("No redirect url???!");
+			console.error(...authStateLogPrefix, "No redirect url?!", data);
 			return redirect(303, "/auth/error");
 		}
 
