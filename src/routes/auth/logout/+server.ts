@@ -13,5 +13,5 @@ export async function POST({locals}) {
 	}
 
 
-	return redirect(303, "/auth");
+	return redirect(303, "/");
 }

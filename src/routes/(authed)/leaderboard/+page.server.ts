@@ -5,4 +5,12 @@ export async function load(loadEvent) {
 
 	// do some stuff here to organize the top 3/5/20/whatever here idc does it really matter in the grand scheme of things
 	// maybe i'll store something like a reset time in a separate table cause neither of the other tables are really designed to have that stuff put in it
+
+
+	const data = await supabase.from("user_data")
+		.select()
+		.order("points", {ascending: false})
+		// .limit(5);
+
+	console.log(data.data);
 }

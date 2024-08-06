@@ -1,6 +1,15 @@
-<h1>home</h1>
+<script lang="ts">
+	export let data;
+</script>
 
 
-<form action="/auth/logout" method="POST">
-	<button type="submit">log out</button>
-</form>
+
+<h1>this is the generic landing page</h1>
+
+
+
+{#if !data.session}
+	<a href="/auth">click here to sign in!</a>
+{:else}
+	<a href="/home">click here to go to the home page!</a>
+{/if}
