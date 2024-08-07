@@ -3,6 +3,7 @@
 	import {invalidate} from "$app/navigation";
 	import {onMount} from "svelte";
     import NavBar from "$lib/NavBar.svelte";
+    import TopBar from "$lib/TopBar.svelte";
 
 
 
@@ -34,6 +35,8 @@
 		/* source: it came to me in a dream
 		   (just kidding i stole it from https://sjorswijsman.medium.com/3-easy-css-tricks-for-responsive-websites-i-use-in-every-project-68ec334a1522) */
 		font-size: clamp(12px, calc(60% + 0.8vmin), 20px);
+
+		--jcs-blue: #003a71;
 	}
 
 	:global(body) {
@@ -61,8 +64,8 @@
 
 
 
+<TopBar />
+
 <slot />
-
-
 
 <NavBar />

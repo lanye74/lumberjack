@@ -35,13 +35,13 @@
 		gap: 2rem;
 	}
 
-	h1, p {
+	h2, p {
 		font-family: Lora;
 		margin: 0;
 	}
 
-	h1 {
-		font-size: 3.5rem;
+	h2 {
+		font-size: 3.25rem;
 	}
 
 	p {
@@ -52,7 +52,7 @@
 
 
 <div id="greeting-box">
-	<h1>{greeting}, {firstName}!</h1>
+	<h2>{greeting}, {firstName}!</h2>
 
 	<p>What have you been up to?</p>
 </div>
