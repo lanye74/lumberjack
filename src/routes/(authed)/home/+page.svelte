@@ -17,6 +17,7 @@
 
 <style>
 	#greeting-box {
+		margin: 2rem;
 		padding: 2rem;
 		box-sizing: border-box;
 
@@ -53,9 +54,3 @@
 
 	<p>What have you been up to?</p>
 </div>
-
-
-
-<form action="/auth/logout" method="POST">
-	<button type="submit">log out</button>
-</form>

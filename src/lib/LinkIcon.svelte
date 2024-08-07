@@ -32,6 +32,8 @@
 		aspect-ratio: 1 / 1;
 
 		height: 4rem;
+		/* increase touch area for icon */
+		padding: 1rem;
 
 		display: inline-flex;
 		align-items: center;

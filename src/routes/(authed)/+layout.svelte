@@ -3,12 +3,6 @@
     import TopBar from "$lib/TopBar.svelte";
 </script>
 
-<style>
-	main {
-		padding: 2rem;
-	}
-</style>
-
 
 
 <TopBar />

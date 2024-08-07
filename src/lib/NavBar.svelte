@@ -18,7 +18,8 @@
 		flex-direction: row;
 		justify-content: space-between;
 
-		padding: 2rem calc(8vw + 1rem);
+		/* effective top padding: 2rem */
+		padding: 1rem calc(6vw + 1rem);
 
 		box-sizing: border-box;
 	}
