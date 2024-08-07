@@ -19,6 +19,7 @@ export async function load(loadEvent) {
 	const {data: {session}} = await supabase.auth.getSession();
 	const {data: {user}} = await supabase.auth.getUser();
 
+
 	return {
 		supabase,
 

@@ -22,7 +22,6 @@
 		border: none;
 		background: none;
 		outline: none;
-		margin: 0;
 		padding: 1rem 2rem;
 
 		font: 1.75rem Lora;

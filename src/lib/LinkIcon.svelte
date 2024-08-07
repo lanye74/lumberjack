@@ -8,6 +8,9 @@
 	// @ts-ignore
 	import FaRegUserCircle from "svelte-icons/fa/FaRegUserCircle.svelte";
 
+	// TODO: switch to iconify since this package is not maintained anymore
+
+
 
 	export let path: IconShortName;
 

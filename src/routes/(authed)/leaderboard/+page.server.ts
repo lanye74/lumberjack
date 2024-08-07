@@ -7,10 +7,24 @@ export async function load(loadEvent) {
 	// maybe i'll store something like a reset time in a separate table cause neither of the other tables are really designed to have that stuff put in it
 
 
-	const data = await supabase.from("user_data")
+	// TODO: error handling here
+	const data = await supabase.from("points")
 		.select()
-		// .order("points", {ascending: false})
-		// .limit(5);
+		.order("points", {ascending: false})
+		.limit(5);
 
-	// console.log(data.data);
+
+	// TODO: map user data to name & pfp
+
+
+	return {
+		leaderboard: data.data as LeaderboardResults
+	};
 }
+
+
+
+type LeaderboardResults = {
+	google_user_id: string;
+	points: number;
+}[];
