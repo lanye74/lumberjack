@@ -22,6 +22,8 @@
 		padding: 1rem calc(6vw + 1rem);
 
 		box-sizing: border-box;
+
+		background-color: white;
 	}
 </style>
 
