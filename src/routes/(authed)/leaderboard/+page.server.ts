@@ -9,8 +9,8 @@ export async function load(loadEvent) {
 
 	const data = await supabase.from("user_data")
 		.select()
-		.order("points", {ascending: false})
+		// .order("points", {ascending: false})
 		// .limit(5);
 
-	console.log(data.data);
+	// console.log(data.data);
 }

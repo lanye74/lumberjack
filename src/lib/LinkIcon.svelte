@@ -29,8 +29,6 @@
 	a {
 		color: black;
 
-		aspect-ratio: 1 / 1;
-
 		height: 4rem;
 		/* increase touch area for icon */
 		padding: 1rem;
@@ -54,6 +52,6 @@
 
 
 
-<a href={path}>
+<a href={path} data-sveltekit-preload-data="hover">
 	<svelte:component this={mappedIconName} />
 </a>

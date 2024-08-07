@@ -1,9 +1,7 @@
 export default function generateGreeting() {
 	const date = new Date();
-
 	const hour = date.getHours();
 
-	console.log(hour);
 
 	if(hour >= 5 && hour < 12) {
 		return "Good morning";
