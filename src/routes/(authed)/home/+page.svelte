@@ -17,11 +17,8 @@
 
 <style>
 	#greeting-box {
-		margin: 2rem;
 		padding: 2rem;
 		box-sizing: border-box;
-
-		width: calc(100% - 4rem);
 
 		/* TODO: should i just leave these as 4px or what
 		         probably not... it's interpolating between 3px - 5px... it's fine */
