@@ -9,5 +9,5 @@
 
 
 {#each leaderboard as user}
-	<p>user id {user.google_user_id} has {user.points} points</p>
+	<p>user name {user.fullName} has {user.points} points and has a profile url of {user.avatarUrl}</p>
 {/each}

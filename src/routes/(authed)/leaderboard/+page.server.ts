@@ -8,23 +8,76 @@ export async function load(loadEvent) {
 
 
 	// TODO: error handling here
-	const data = await supabase.from("points")
+	// TODO: (2) figure out how to write this in a nice way because this fucking sucks
+	const getTopPointsResponse = await supabase.from("points")
 		.select()
 		.order("points", {ascending: false})
 		.limit(5);
 
+	if(getTopPointsResponse.error) {
+		// whatever bro
+	}
 
-	// TODO: map user data to name & pfp
+
+	const topPoints = getTopPointsResponse.data as GetTopPointsResponse;
+	const topPointsGUUIDs = topPoints.map(person => person.google_user_id);
+
+
+	const getUserInfoResponse = await supabase.from("user_public_info")
+		.select()
+		.in("google_user_id", topPointsGUUIDs);
+
+	if(getUserInfoResponse.error) {
+		// whatever bro
+	}
+
+	const userInfo = getUserInfoResponse.data as GetUserPublicInfoResponse;
+
+
+
+	const output: LeaderboardResults = [];
+
+
+	// ewwwwwwwwww
+	for(const [index, gUUID] of topPointsGUUIDs.entries()) {
+		const relevantUserInfo = userInfo.filter(user => user.google_user_id === gUUID)[0];
+		const points = topPoints.filter(user => user.google_user_id === gUUID)[0].points;
+
+		output[index] = {
+			googleUserId: gUUID,
+			fullName: relevantUserInfo.full_name,
+			avatarUrl: relevantUserInfo.avatar_url,
+			points
+		};
+	}
 
 
 	return {
-		leaderboard: data.data as LeaderboardResults
+		leaderboard: output
 	};
 }
 
 
 
 type LeaderboardResults = {
+	googleUserId: string;
+	fullName: string;
+	avatarUrl: string;
+
+	points: number;
+}[];
+
+
+
+type GetTopPointsResponse = {
 	google_user_id: string;
 	points: number;
+}[];
+
+
+
+type GetUserPublicInfoResponse = {
+	google_user_id: string;
+	full_name: string;
+	avatar_url: string;
 }[];
