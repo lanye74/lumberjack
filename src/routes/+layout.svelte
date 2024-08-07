@@ -2,8 +2,6 @@
     import {authStateLogPrefix} from "$lib/consoleColorPrefixes.js";
 	import {invalidate} from "$app/navigation";
 	import {onMount} from "svelte";
-    import NavBar from "$lib/NavBar.svelte";
-    import TopBar from "$lib/TopBar.svelte";
 
 
 
@@ -64,8 +62,6 @@
 
 
 
-<TopBar />
+
 
 <slot />
-
-<NavBar />
