@@ -1,13 +1,13 @@
 <style>
 	header {
-		position: static;
+		position: sticky;
 		top: 0;
 
 		height: fit-content;
 		width: 100%;
 
 		background-color: var(--jcs-blue);
-		padding: 0.5rem 2rem;
+		padding: 1rem 2rem;
 		box-sizing: border-box;
 
 		box-shadow: 0px;

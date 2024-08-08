@@ -14,7 +14,7 @@ export async function load(loadEvent) {
 	const getTopUsersByPointsResponse = await supabase.from("public_user_data")
 		.select()
 		.order("points", {ascending: false})
-		.limit(5);
+		.limit(10);
 
 	if(getTopUsersByPointsResponse.error) {
 		// whatever bro

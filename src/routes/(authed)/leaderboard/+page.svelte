@@ -4,6 +4,8 @@
 
 
 	const {leaderboard} = data;
+
+	const formatNumber = new Intl.NumberFormat().format;
 </script>
 
 <style>
@@ -25,21 +27,25 @@
 		align-items: center;
 
 
-		padding: 1rem 2rem;
+		/* TODO: standardize some properties e.g. this specific padding */
+		padding: 1.25rem 2rem;
 		box-sizing: border-box;
 
 		border-bottom: 0.25rem solid #ccc;
 
 		grid-column: 1 / span 3;
-		grid-row: var(--grid-row);
+	}
+
+	.user:last-child {
+		border-bottom: none;
 	}
 
 
 
-	.user span.place {
+	.user .place {
 		grid-column: 1;
 
-		font: normal bold 2rem Lora;
+		font: normal bold 2.5rem Lora;
 	}
 
 	.user img {
@@ -49,11 +55,27 @@
 		border-radius: 50%;
 	}
 
-	.user p {
+	.user .text {
 		grid-column: 3;
 
-		font: 1.5rem Lora;
+
+		display: flex;
+		flex-direction: column;
+	}
+
+
+
+	.user .text p {
 		margin: 0;
+	}
+
+	.text .name {
+		font: normal bold 1.5rem Lora;
+	}
+
+	.text .points {
+		font: italic normal 1.25rem Lora;
+		color: #666;
 	}
 </style>
 
@@ -62,7 +84,7 @@
 {#if leaderboard !== null}
 	<div class="leaderboard">
 		{#each leaderboard as user, index}
-			<div class="user" style:--grid-row={index + 1}>
+			<div class="user">
 				<span class="place">{index + 1}.</span>
 
 				<!-- TODO: store a local user missing asset -->
@@ -70,7 +92,10 @@
 				<!-- svelte-ignore a11y-img-redundant-alt -->
 				<img src={user.avatarUrl ?? "https://www.ais.unwater.org/ais/aiscm/pdf/lib/tcpdf/images/logo_example.png"} alt="User profile picture">
 
-				<p>{user.fullName} - {user.points} points</p>
+				<div class="text">
+					<p class="name">{user.fullName}</p>
+					<p class="points">{formatNumber(user.points)} points</p>
+				</div>
 			</div>
 		{/each}
 	</div>

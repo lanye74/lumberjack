@@ -22,7 +22,7 @@
 		border: none;
 		background: none;
 		outline: none;
-		padding: 1rem 2rem;
+		padding: 1.25rem 2rem;
 
 		font: 1.75rem Lora;
 		cursor: pointer;

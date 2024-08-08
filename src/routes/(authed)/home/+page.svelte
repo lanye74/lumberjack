@@ -31,6 +31,8 @@
 		flex-direction: column;
 
 		gap: 2rem;
+
+		overflow-wrap: break-word;
 	}
 
 	h2, p {

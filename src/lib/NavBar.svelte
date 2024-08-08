@@ -9,7 +9,7 @@
 
 		width: 100%;
 
-		border-top: 0.255rem solid #ccc;
+		border-top: 0.25rem solid #ccc;
 		/* box-shadow: 0px; */
 
 		font: 1.5rem Lora;
