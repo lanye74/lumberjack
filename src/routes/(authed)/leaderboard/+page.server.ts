@@ -5,65 +5,37 @@ export async function load(loadEvent) {
 	// if we made it this far, i.e. we were authed in the hook and thus allowed to access this, then of course we're still authed here
 	// so we don't need to worry about verifying that we have a session/user etc
 
-	// do some stuff here to organize the top 3/5/20/whatever here idc does it really matter in the grand scheme of things
-	// maybe i'll store something like a reset time in a separate table cause neither of the other tables are really designed to have that stuff put in it
-
-
-	// TODO: error handling here
-	// TODO: (2) figure out how to write this in a nice way because this fucking sucks
 	let output: LoadLeaderboardOutput = {
 		leaderboard: null
 	};
 
 
 
-	const getTopPointsResponse = await supabase.from("points")
+	const getTopUsersByPointsResponse = await supabase.from("public_user_data")
 		.select()
 		.order("points", {ascending: false})
 		.limit(5);
 
-	if(getTopPointsResponse.error) {
+	if(getTopUsersByPointsResponse.error) {
 		// whatever bro
-		console.error(...leaderboardLogPrefix, getTopPointsResponse.error);
+		console.error(...leaderboardLogPrefix, getTopUsersByPointsResponse.error);
+		return output;
 	}
 
 
-	const topPoints = getTopPointsResponse.data as GetTopPointsResponse;
-	const topPointsGUUIDs = topPoints.map(person => person.google_user_id);
+	const topPoints = getTopUsersByPointsResponse.data as UserPublicInfoRow[];
 
 
-	const getUserInfoResponse = await supabase.from("user_public_info")
-		.select()
-		.in("google_user_id", topPointsGUUIDs);
-
-	if(getUserInfoResponse.error) {
-		// whatever bro
-		console.error(...leaderboardLogPrefix, getUserInfoResponse.error);
-	}
-
-	const userInfo = getUserInfoResponse.data as GetUserPublicInfoResponse;
-
-
-
-	output.leaderboard = [];
-
-
-	// ewwwwwwwwww
-	for(const [index, gUUID] of topPointsGUUIDs.entries()) {
-		const relevantUserInfo = userInfo.filter(user => user.google_user_id === gUUID)[0];
-		const points = topPoints.filter(user => user.google_user_id === gUUID)[0].points;
-
-		output.leaderboard[index] = {
-			googleUserId: gUUID,
-			fullName: relevantUserInfo.full_name,
-			avatarUrl: relevantUserInfo.avatar_url,
-			points
-		};
-	}
+	// TODO: i hate converting naming conventions
+	output.leaderboard = topPoints.map<UserPublicInfo>(user => ({
+		googleUserId: user.google_user_id,
+		fullName: user.full_name,
+		avatarUrl: user.avatar_url,
+		points: user.points
+	}));
 
 
 	console.log(...leaderboardLogPrefix, "Leaderboard state fetched successfully", output);
-
 
 	return output;
 }
@@ -71,30 +43,23 @@ export async function load(loadEvent) {
 
 
 type LoadLeaderboardOutput = {
-	leaderboard: LeaderboardResult[] | null;
+	leaderboard: UserPublicInfo[] | null;
 };
 
 
 
-type LeaderboardResult = {
+type UserPublicInfo = {
 	googleUserId: string;
 	fullName: string;
 	avatarUrl: string;
-
 	points: number;
 };
 
 
 
-type GetTopPointsResponse = {
-	google_user_id: string;
-	points: number;
-}[];
-
-
-
-type GetUserPublicInfoResponse = {
+type UserPublicInfoRow = {
 	google_user_id: string;
 	full_name: string;
 	avatar_url: string;
-}[];
+	points: number;
+};

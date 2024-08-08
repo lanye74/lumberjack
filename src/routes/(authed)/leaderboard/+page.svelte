@@ -30,7 +30,7 @@
 
 		border-bottom: 0.25rem solid #ccc;
 
-		grid-column: 1 / 4;
+		grid-column: 1 / span 3;
 		grid-row: var(--grid-row);
 	}
 
