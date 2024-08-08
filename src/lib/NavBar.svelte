@@ -1,5 +1,5 @@
 <script lang="ts">
-    import LinkIcon from "./LinkIcon.svelte";
+	import LinkIcon from "./LinkIcon.svelte";
 </script>
 
 <style>
@@ -9,7 +9,7 @@
 
 		width: 100%;
 
-		border-top: 2px solid #ccc;
+		border-top: 0.255rem solid #ccc;
 		/* box-shadow: 0px; */
 
 		font: 1.5rem Lora;

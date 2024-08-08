@@ -1,3 +1,5 @@
+import {leaderboardLogPrefix} from "$lib/consoleColorPrefixes.js";
+
 export async function load(loadEvent) {
 	const supabase = loadEvent.locals.supabase;
 	// if we made it this far, i.e. we were authed in the hook and thus allowed to access this, then of course we're still authed here
@@ -9,6 +11,12 @@ export async function load(loadEvent) {
 
 	// TODO: error handling here
 	// TODO: (2) figure out how to write this in a nice way because this fucking sucks
+	let output: LoadLeaderboardOutput = {
+		leaderboard: null
+	};
+
+
+
 	const getTopPointsResponse = await supabase.from("points")
 		.select()
 		.order("points", {ascending: false})
@@ -16,6 +24,7 @@ export async function load(loadEvent) {
 
 	if(getTopPointsResponse.error) {
 		// whatever bro
+		console.error(...leaderboardLogPrefix, getTopPointsResponse.error);
 	}
 
 
@@ -29,13 +38,14 @@ export async function load(loadEvent) {
 
 	if(getUserInfoResponse.error) {
 		// whatever bro
+		console.error(...leaderboardLogPrefix, getUserInfoResponse.error);
 	}
 
 	const userInfo = getUserInfoResponse.data as GetUserPublicInfoResponse;
 
 
 
-	const output: LeaderboardResults = [];
+	output.leaderboard = [];
 
 
 	// ewwwwwwwwww
@@ -43,7 +53,7 @@ export async function load(loadEvent) {
 		const relevantUserInfo = userInfo.filter(user => user.google_user_id === gUUID)[0];
 		const points = topPoints.filter(user => user.google_user_id === gUUID)[0].points;
 
-		output[index] = {
+		output.leaderboard[index] = {
 			googleUserId: gUUID,
 			fullName: relevantUserInfo.full_name,
 			avatarUrl: relevantUserInfo.avatar_url,
@@ -52,20 +62,27 @@ export async function load(loadEvent) {
 	}
 
 
-	return {
-		leaderboard: output
-	};
+	console.log(...leaderboardLogPrefix, "Leaderboard state fetched successfully", output);
+
+
+	return output;
 }
 
 
 
-type LeaderboardResults = {
+type LoadLeaderboardOutput = {
+	leaderboard: LeaderboardResult[] | null;
+};
+
+
+
+type LeaderboardResult = {
 	googleUserId: string;
 	fullName: string;
 	avatarUrl: string;
 
 	points: number;
-}[];
+};
 
 
 

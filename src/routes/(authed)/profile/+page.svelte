@@ -1,5 +1,5 @@
 <script lang="ts">
-    import UserProfileActions from "$lib/UserProfileActions.svelte";
+	import UserProfileActions from "$lib/UserProfileActions.svelte";
 
 
 

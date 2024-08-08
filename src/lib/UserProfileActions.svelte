@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {invalidateAll} from "$app/navigation";
+	import {invalidateAll} from "$app/navigation";
 	// @ts-ignore
 	import FaSignOutAlt from "svelte-icons/fa/FaSignOutAlt.svelte";
 

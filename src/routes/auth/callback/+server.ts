@@ -27,6 +27,8 @@ export const GET = async ({url, locals}) => {
 	const avatarUrlResized = avatar_url.replace("=s96-c", "=s192-c");
 
 
+	// TODO: can i access the `auth` schema --> identities table myself and not have to keep my own copy?
+	// i really need to dig into how sensible (read: experienced) people do this
 	const updatePublicDataResponse = await locals.supabase.from("user_public_info")
 		.upsert({google_user_id, full_name, avatar_url: avatarUrlResized});
 

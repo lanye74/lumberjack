@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {authStateLogPrefix} from "$lib/consoleColorPrefixes.js";
+	import {authStateLogPrefix} from "$lib/consoleColorPrefixes.js";
 	import {invalidate} from "$app/navigation";
 	import {onMount} from "svelte";
 
