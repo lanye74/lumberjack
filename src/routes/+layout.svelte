@@ -58,6 +58,19 @@
 		src: url("/Lora-Bold.ttf") format("truetype");
 		font-weight: bold;
 	}
+
+
+	@font-face {
+		font-family: "CascadiaCode";
+		src: url("/Cascadia-Code-Semibold.ttf") format("truetype");
+		font-weight: 600;
+	}
+
+	@font-face {
+		font-family: "FiraCode";
+		src: url("/Fira-Code-Semibold.ttf") format("truetype");
+		font-weight: 600;
+	}
 </style>
 
 

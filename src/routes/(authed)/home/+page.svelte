@@ -1,5 +1,6 @@
 <script lang="ts">
 	import generateGreeting from "$lib/generateGreeting.js";
+    import {derived, readable} from "svelte/store";
 
 
 
@@ -13,6 +14,27 @@
 
 
 	const greeting = generateGreeting();
+
+
+
+	const timeReadable = readable(new Date(), (set) => {
+		const interval = setInterval(() => {
+			set(new Date());
+		}, 1000);
+
+
+		return () => clearInterval(interval);
+	});
+
+	const time = derived(timeReadable, ($date => {
+		return Intl.DateTimeFormat("en", {
+			hour: "numeric",
+			hour12: true,
+
+			minute: "2-digit",
+			second: "2-digit"
+		}).format($date);
+	}));
 </script>
 
 <style>
@@ -47,12 +69,17 @@
 	p {
 		font-size: 2rem;
 	}
+
+	span.time {
+		font: normal 600 2rem CascadiaCode;
+	}
 </style>
 
 
 
 <div id="greeting-box">
-	<h2>{greeting}, {firstName}!</h2>
+	<h2 class="greeting">{greeting}, {firstName}!</h2>
 
-	<p>What have you been up to?</p>
+	<!-- i need a better name for this class but whatever it's not that important -->
+	<p>What have you been up to? It's currently <span class="time">{$time}.</span></p>
 </div>
