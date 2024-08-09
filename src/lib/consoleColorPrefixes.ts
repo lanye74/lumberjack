@@ -3,3 +3,6 @@ export const authStateLogPrefix = ["%c[Auth State]", "color: #009e36; font-weigh
 
 // oklch(60% 0.2 240)
 export const leaderboardLogPrefix = ["%c[Leaderboard]", "color: #0089d7; font-weight: 900;"];
+
+// oklch(60% 0.2 300)
+export const logEditorPrefix = ["%c[Leaderboard]", "color: #955be3; font-weight: 900;"];

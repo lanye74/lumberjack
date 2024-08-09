@@ -31,7 +31,7 @@
 
 <nav id="bottom-bar">
 	<LinkIcon path="/home" />
-	<LinkIcon path="/logger" />
+	<LinkIcon path="/editor" />
 	<LinkIcon path="/leaderboard" />
 	<LinkIcon path="/profile" />
 </nav>

@@ -2,7 +2,7 @@
 	// @ts-ignore wehhhhhh
 	import FaHome from "svelte-icons/fa/FaHome.svelte";
 	// @ts-ignore
-	import FaRegClock from "svelte-icons/fa/FaRegClock.svelte";
+	import FaPencilAlt from "svelte-icons/fa/FaPencilAlt.svelte";
 	// @ts-ignore
 	import FaTrophy from "svelte-icons/fa/FaTrophy.svelte";
 	// @ts-ignore
@@ -15,9 +15,10 @@
 	export let path: IconShortName;
 
 
+
 	const iconNameMappings = {
 		"/home": FaHome,
-		"/logger": FaRegClock,
+		"/editor": FaPencilAlt,
 		"/leaderboard": FaTrophy,
 		"/profile": FaRegUserCircle
 	};

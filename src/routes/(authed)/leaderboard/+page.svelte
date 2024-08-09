@@ -88,7 +88,8 @@
 				<span class="place">{index + 1}.</span>
 
 				<!-- TODO: store a local user missing asset -->
-				<!-- TODO: (2) figure out how to use skeleton loaders for this stuff -->
+				<!-- TODO: (2) figure out how to use skeleton loaders for this stuff
+				           currently waiting for the server halts page loading = bad UX -->
 				<!-- svelte-ignore a11y-img-redundant-alt -->
 				<img src={user.avatarUrl ?? "https://www.ais.unwater.org/ais/aiscm/pdf/lib/tcpdf/images/logo_example.png"} alt="User profile picture">
 
