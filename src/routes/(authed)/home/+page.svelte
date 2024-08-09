@@ -1,6 +1,7 @@
 <script lang="ts">
+	import {currentDate, currentFormattedTime} from "$lib/time.js";
+    import {enhance} from "$app/forms";
 	import generateGreeting from "$lib/generateGreeting.js";
-    import {derived, readable} from "svelte/store";
 
 
 
@@ -8,33 +9,17 @@
 
 	// no nice way to use destructuring to get around this
 	const user = data.user!;
-	// const session = data.session!;
-	const name = user.user_metadata.full_name as string;
-	const firstName = name.split(" ")[0];
 
 
-	const greeting = generateGreeting();
+	// this really doesn't need to be reactive but it'll make me feel fancy
+	// there's no way that this is an expensive enough operation i really have to trash it
+	$: greeting = generateGreeting(user, $currentDate);
 
 
-
-	const timeReadable = readable(new Date(), (set) => {
-		const interval = setInterval(() => {
-			set(new Date());
-		}, 1000);
-
-
-		return () => clearInterval(interval);
-	});
-
-	const time = derived(timeReadable, ($date => {
-		return Intl.DateTimeFormat("en", {
-			hour: "numeric",
-			hour12: true,
-
-			minute: "2-digit",
-			second: "2-digit"
-		}).format($date);
-	}));
+	const jcsSites = [
+		"EJMS",
+		"WJMS"
+	];
 </script>
 
 <style>
@@ -77,9 +62,27 @@
 
 
 
+<!-- TODO: semantic HTML this -->
 <div id="greeting-box">
-	<h2 class="greeting">{greeting}, {firstName}!</h2>
+	<h2>{greeting}</h2>
 
 	<!-- i need a better name for this class but whatever it's not that important -->
-	<p>What have you been up to? It's currently <span class="time">{$time}.</span></p>
+	<p>What have you been up to? It's currently <span class="time">{$currentFormattedTime}.</span></p>
 </div>
+
+
+
+<form id="location-input" method="POST" action="?/submitLocation" use:enhance>
+	<!-- TODO: a11y here -->
+	<label for="location-selector">Location</label>
+	<select name="location-selector">
+		{#each jcsSites as site}
+			<option>{site}</option>
+		{/each}
+	</select>
+
+	<label for="location-purpose">Purpose for visiting</label>
+	<input name="location-purpose">
+
+	<button id="submit">Submit</button>
+</form>

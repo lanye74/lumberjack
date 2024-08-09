@@ -1,19 +1,25 @@
-export default function generateGreeting() {
-	const date = new Date();
-	const hour = date.getHours();
+import type {User} from "@supabase/supabase-js";
 
+
+
+export default function generateGreeting(user: User, currentTime: Date) {
+	const hour = currentTime.getHours();
+
+
+	let salutation = "";
 
 	if(hour >= 5 && hour < 12) {
-		return "Good morning";
+		salutation = "Good morning";
+	} else if(hour >= 12 && hour < 17) {
+		salutation = "Good afternoon";
+	} else if(hour >= 17 && hour < 21) {
+		salutation = "Good evening";
+	} else {
+		salutation = "Welcome";
 	}
 
-	if(hour >= 12 && hour < 17) {
-		return "Good afternoon";
-	}
 
-	if(hour >= 17 && hour < 21) {
-		return "Good evening";
-	}
+	const firstName = (user.user_metadata.full_name as string).split(" ")[0];
 
-	return "Welcome";
+	return `${salutation}, ${firstName}!`;
 }

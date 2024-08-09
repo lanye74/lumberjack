@@ -11,7 +11,7 @@
 
 
 	onMount(() => {
-		const {data} = supabase.auth.onAuthStateChange((_authEvent, newSession) => {
+		const {data: {subscription}} = supabase.auth.onAuthStateChange((_authEvent, newSession) => {
 			// we just got a session and the server needs to pull it to provide in all future requests
 			// (i think)
 
@@ -24,7 +24,7 @@
 		});
 
 
-		return () => data.subscription.unsubscribe();
+		return () => subscription.unsubscribe();
 	});
 </script>
 

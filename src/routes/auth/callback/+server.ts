@@ -2,7 +2,7 @@ import {error, redirect} from "@sveltejs/kit";
 
 
 
-export const GET = async ({url, locals}) => {
+export async function GET({url, locals}) {
 	const code = url.searchParams.get("code");
 	const next = url.searchParams.get("next") ?? "/";
 
