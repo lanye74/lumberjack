@@ -25,7 +25,7 @@ export const actions = {
 
 
 
-		const {error} = await supabase.from("locataion_logs")
+		const {error} = await supabase.from("location_logs")
 			.insert({
 				timestamp: currentTime,
 				google_user_id: user.id,

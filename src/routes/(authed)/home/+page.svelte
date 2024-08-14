@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {currentDate, currentFormattedTime} from "$lib/time.js";
-    import {enhance} from "$app/forms";
 	import generateGreeting from "$lib/generateGreeting.js";
+    import SubmitLocationForm from "$lib/SubmitLocationForm.svelte";
 
 
 
@@ -15,25 +15,10 @@
 	// this really doesn't need to be reactive but it'll make me feel fancy
 	// there's no way that this is an expensive enough operation i really have to trash it
 	$: greeting = generateGreeting(user, $currentDate);
-
-
-	const jcsSites = [
-		"EJMS",
-		"WJMS"
-	];
-
-	const visitPurposes = [
-		"Administration",
-		"Class monitoring",
-		"Other"
-	];
-
-
-	let currentlySelectedPurpose: string;
 </script>
 
 <style>
-	#greeting-box, #location-input {
+	#greeting-box {
 		display: flex;
 		flex-direction: column;
 
@@ -65,14 +50,6 @@
 	span.time {
 		font: normal 600 2rem var(--time-font);
 	}
-
-
-
-	fieldset {
-		border: none;
-		margin: 0;
-		padding: 0;
-	}
 </style>
 
 
@@ -87,33 +64,7 @@
 
 
 
-<form id="location-input" method="POST" action="?/submitLocation" use:enhance>
-	<!-- TODO: a11y here -->
-	<label for="location-selector">Location</label>
-	<select name="location-selector">
-		<option selected hidden value={""}>Select a site...</option>
-		{#each jcsSites as site}
-			<option>{site}</option>
-		{/each}
-	</select>
-
-
-	<fieldset>
-		<legend>Purpose for visiting</legend>
-
-		<select name="purpose-selector" bind:value={currentlySelectedPurpose}>
-			<option selected hidden value={""}>Select a reason...</option>
-			{#each visitPurposes as purpose}
-				<option>{purpose}</option>
-			{/each}
-		</select>
-
-		<input name="location-purpose" disabled={currentlySelectedPurpose !== "Other"}>
-	</fieldset>
-
-
-	<button id="submit">Submit</button>
-</form>
+<SubmitLocationForm />
 
 
 
