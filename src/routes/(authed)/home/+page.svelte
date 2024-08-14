@@ -6,6 +6,7 @@
 
 
 	export let data;
+	export let form;
 
 	// no nice way to use destructuring to get around this
 	const user = data.user!;
@@ -20,10 +21,19 @@
 		"EJMS",
 		"WJMS"
 	];
+
+	const visitPurposes = [
+		"Administration",
+		"Class monitoring",
+		"Other"
+	];
+
+
+	let currentlySelectedPurpose: string;
 </script>
 
 <style>
-	#greeting-box {
+	#greeting-box, #location-input {
 		margin: 2rem;
 		padding: 2rem;
 		box-sizing: border-box;
@@ -33,10 +43,11 @@
 		border: 0.25rem solid #ccc;
 		border-radius: 0.25rem;
 
-
 		display: flex;
 		flex-direction: column;
+	}
 
+	#greeting-box {
 		gap: 2rem;
 
 		overflow-wrap: break-word;
@@ -58,6 +69,18 @@
 	span.time {
 		font: normal 600 2rem CascadiaCode;
 	}
+
+
+
+	fieldset {
+		border: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	label, legend {
+		/* font: normal bold 2rem Lora; */
+	}
 </style>
 
 
@@ -76,13 +99,36 @@
 	<!-- TODO: a11y here -->
 	<label for="location-selector">Location</label>
 	<select name="location-selector">
+		<option selected hidden value={""}>Select a site...</option>
 		{#each jcsSites as site}
 			<option>{site}</option>
 		{/each}
 	</select>
 
-	<label for="location-purpose">Purpose for visiting</label>
-	<input name="location-purpose">
+
+	<fieldset>
+		<legend>Purpose for visiting</legend>
+
+		<select name="purpose-selector" bind:value={currentlySelectedPurpose}>
+			<option selected hidden value={""}>Select a reason...</option>
+			{#each visitPurposes as purpose}
+				<option>{purpose}</option>
+			{/each}
+		</select>
+
+		<input name="location-purpose" disabled={currentlySelectedPurpose !== "Other"}>
+	</fieldset>
+
 
 	<button id="submit">Submit</button>
 </form>
+
+
+
+{#if form}
+	{#if form.error}
+		<p>something went wrong!!!!</p>
+	{:else}
+		<p>yay!!!</p>
+	{/if}
+{/if}
