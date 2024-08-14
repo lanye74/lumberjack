@@ -34,32 +34,28 @@
 
 <style>
 	#greeting-box, #location-input {
-		margin: 2rem;
-		padding: 2rem;
-		box-sizing: border-box;
-
-		/* TODO: should i just leave these as 4px or what
-		         probably not... it's interpolating between 3px - 5px... it's fine */
-		border: 0.25rem solid #ccc;
-		border-radius: 0.25rem;
-
 		display: flex;
 		flex-direction: column;
+
+		margin: 2rem;
+		box-sizing: border-box;
 	}
 
 	#greeting-box {
-		gap: 2rem;
+		border-radius: 0.25rem;
+		border: 0.25rem solid #ccc;
+		padding: 2rem;
 
+		gap: 2rem;
 		overflow-wrap: break-word;
 	}
 
 	h2, p {
-		font-family: Lora;
 		margin: 0;
 	}
 
 	h2 {
-		font-size: 3.25rem;
+		font: normal bold 3.25rem var(--font-family);
 	}
 
 	p {
@@ -67,7 +63,7 @@
 	}
 
 	span.time {
-		font: normal 600 2rem CascadiaCode;
+		font: normal 600 2rem var(--time-font);
 	}
 
 
@@ -76,10 +72,6 @@
 		border: none;
 		margin: 0;
 		padding: 0;
-	}
-
-	label, legend {
-		/* font: normal bold 2rem Lora; */
 	}
 </style>
 

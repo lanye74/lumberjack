@@ -12,7 +12,7 @@
 		border-top: 0.25rem solid #ccc;
 		/* box-shadow: 0px; */
 
-		font: 1.5rem Lora;
+		font-size: 1.5rem;
 
 		display: flex;
 		flex-direction: row;

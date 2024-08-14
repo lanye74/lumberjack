@@ -35,6 +35,9 @@
 		font-size: clamp(12px, calc(60% + 0.8vmin), 20px);
 
 		--jcs-blue: #003a71;
+		--fallback-fonts: BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-sans;
+		--font-family: Lora, var(--fallback-fonts);
+		--time-font: "Cascadia Code", var(--fallback-fonts);
 	}
 
 	:global(body) {
@@ -42,33 +45,20 @@
 	}
 
 	:global(*) {
-		font-size: 1rem;
+		font: 1rem var(--font-family);
 	}
 
 
 
 	@font-face {
 		font-family: "Lora";
-		src: url("/Lora-Regular.ttf") format("truetype");
-		font-weight: normal;
-	}
-
-	@font-face {
-		font-family: "Lora";
-		src: url("/Lora-Bold.ttf") format("truetype");
-		font-weight: bold;
+		src: url("/Lora-Variable.ttf") format("truetype-variations");
 	}
 
 
 	@font-face {
-		font-family: "CascadiaCode";
+		font-family: "Cascadia Code";
 		src: url("/Cascadia-Code-Semibold.ttf") format("truetype");
-		font-weight: 600;
-	}
-
-	@font-face {
-		font-family: "FiraCode";
-		src: url("/Fira-Code-Semibold.ttf") format("truetype");
 		font-weight: 600;
 	}
 </style>

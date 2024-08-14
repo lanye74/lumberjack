@@ -24,7 +24,7 @@
 		outline: none;
 		padding: 1.25rem 2rem;
 
-		font: 1.75rem Lora;
+		font-size: 1.75rem;
 		cursor: pointer;
 
 		width: 100%;

@@ -45,7 +45,7 @@
 	.user .place {
 		grid-column: 1;
 
-		font: normal bold 2.5rem Lora;
+		font: normal bold 2.5rem var(--font-family);
 	}
 
 	.user img {
@@ -70,11 +70,11 @@
 	}
 
 	.text .name {
-		font: normal bold 1.5rem Lora;
+		font: normal bold 1.5rem var(--font-family);
 	}
 
 	.text .points {
-		font: italic normal 1.25rem Lora;
+		font: italic normal 1.25rem var(--font-family);
 		color: #666;
 	}
 </style>

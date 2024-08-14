@@ -30,7 +30,7 @@
 	}
 
 	.name-icon span {
-		font: normal bold 2.25rem Lora;
+		font: normal bold 2.25rem var(--font-family);
 	}
 
 	img {

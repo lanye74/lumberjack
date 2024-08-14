@@ -19,7 +19,7 @@
 		margin: 0;
 		color: white;
 
-		font: normal bold 2.5rem Lora;
+		font: normal bold 2.5rem var(--font-family);
 	}
 </style>
 

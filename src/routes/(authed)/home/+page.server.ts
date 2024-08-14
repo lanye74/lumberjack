@@ -29,9 +29,10 @@ export const actions = {
 			.insert({
 				timestamp: currentTime,
 				google_user_id: user.id,
+
 				location: userLocation,
 				purpose: userPurpose,
-				was_typed: true
+				was_typed: userPurposeMultiple === "Other"
 			});
 
 
