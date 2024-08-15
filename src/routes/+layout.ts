@@ -11,7 +11,6 @@ export async function load(loadEvent) {
 		createBrowserClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {global: {fetch}}) :
 		createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 			global: {fetch},
-			// @ts-ignore idk bro
 			cookies: {getAll: () => loadEvent.data?.cookies ?? null}
 		});
 

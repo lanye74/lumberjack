@@ -54,7 +54,6 @@
 
 
 
-<!-- TODO: semantic HTML this -->
 <div id="greeting-box">
 	<h2>{greeting}</h2>
 

@@ -18,10 +18,12 @@ export async function GET({url, locals}) {
 	}
 
 
-	// update user data
+	const {data: {user}} = codeExchangeResponse;
 
-	const user = codeExchangeResponse.data.user;
-	const {google_user_id, full_name, avatar_url} = user.user_metadata;
+
+	const {full_name, avatar_url} = user!.user_metadata;
+	const {id: google_user_id} = user!;
+
 
 	// TODO: this should become a helper function
 	const avatarUrlResized = avatar_url.replace("=s96-c", "=s192-c");
@@ -29,12 +31,14 @@ export async function GET({url, locals}) {
 
 	// TODO: can i access the `auth` schema --> identities table myself and not have to keep my own copy?
 	// i really need to dig into how sensible (read: experienced) people do this
-	const updatePublicDataResponse = await locals.supabase.from("user_public_info")
+	const updatePublicDataResponse = await locals.supabase.from("public_user_data")
 		.upsert({google_user_id, full_name, avatar_url: avatarUrlResized});
+
+
 
 	if(updatePublicDataResponse.error) {
 		// whatever bro
-		return error(500, "Error updating your data!");
+		return error(500, "Error while updating your data!");
 	}
 
 
