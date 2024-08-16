@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {currentDate, currentFormattedTime} from "$lib/time.js";
 	import generateGreeting from "$lib/generateGreeting.js";
-    import SubmitLocationForm from "$lib/SubmitLocationForm.svelte";
+    import SubmitLocationForm from "$lib/components/SubmitLocationForm.svelte";
 
 
 
