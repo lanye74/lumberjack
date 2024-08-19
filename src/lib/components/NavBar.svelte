@@ -1,5 +1,10 @@
 <script lang="ts">
 	import LinkIcon from "./LinkIcon.svelte";
+	import type {LumberjackRoute} from "../../app.js";
+
+
+
+	const routes: LumberjackRoute[] = ["/home", "/editor", "/leaderboard", "/profile"];
 </script>
 
 <style>
@@ -30,8 +35,7 @@
 
 
 <nav id="bottom-bar">
-	<LinkIcon path="/home" />
-	<LinkIcon path="/editor" />
-	<LinkIcon path="/leaderboard" />
-	<LinkIcon path="/profile" />
+	{#each routes as path}
+		<LinkIcon {path} />
+	{/each}
 </nav>

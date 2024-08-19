@@ -1,13 +1,14 @@
 <script lang="ts">
 	import "iconify-icon";
+    import type {LumberjackRoute} from "../../app.js";
 
 
 
-	export let path: keyof typeof iconNameMappings;
+	export let path: LumberjackRoute;
 
 
 
-	const iconNameMappings = {
+	const routeIconMappings: {[key in LumberjackRoute]: string} = {
 		"/home": "fa-solid:home",
 		"/editor": "fa-solid:pencil-alt",
 		"/leaderboard": "fa-solid:trophy",
@@ -15,7 +16,7 @@
 	};
 
 
-	const mappedIconName = iconNameMappings[path];
+	const mappedIconName = routeIconMappings[path];
 </script>
 
 <style>

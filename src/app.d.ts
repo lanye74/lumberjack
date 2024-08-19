@@ -14,16 +14,18 @@ declare global {
 		}
 
 		interface PageData {
-			session: MaybeNull<SessionData>;
+			session: SessionData | null;
 		}
 	}
 }
 
 
 
-type MaybeNull<T> = T | null;
-
 type SessionData = {
-	session: MaybeNull<Session>;
-	user: MaybeNull<User>;
+	session: Session | null;
+	user: User | null;
 };
+
+
+
+type LumberjackRoute = "/home" | "/editor" | "/leaderboard" | "/profile";

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {applyAction, enhance} from "$app/forms";
 	import {jcsSites, possibleVisitPurposes, parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
-    import type {SubmitFunction} from "@sveltejs/kit";
+	import type {SubmitFunction} from "@sveltejs/kit";
 
 
 
