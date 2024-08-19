@@ -20,7 +20,7 @@ export const actions = {
 		const user = requestEvent.locals.user!;
 
 
-		const {userLocation, userPurpose, wasTyped} = parsedForm;
+		const {userLocation, userPurpose, didTypePurpose} = parsedForm;
 		const currentTime = new Date().toISOString();
 
 
@@ -31,7 +31,7 @@ export const actions = {
 
 				location: userLocation,
 				purpose: userPurpose,
-				was_typed: wasTyped
+				did_type_purpose: didTypePurpose
 			});
 
 

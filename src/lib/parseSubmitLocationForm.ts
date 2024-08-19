@@ -30,32 +30,29 @@ export const possibleVisitPurposes = [
 
 
 export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocationForm {
-	const userLocation = formData.get("location-selector")!.toString().trim();
-	const userPurposeMultiple = formData.get("purpose-selector")!.toString().trim();
-	const wasTyped = userPurposeMultiple === "Other";
+	// though i would like to believe these fields always exist, can't trust the client xd
+	const userLocation = formData.get("location-selector")?.toString().trim() ?? "";
+	const userPurposeMultiple = formData.get("purpose-selector")?.toString().trim() ?? "";
+	// in the formData, this field does not exist if disabled disabled (i.e., null when userPurposeMultiple !== "Other")
+	const userPurposeText = formData.get("location-purpose")?.toString().trim() ?? "";
 
-	// null if disabled (i.e., null when userPurposeMultiple !== "Other")
-	const userPurposeText = formData.get("location-purpose");
-
-	const userPurpose = ((userPurposeMultiple !== "Other") ? userPurposeMultiple : userPurposeText!).toString().trim();
+	const didTypePurpose = userPurposeMultiple === "Other";
+	const userPurpose = didTypePurpose ? userPurposeText : userPurposeMultiple;
 
 
-	if(userLocation === "" || userPurpose === "") {
-		return {
-			isValid: false,
-			userLocation: null,
-			userPurpose: null,
-			wasTyped: null
-		};
-	}
+	// TODO: return specific errors
+	const isValid = userLocation !== "" &&
+	                userPurpose !== "" &&
+	                jcsSites.includes(userLocation) &&
+	                possibleVisitPurposes.includes(userPurposeMultiple);
 
 
 	return {
-		isValid: true,
-		userLocation,
-		userPurpose,
-		wasTyped
-	};
+		isValid,
+		userLocation: isValid ? userLocation : null,
+		userPurpose: isValid ? userPurpose : null,
+		didTypePurpose: isValid ? didTypePurpose : null
+	} as ParsedSubmitLocationForm;
 }
 
 
@@ -64,10 +61,10 @@ type ParsedSubmitLocationForm = {
 	isValid: true;
 	userLocation: string;
 	userPurpose: string;
-	wasTyped: boolean;
+	didTypePurpose: boolean;
 } | {
 	isValid: false;
 	userLocation: null;
 	userPurpose: null;
-	wasTyped: null;
+	didTypePurpose: null;
 };
