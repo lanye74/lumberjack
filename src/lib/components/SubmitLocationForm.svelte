@@ -1,21 +1,24 @@
 <script lang="ts">
 	import {enhance} from "$app/forms";
+	import {jcsSites, possibleVisitPurposes, parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
+    import type {SubmitFunction} from "@sveltejs/kit";
 
-
-
-	const jcsSites = [
-		"EJMS",
-		"WJMS"
-	];
-
-	const visitPurposes = [
-		"Administration",
-		"Class monitoring",
-		"Other"
-	];
 
 
 	let currentlySelectedPurpose: string;
+
+
+	// TODO: rename this
+	const enhanceForm: SubmitFunction = ({formData, cancel}) => {
+		const isFormValid = parseSubmitLocationForm(formData);
+
+		if(isFormValid.isValid === false) {
+			cancel();
+			console.error("Form invalid.");
+
+			// update();
+		}
+	}
 </script>
 
 <style>
@@ -136,7 +139,7 @@
 
 
 
-<form method="POST" action="?/submitLocation" use:enhance>
+<form method="POST" action="?/submitLocation" use:enhance={enhanceForm}>
 	<!-- TODO: a11y here -->
 	<fieldset>
 		<legend>Location</legend>
@@ -155,7 +158,7 @@
 
 		<select name="purpose-selector" bind:value={currentlySelectedPurpose}>
 			<option selected hidden value={""}>Select a reason...</option>
-			{#each visitPurposes as purpose}
+			{#each possibleVisitPurposes as purpose}
 				<option>{purpose}</option>
 			{/each}
 		</select>

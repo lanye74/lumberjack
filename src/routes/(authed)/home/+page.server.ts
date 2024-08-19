@@ -1,28 +1,27 @@
 import {submitLocationPrefix} from "$lib/consoleColorPrefixes.js";
+import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
 
 
 
 export const actions = {
-	// TODO: PLEASEEEEEE VALIdATE THIS GRAHHGHGHGHHHHHH
 	submitLocation: async (requestEvent) => {
-		const currentTime = new Date().toISOString();
-
 		const formData = await requestEvent.request.formData();
+		const parsedForm = parseSubmitLocationForm(formData);
+
+		if(parsedForm.isValid === false) {
+			return {
+				error: true
+			};
+		}
+
 
 		const {supabase} = requestEvent.locals;
 		// :c
 		const user = requestEvent.locals.user!;
 
 
-		const userLocation = formData.get("location-selector")!;
-
-
-		const userPurposeMultiple = formData.get("purpose-selector")!;
-		// null if disabled (i.e., null when userPurposeMultiple !== "Other")
-		const userPurposeText = formData.get("location-purpose");
-
-		const userPurpose = (userPurposeMultiple !== "Other") ? userPurposeMultiple : userPurposeText!;
-
+		const {userLocation, userPurpose, wasTyped} = parsedForm;
+		const currentTime = new Date().toISOString();
 
 
 		const {error} = await supabase.from("location_logs")
@@ -32,7 +31,7 @@ export const actions = {
 
 				location: userLocation,
 				purpose: userPurpose,
-				was_typed: userPurposeMultiple === "Other"
+				was_typed: wasTyped
 			});
 
 
