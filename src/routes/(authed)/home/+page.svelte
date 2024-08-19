@@ -57,7 +57,6 @@
 <div id="greeting-box">
 	<h2>{greeting}</h2>
 
-	<!-- i need a better name for this class but whatever it's not that important -->
 	<p>What have you been up to? It's currently <span class="time">{$currentFormattedTime}.</span></p>
 </div>
 
@@ -69,7 +68,7 @@
 
 {#if form}
 	{#if form.error}
-		<p>something went wrong!!!!</p>
+		<p>something went wrong!!!! message: {form.message}</p>
 	{:else}
 		<p>yay!!!</p>
 	{/if}

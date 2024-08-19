@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {enhance} from "$app/forms";
+	import {applyAction, enhance} from "$app/forms";
 	import {jcsSites, possibleVisitPurposes, parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
     import type {SubmitFunction} from "@sveltejs/kit";
 
@@ -8,15 +8,26 @@
 	let currentlySelectedPurpose: string;
 
 
-	// TODO: rename this
-	const enhanceForm: SubmitFunction = ({formData, cancel}) => {
-		const isFormValid = parseSubmitLocationForm(formData);
+	// my `function` syntax.....
+	const performClientSideValidation: SubmitFunction = ({formData, cancel}) => {
+		const {isValid, errorMessage} = parseSubmitLocationForm(formData);
 
-		if(isFormValid.isValid === false) {
+		if(isValid === false) {
 			cancel();
-			console.error("Form invalid.");
+			console.error("Invalid form submitted!");
 
-			// update();
+
+			// simulate that that form did fail, so that we can display the error
+			applyAction({
+				type: "failure",
+				status: 400,
+
+				data: {
+					error: true,
+					message: errorMessage,
+					source: "client"
+				}
+			});
 		}
 	}
 </script>
@@ -45,6 +56,7 @@
 		/* i love u variable fonts */
 		font-weight: 600;
 		margin-bottom: 0.25rem;
+		padding: 0;
 	}
 
 	select {
@@ -139,7 +151,7 @@
 
 
 
-<form method="POST" action="?/submitLocation" use:enhance={enhanceForm}>
+<form method="POST" action="?/submitLocation" use:enhance={performClientSideValidation}>
 	<!-- TODO: a11y here -->
 	<fieldset>
 		<legend>Location</legend>

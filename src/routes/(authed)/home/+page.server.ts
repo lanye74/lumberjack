@@ -10,7 +10,8 @@ export const actions = {
 
 		if(parsedForm.isValid === false) {
 			return {
-				error: true
+				error: true,
+				message: "Don't submit invalid data >:("
 			};
 		}
 
@@ -40,7 +41,8 @@ export const actions = {
 		}
 
 		return {
-			error: error !== null
+			error: error !== null,
+			message: "succeed"
 		};
 	}
 }

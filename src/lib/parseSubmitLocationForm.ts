@@ -40,15 +40,19 @@ export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocatio
 	const userPurpose = didTypePurpose ? userPurposeText : userPurposeMultiple;
 
 
-	// TODO: return specific errors
 	const isValid = userLocation !== "" &&
 	                userPurpose !== "" &&
 	                jcsSites.includes(userLocation) &&
 	                possibleVisitPurposes.includes(userPurposeMultiple);
 
+	// TODO: return specific errors
+	const errorMessage = isValid === false ? "Invalid form!" : null;
+
 
 	return {
 		isValid,
+		errorMessage,
+
 		userLocation: isValid ? userLocation : null,
 		userPurpose: isValid ? userPurpose : null,
 		didTypePurpose: isValid ? didTypePurpose : null
@@ -59,11 +63,15 @@ export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocatio
 
 type ParsedSubmitLocationForm = {
 	isValid: true;
+	errorMessage: null;
+
 	userLocation: string;
 	userPurpose: string;
 	didTypePurpose: boolean;
 } | {
 	isValid: false;
+	errorMessage: string;
+
 	userLocation: null;
 	userPurpose: null;
 	didTypePurpose: null;
