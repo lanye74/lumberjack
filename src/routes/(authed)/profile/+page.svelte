@@ -10,10 +10,7 @@
 
 	let avatarUrl = user.user_metadata.avatar_url as string;
 
-	// TODO: handle this in a more robust way
-	if(avatarUrl.includes("=s96-c")) {
-		avatarUrl = avatarUrl.replace("=s96-c", "=s192-c");
-	}
+	avatarUrl = resizeGoogleAvatarUrl(avatarUrl);
 </script>
 
 <style>

@@ -25,8 +25,7 @@ export async function GET({url, locals}) {
 	const {id: google_user_id} = user!;
 
 
-	// TODO: this should become a helper function
-	const avatarUrlResized = avatar_url.replace("=s96-c", "=s192-c");
+	const avatarUrlResized = resizeGoogleAvatarUrl(avatar_url);
 
 
 	// TODO: can i access the `auth` schema --> identities table myself and not have to keep my own copy?
