@@ -1,39 +1,31 @@
 <script lang="ts">
-	// @ts-ignore wehhhhhh
-	import FaHome from "svelte-icons/fa/FaHome.svelte";
-	// @ts-ignore
-	import FaPencilAlt from "svelte-icons/fa/FaPencilAlt.svelte";
-	// @ts-ignore
-	import FaTrophy from "svelte-icons/fa/FaTrophy.svelte";
-	// @ts-ignore
-	import FaRegUserCircle from "svelte-icons/fa/FaRegUserCircle.svelte";
-
-	// TODO: switch to iconify since this package is not maintained anymore
+	import "iconify-icon";
 
 
 
-	export let path: IconShortName;
+	export let path: keyof typeof iconNameMappings;
 
 
 
 	const iconNameMappings = {
-		"/home": FaHome,
-		"/editor": FaPencilAlt,
-		"/leaderboard": FaTrophy,
-		"/profile": FaRegUserCircle
+		"/home": "fa-solid:home",
+		"/editor": "fa-solid:pencil-alt",
+		"/leaderboard": "fa-solid:trophy",
+		"/profile": "fa-solid:user-circle"
 	};
-
-	type IconShortName = keyof typeof iconNameMappings;
 
 
 	const mappedIconName = iconNameMappings[path];
 </script>
 
 <style>
+	iconify-icon {
+		font-size: 4rem;
+	}
+
 	a {
 		color: black;
 
-		height: 4rem;
 		/* increase touch area for icon */
 		padding: 1rem;
 
@@ -57,5 +49,5 @@
 
 
 <a href={path} data-sveltekit-preload-data="hover">
-	<svelte:component this={mappedIconName} />
+	<iconify-icon icon={mappedIconName} />
 </a>
