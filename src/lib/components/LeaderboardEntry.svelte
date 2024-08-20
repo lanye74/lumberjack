@@ -1,7 +1,10 @@
 <script lang="ts">
-    import type {User} from "@supabase/supabase-js";
+	import ImageWithIconFallback from "./ImageWithIconFallback.svelte";
 
-	export let user: UserPublicInfo, index: number;
+
+
+	// TODO: provide UserPublicInfo type for user
+	export let user, index: number;
 
 
 
@@ -40,13 +43,16 @@
 		font: normal bold 2.5rem var(--font-family);
 	}
 
-	img {
+	.image-wrapper {
 		grid-column: 2;
 
 		/* prevent pop-in */
-		display: inline-block;
+		display: block;
 		height: 5rem;
 		width: 5rem;
+
+		font-size: 5rem;
+		color: #aaa;
 
 		border-radius: 50%;
 	}
@@ -84,7 +90,12 @@
 	<!-- TODO: (2) figure out how to use skeleton loaders for this stuff
 			   currently waiting for the server halts page loading = bad UX -->
 	<!-- svelte-ignore a11y-img-redundant-alt -->
-	<img src={user.avatarUrl ?? "https://www.ais.unwater.org/ais/aiscm/pdf/lib/tcpdf/images/logo_example.png"} alt="User profile picture">
+	<!-- <img src={user.avatarUrl ?? "https://www.ais.unwater.org/ais/aiscm/pdf/lib/tcpdf/images/logo_example.png"} alt="User profile picture"> -->
+	<div class="image-wrapper">
+		<ImageWithIconFallback class="image-fallback"
+			src={user.avatarUrl} alt="User profile picture"
+			iconId="fa-solid:user-circle" />
+	</div>
 
 	<div class="text">
 		<p class="name">{user.fullName}</p>
