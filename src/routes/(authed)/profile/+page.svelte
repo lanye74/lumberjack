@@ -1,6 +1,6 @@
 <script lang="ts">
 	import UserProfileActions from "$lib/components/UserProfileActions.svelte";
-
+	import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
 
 
 	export let data;

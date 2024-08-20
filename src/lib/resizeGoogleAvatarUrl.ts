@@ -6,7 +6,7 @@ const sizeRegex = new RegExp(/[\d]+/);
 
 
 // TODO: make this less naïve
-function resizeGoogleAvatarUrl(url: string) {
+export default function resizeGoogleAvatarUrl(url: string) {
 	const [baseUrl, avatarSize] = url.split("=");
 	const extractedSize = sizeRegex.exec(avatarSize)![0];
 	const parsedSize = parseInt(extractedSize);
