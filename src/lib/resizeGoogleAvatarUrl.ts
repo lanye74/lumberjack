@@ -1,3 +1,7 @@
+import {resizeGoogleAvatarUrlLogPrefix} from "./consoleColorPrefixes.js";
+
+
+
 const targetSizes = [32, 64, 96, 128, 192, 256, 384, 512, 1024];
 const maxSizeIndex = targetSizes.length - 1;
 
@@ -16,8 +20,7 @@ export default function resizeGoogleAvatarUrl(url: string) {
 	const match = sizeRegex.exec(url);
 
 	if(!match) {
-		// TODO: give this a color
-		console.log("[ResizeGoogleAvatarUrl] Found avatar URL that didn't need to be transformed:", url);
+		console.log(...resizeGoogleAvatarUrlLogPrefix, "Found avatar URL that didn't need to be transformed:", url);
 		return url;
 	}
 
@@ -27,7 +30,7 @@ export default function resizeGoogleAvatarUrl(url: string) {
 
 	if(sizeIndex === -1) {
 		// kms
-		console.log("[ResizeGoogleAvatarUrl] Received size not in targetSizes array:", parsedSize);
+		console.log(...resizeGoogleAvatarUrlLogPrefix, "Received size not in targetSizes array:", parsedSize);
 		return url;
 	}
 

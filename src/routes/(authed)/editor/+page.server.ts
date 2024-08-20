@@ -1,4 +1,4 @@
-import {logEditorPrefix} from "$lib/consoleColorPrefixes.js";
+import {logEditorLogPrefix} from "$lib/consoleColorPrefixes.js";
 
 
 
@@ -30,7 +30,7 @@ export async function load(loadEvent) {
 
 	if(getUserLogs.error) {
 		// whatever bro
-		console.error(...logEditorPrefix, getUserLogs.error);
+		console.error(...logEditorLogPrefix, getUserLogs.error);
 		return output;
 	}
 
@@ -46,7 +46,7 @@ export async function load(loadEvent) {
 
 
 
-	console.log(...logEditorPrefix, "Recent logs fetched", output);
+	console.log(...logEditorLogPrefix, "Recent logs fetched", output);
 
 	return output;
 }

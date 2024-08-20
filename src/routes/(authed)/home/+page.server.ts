@@ -1,4 +1,4 @@
-import {submitLocationPrefix} from "$lib/consoleColorPrefixes.js";
+import {submitLocationLogPrefix} from "$lib/consoleColorPrefixes.js";
 import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
 
 
@@ -37,7 +37,7 @@ export const actions = {
 
 
 		if(error) {
-			console.error(...submitLocationPrefix, "Error submitting location", error);
+			console.error(...submitLocationLogPrefix, "Error submitting location", error);
 		}
 
 		return {
