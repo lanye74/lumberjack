@@ -5,9 +5,7 @@
 
 
 
-	export let data;
-	export let form;
-
+	export let data, form;
 	// no nice way to use destructuring to get around this
 	const user = data.user!;
 

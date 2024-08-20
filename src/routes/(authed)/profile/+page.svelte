@@ -1,16 +1,28 @@
 <script lang="ts">
-	import UserProfileActions from "$lib/components/UserProfileActions.svelte";
+	import {invalidateAll} from "$app/navigation";
 	import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
+	import UserProfileAction from "$lib/components/UserProfileAction.svelte";
+
 
 
 	export let data;
 
 	const user = data.user!;
-
-
 	let avatarUrl = user.user_metadata.avatar_url as string;
-
 	avatarUrl = resizeGoogleAvatarUrl(avatarUrl);
+
+
+
+	const userProfileActions = [
+		{
+			text: "Logout",
+			iconId: "fa-solid:sign-out-alt",
+			callback: async () => {
+				await fetch("/auth/logout", {method: "POST"});
+				invalidateAll();
+			}
+		}
+	];
 </script>
 
 <style>
@@ -51,6 +63,8 @@
 	</div>
 
 	<div class="options">
-		<UserProfileActions />
+		{#each userProfileActions as action}
+			<UserProfileAction {...action} />
+		{/each}
 	</div>
 </section>

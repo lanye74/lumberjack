@@ -1,5 +1,6 @@
 <script lang="ts">
 	import "iconify-icon";
+
     import type {LumberjackRoute} from "../../app.js";
 
 
