@@ -8,6 +8,7 @@
 	export let data;
 
 	const user = data.user!;
+
 	let avatarUrl = user.user_metadata.avatar_url as string;
 	avatarUrl = resizeGoogleAvatarUrl(avatarUrl);
 
