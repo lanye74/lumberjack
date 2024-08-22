@@ -65,6 +65,7 @@
 	}
 
 	select:focus, input[type="text"]:focus {
+		/* TODO: make a "focusable" class that does this */
 		outline: 0.25rem solid #000;
 		border-radius: 0.25rem;
 	}
@@ -118,7 +119,7 @@
 		background-color: var(--jcs-blue);
 
 		color: white;
-		font: normal bold 2rem var(--font-family);
+		font: bold 2rem var(--font-family);
 
 		cursor: pointer;
 

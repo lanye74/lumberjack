@@ -38,7 +38,7 @@
 	}
 
 	h2 {
-		font: normal bold 3.25rem var(--font-family);
+		font: bold 3.25rem var(--font-family);
 	}
 
 	p {
@@ -46,7 +46,7 @@
 	}
 
 	span.time {
-		font: normal 600 2rem var(--time-font);
+		font: 600 2rem var(--time-font);
 	}
 </style>
 

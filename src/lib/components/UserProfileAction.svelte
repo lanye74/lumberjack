@@ -13,7 +13,6 @@
 	button {
 		border: none;
 		background: none;
-		outline: none;
 		padding: 1.25rem 2rem;
 
 		font-size: 1.75rem;

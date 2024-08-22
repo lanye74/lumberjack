@@ -67,6 +67,4 @@
 
 
 
-<main>
-	<slot />
-</main>
+<slot />

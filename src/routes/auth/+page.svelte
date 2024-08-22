@@ -2,15 +2,79 @@
 	import {enhance} from "$app/forms";
 </script>
 
+<style>
+	main {
+		width: 100vw;
+		height: 100vh;
+		padding: 4rem 2rem;
+		box-sizing: border-box;
+
+		background-color: var(--jcs-blue);
 
 
-<section>
-	<h1>Welcome to Lumberjack</h1>
+	}
 
-	<p>click on the button below to sign in</p>
+	section {
+		height: 100%;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+
+	h1 {
+		color: white;
+		font: 800 4rem var(--font-family);
+
+		margin: 0;
+	}
+
+	p {
+		color: white;
+
+		font: 2.5rem var(--font-family);
+
+		margin: 0;
+		margin-top: 2rem;
+	}
 
 
-	<form action="?/signIn" method="POST" use:enhance>
-		<button type="submit">sign in</button>
-	</form>
-</section>
+
+	button {
+		width: 100%;
+		/* TODO: use em in cases like this */
+		padding: 1rem 4rem;
+		box-sizing: border-box;
+
+		background-color: var(--jcs-cyan);
+		color: white;
+
+		border: none;
+
+		font: bold 2rem var(--font-family);
+
+		border-radius: 10rem;
+	}
+
+	button:hover {
+		cursor: pointer;
+	}
+</style>
+
+
+
+<main>
+	<section>
+		<div class="text">
+			<h1>Welcome to JCS Lumberjack!</h1>
+
+			<p>Log where you are, instantly</p>
+		</div>
+
+
+
+		<form action="?/signIn" method="POST" use:enhance>
+			<button type="submit">Sign in with Google</button>
+		</form>
+	</section>
+</main>

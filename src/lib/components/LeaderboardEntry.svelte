@@ -40,7 +40,7 @@
 	.place {
 		grid-column: 1;
 
-		font: normal bold 2.5rem var(--font-family);
+		font: bold 2.5rem var(--font-family);
 	}
 
 	.image-wrapper {
@@ -74,11 +74,11 @@
 	}
 
 	.text .name {
-		font: normal bold 1.5rem var(--font-family);
+		font: bold 1.5rem var(--font-family);
 	}
 
 	.text .points {
-		font: italic normal 1.25rem var(--font-family);
+		font: italic 1.25rem var(--font-family);
 		color: #666;
 	}
 </style>
