@@ -40,7 +40,7 @@
 	}
 
 	.name-icon span {
-		font: bold 2.25rem var(--font-family);
+		font: bold 2.25rem var(--font-serif);
 	}
 
 	img {

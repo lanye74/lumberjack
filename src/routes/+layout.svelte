@@ -41,7 +41,8 @@
 		font-size: clamp(12px, calc(60% + 0.8vmin), 20px);
 
 		--fallback-fonts: BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-sans;
-		--font-family: Lora, var(--fallback-fonts);
+		--font-serif: "Lora", var(--fallback-fonts);
+		--font-sans-serif: "Avenir", var(--fallback-fonts);
 		--time-font: "Cascadia Code", var(--fallback-fonts);
 
 		--jcs-blue: #003a70;
@@ -53,7 +54,7 @@
 	}
 
 	:global(*) {
-		font: 1rem var(--font-family);
+		font: 1rem var(--font-serif);
 	}
 
 
@@ -63,6 +64,10 @@
 		src: url("/Lora-Variable.ttf") format("truetype-variations");
 	}
 
+	@font-face {
+		font-family: "Avenir";
+		src: url("/AvenirNext_Variable.ttf") format("truetype-variations");
+	}
 
 	@font-face {
 		font-family: "Cascadia Code";

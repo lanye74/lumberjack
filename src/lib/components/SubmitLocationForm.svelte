@@ -119,7 +119,7 @@
 		background-color: var(--jcs-blue);
 
 		color: white;
-		font: bold 2rem var(--font-family);
+		font: bold 2rem var(--font-serif);
 
 		cursor: pointer;
 

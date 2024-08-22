@@ -23,8 +23,8 @@
 	}
 
 	h1 {
-		color: white;
-		font: 800 4rem var(--font-family);
+		color: var(--jcs-cyan);
+		font: 750 4rem var(--font-sans-serif);
 
 		margin: 0;
 	}
@@ -32,7 +32,7 @@
 	p {
 		color: white;
 
-		font: 2.5rem var(--font-family);
+		font: 2.5rem var(--font-sans-serif);
 
 		margin: 0;
 		margin-top: 2rem;
@@ -48,7 +48,7 @@
 		box-sizing: border-box;
 
 		background-color: var(--jcs-cyan);
-		font: bold 2rem var(--font-family);
+		font: bold 2rem var(--font-sans-serif);
 		color: white;
 
 		border-radius: 10rem;
