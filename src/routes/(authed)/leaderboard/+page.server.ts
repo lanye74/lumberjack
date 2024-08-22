@@ -38,7 +38,7 @@ export async function load(loadEvent) {
 	}));
 
 
-	console.log(...leaderboardLogPrefix, "Leaderboard state fetched successfully", output);
+	// console.log(...leaderboardLogPrefix, "Leaderboard state fetched successfully", output);
 
 	return output;
 }

@@ -40,6 +40,7 @@
 
 
 
+	/* TODO: make a Button component with sensible defaults */
 	button {
 		width: 100%;
 		/* TODO: use em in cases like this */
@@ -47,13 +48,11 @@
 		box-sizing: border-box;
 
 		background-color: var(--jcs-cyan);
+		font: bold 2rem var(--font-family);
 		color: white;
 
-		border: none;
-
-		font: bold 2rem var(--font-family);
-
 		border-radius: 10rem;
+		border: none;
 	}
 
 	button:hover {

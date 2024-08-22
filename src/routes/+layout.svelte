@@ -1,13 +1,19 @@
 <script lang="ts">
 	import {authStateLogPrefix} from "$lib/consoleColorPrefixes.js";
 	import {invalidate} from "$app/navigation";
+    import mapRouteToPageTitle from "$lib/mapRouteToPageTitle.js";
 	import {onMount} from "svelte";
+    import {page} from "$app/stores";
 
 
 
 	export let data;
 
 	$: ({session, supabase} = data);
+
+
+	$: head = mapRouteToPageTitle($page.route.id);
+
 
 
 	onMount(() => {
@@ -64,6 +70,10 @@
 		font-weight: 600;
 	}
 </style>
+
+<svelte:head>
+	<title>{head}</title>
+</svelte:head>
 
 
 
