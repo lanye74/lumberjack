@@ -34,10 +34,12 @@
 		   (just kidding i stole it from https://sjorswijsman.medium.com/3-easy-css-tricks-for-responsive-websites-i-use-in-every-project-68ec334a1522) */
 		font-size: clamp(12px, calc(60% + 0.8vmin), 20px);
 
-		--jcs-blue: #003a71;
 		--fallback-fonts: BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-sans;
 		--font-family: Lora, var(--fallback-fonts);
 		--time-font: "Cascadia Code", var(--fallback-fonts);
+
+		--jcs-blue: #003a70;
+		--jcs-cyan: #69b3e7;
 	}
 
 	:global(body) {
@@ -65,4 +67,6 @@
 
 
 
-<slot />
+<main>
+	<slot />
+</main>

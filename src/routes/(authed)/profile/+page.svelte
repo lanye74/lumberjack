@@ -16,7 +16,7 @@
 
 	const userProfileActions = [
 		{
-			text: "Logout",
+			text: "Sign out",
 			iconId: "fa-solid:sign-out-alt",
 			callback: async () => {
 				await fetch("/auth/logout", {method: "POST"});

@@ -46,8 +46,10 @@
 	.image-wrapper {
 		grid-column: 2;
 
-		/* prevent pop-in */
-		display: block;
+		/* prevent pop-in with a box element */
+		display: flex;
+		justify-content: center;
+
 		height: 5rem;
 		width: 5rem;
 

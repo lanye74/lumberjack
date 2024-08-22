@@ -52,22 +52,25 @@
 
 
 
-<div id="greeting-box">
-	<h2>{greeting}</h2>
+<section>
+	<!-- TODO: is it better to wrap this in its own section? -->
+	<div id="greeting-box">
+		<h2>{greeting}</h2>
 
-	<p>What have you been up to? It's currently <span class="time">{$currentFormattedTime}.</span></p>
-</div>
-
-
-
-<SubmitLocationForm />
+		<p>What have you been up to? It's currently <span class="time">{$currentFormattedTime}.</span></p>
+	</div>
 
 
 
-{#if form}
-	{#if form.error}
-		<p>something went wrong!!!! message: {form.message}</p>
-	{:else}
-		<p>yay!!!</p>
+	<SubmitLocationForm />
+
+
+
+	{#if form}
+		{#if form.error}
+			<p>something went wrong!!!! message: {form.message}</p>
+		{:else}
+			<p>yay!!!</p>
+		{/if}
 	{/if}
-{/if}
+</section>

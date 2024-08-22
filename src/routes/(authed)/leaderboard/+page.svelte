@@ -20,11 +20,11 @@
 
 
 {#if leaderboard !== null}
-	<div class="leaderboard">
+	<section class="leaderboard">
 		{#each leaderboard as user, index}
 			<LeaderboardEntry {user} {index} />
 		{/each}
-	</div>
+	</section>
 {:else}
 	<p>Something went terribly terribly wrong while loading the data...</p>
 {/if}
