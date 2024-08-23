@@ -1,5 +1,5 @@
-import {submitLocationLogPrefix} from "$lib/consoleColorPrefixes.js";
 import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
+import {submitLocationLogPrefix} from "$lib/consoleColorPrefixes.js";
 
 
 

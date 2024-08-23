@@ -1,14 +1,14 @@
 <script lang="ts">
-	import {authStateLogPrefix} from "$lib/consoleColorPrefixes.js";
 	import {invalidate} from "$app/navigation";
-    import mapRouteToPageTitle from "$lib/mapRouteToPageTitle.js";
 	import {onMount} from "svelte";
     import {page} from "$app/stores";
+
+	import {authStateLogPrefix} from "$lib/consoleColorPrefixes.js";
+	import {mapRouteToPageTitle} from "$lib/routes.js";
 
 
 
 	export let data;
-
 	$: ({session, supabase} = data);
 
 

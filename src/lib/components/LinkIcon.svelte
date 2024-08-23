@@ -2,6 +2,7 @@
 	import "iconify-icon";
 
     import type {LumberjackRoute} from "../../app.js";
+    import {onNavigate} from "$app/navigation";
 
 
 
@@ -18,6 +19,29 @@
 
 
 	const mappedIconName = routeIconMappings[path];
+
+
+
+	let isNavigating = false;
+
+
+	onNavigate(navigation => {
+		// @ts-ignore
+		if(!document.startViewTransition) return;
+
+		isNavigating = true;
+
+		return new Promise(resolve => {
+			// @ts-ignore
+			document.startViewTransition(async () => {
+				resolve();
+
+				await navigation.complete;
+
+				isNavigating = false;
+			});
+		});
+	});
 </script>
 
 <style>
@@ -50,6 +74,7 @@
 
 
 
-<a href={path} data-sveltekit-preload-data="hover">
+<a href={path} class:navigating={isNavigating} data-sveltekit-preload-data="hover">
+	<!-- TODO: the icons don't populate in edge?????? -->
 	<iconify-icon icon={mappedIconName} />
 </a>

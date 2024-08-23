@@ -1,27 +1,18 @@
 <script lang="ts">
-	import NavBar from "$lib/components/NavBar.svelte";
-	import TopBar from "$lib/components/TopBar.svelte";
 	import {onNavigate} from "$app/navigation";
     import {page} from "$app/stores";
 
+	import {enableCorrectTransitionForNavigation} from "$lib/routes.js";
+	import NavBar from "$lib/components/NavBar.svelte";
+	import TopBar from "$lib/components/TopBar.svelte";
 
 
+
+	// TODO: (VERY VERY IMPORTANT)
+	// THIS WHOLE NAVIGATION THING MEANS PEOPLE WILL WANT SWIPE CONTROLS
+	// POSSIBLY SHELF THIS TRANSITION AND ADD IT BACK AS A FEATURE
 	onNavigate(navigation => {
-		// TODO: remove these ts-ignores when it becomes official spec
-		// npm @types/dom-view-transitions?
-		// @ts-ignore
-		if(!document.startViewTransition) return;
-
-		if(navigation.to?.route.id === $page.route.id) return;
-
-		return new Promise(resolve => {
-			// @ts-ignore
-			document.startViewTransition(async () => {
-				resolve();
-
-				await navigation.complete;
-			});
-		});
+		enableCorrectTransitionForNavigation(navigation, $page.route.id);
 	});
 </script>
 
@@ -32,30 +23,53 @@
 
 
 
+	@keyframes slide-from-left {
+		from {
+			transform: translateX(-100vw);
+		}
+	}
+
 	@keyframes slide-to-left {
 		to {
-			transform: translateX(-100%);
+			transform: translateX(-100vw);
 		}
 	}
 
 	@keyframes slide-from-right {
 		from {
-			transform: translateX(100%);
+			transform: translateX(100vw);
 		}
 	}
 
-	:root::view-transition-old(root) {
+	@keyframes slide-to-right {
+		to {
+			transform: translateX(100vw);
+		}
+	}
+
+
+	:root.sliding-in-from-left::view-transition-old(root) {
+		animation: 0.5s cubic-bezier(0.2, 0.8, 0.7, 1) both slide-to-right;
+	}
+
+	:root.sliding-in-from-left::view-transition-new(root) {
+		animation: 0.5s cubic-bezier(0.2, 0.8, 0.7, 1) both slide-from-left;
+	}
+
+	:root.sliding-in-from-right::view-transition-old(root) {
 		animation: 0.5s cubic-bezier(0.2, 0.8, 0.7, 1) both slide-to-left;
 	}
 
-	:root::view-transition-new(root) {
+	:root.sliding-in-from-right::view-transition-new(root) {
 		animation: 0.5s cubic-bezier(0.2, 0.8, 0.7, 1) both slide-from-right;
 	}
+
 
 	@media (prefers-reduced-motion) {
 		::view-transition-group(*),
 		::view-transition-old(*),
 		::view-transition-new(*) {
+			/* TODO: crossfade here */
 			animation: none !important;
 		}
 	}

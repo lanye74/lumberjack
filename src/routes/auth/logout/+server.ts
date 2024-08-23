@@ -1,4 +1,5 @@
 import {authStateLogPrefix} from "$lib/consoleColorPrefixes.js";
+
 import {error, redirect} from "@sveltejs/kit";
 
 

@@ -1,10 +1,9 @@
 <script lang="ts">
     import LeaderboardEntry from "$lib/components/LeaderboardEntry.svelte";
 
+
+
 	export let data;
-
-
-
 	const {leaderboard} = data;
 </script>
 

@@ -1,8 +1,5 @@
 <script lang="ts">
 	export let data;
-
-
-
 	const {recentLogs} = data;
 </script>
 

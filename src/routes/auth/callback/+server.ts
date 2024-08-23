@@ -1,5 +1,6 @@
-import {error, redirect} from "@sveltejs/kit";
 import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
+
+import {error, redirect} from "@sveltejs/kit";
 
 
 

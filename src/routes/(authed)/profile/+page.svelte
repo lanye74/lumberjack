@@ -1,13 +1,14 @@
 <script lang="ts">
-	import {invalidateAll} from "$app/navigation";
 	import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
 	import UserProfileAction from "$lib/components/UserProfileAction.svelte";
+
+	import {invalidateAll} from "$app/navigation";
 
 
 
 	export let data;
-
 	const user = data.user!;
+
 
 	let avatarUrl = user.user_metadata.avatar_url as string;
 	avatarUrl = resizeGoogleAvatarUrl(avatarUrl);
