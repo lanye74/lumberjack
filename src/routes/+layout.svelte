@@ -12,7 +12,7 @@
 	$: ({session, supabase} = data);
 
 
-	$: head = mapRouteToPageTitle($page.route.id);
+	$: title = mapRouteToPageTitle($page.route.id);
 
 
 
@@ -77,7 +77,7 @@
 </style>
 
 <svelte:head>
-	<title>{head}</title>
+	<title>{title}</title>
 </svelte:head>
 
 

@@ -20,7 +20,7 @@ export default function mapRouteToPageTitle(routeToMap: string | null) {
 	}
 
 
-	return routePageTitleMappings[routeToMap];
+	return `${routePageTitleMappings[routeToMap]} - Lumberjack`;
 }
 
 

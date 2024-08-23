@@ -24,11 +24,13 @@
 		justify-content: space-between;
 
 		/* effective top padding: 2rem */
-		padding: 1rem calc(6vw + 1rem);
+		padding: 1rem 2rem;
 
 		box-sizing: border-box;
 
 		background-color: white;
+
+		view-transition-name: navbar;
 	}
 </style>
 

@@ -11,6 +11,8 @@
 		box-sizing: border-box;
 
 		box-shadow: 0 0.25rem 1rem 0.25rem #0004;
+
+		view-transition-name: header;
 	}
 
 
@@ -19,7 +21,7 @@
 		margin: 0;
 		color: white;
 
-		font: bold 2.5rem var(--font-serif);
+		font: bold 2.5rem var(--font-sans-serif);
 	}
 </style>
 

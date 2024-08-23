@@ -52,6 +52,8 @@
 
 
 
+<!-- <section bind:clientWidth={sectionWidth} bind:clientHeight={sectionHeight}
+         in:fly={{x: sectionWidth, duration: 500}} out:fly={{x: sectionHeight, duration: 500}}> -->
 <section>
 	<!-- TODO: is it better to wrap this in its own section? -->
 	<div id="greeting-box">

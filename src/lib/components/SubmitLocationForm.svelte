@@ -52,9 +52,8 @@
 	}
 
 	legend {
-		font-size: 2rem;
 		/* i love u variable fonts */
-		font-weight: 600;
+		font: 600 2rem var(--font-serif);
 		margin-bottom: 0.25rem;
 		padding: 0;
 	}
