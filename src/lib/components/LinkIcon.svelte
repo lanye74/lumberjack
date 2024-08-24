@@ -1,16 +1,16 @@
 <script lang="ts">
 	import "iconify-icon";
 
-    import type {LumberjackRoute} from "../../app.js";
+    import type {AuthedRoute} from "../../app.js";
     import {onNavigate} from "$app/navigation";
 
 
 
-	export let path: LumberjackRoute;
+	export let path: AuthedRoute;
 
 
 
-	const routeIconMappings: {[key in LumberjackRoute]: string} = {
+	const routeIconMappings: {[key in AuthedRoute]: string} = {
 		"/home": "fa-solid:home",
 		"/editor": "fa-solid:pencil-alt",
 		"/leaderboard": "fa-solid:trophy",

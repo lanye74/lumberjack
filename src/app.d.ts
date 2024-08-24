@@ -28,4 +28,4 @@ type SessionData = {
 
 
 
-type LumberjackRoute = "/home" | "/editor" | "/leaderboard" | "/profile";
+type AuthedRoute = "/home" | "/editor" | "/leaderboard" | "/profile";

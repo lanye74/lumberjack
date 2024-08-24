@@ -42,25 +42,34 @@ const supabaseHandle: Handle = async({event: requestEvent, resolve}) => {
 
 const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 	const sessionData = await requestEvent.locals.safeGetSession();
+	const {session, user} = sessionData;
+	const {locals, url} = requestEvent;
 
-	[requestEvent.locals.session, requestEvent.locals.user] = [sessionData.session, sessionData.user];
-
-
-	// perhaps to no great surprise, i still have trust issues approximately 30 lines later
-	const {locals: {session}, url} = requestEvent;
-
-	// whatever idc i'll rename them later (kappa)
-	const authDependentPaths = ["/home", "/logger", "/leaderboard", "/profile"];
-	// these redirect to /home when authed
-	const authAvoidantPaths = ["/", "/auth"];
+	locals.session = session;
+	locals.user = user;
 
 
-	if(!session && authDependentPaths.includes(url.pathname)) {
-		return redirect(303, "/auth");
-	}
+	const redirectsToAuth = !session ? "/auth" : null;
+	const redirectsToHome = session ? "/home" : null;
 
-	if(session && authAvoidantPaths.includes(url.pathname)) {
-		return redirect(303, "/home");
+
+	// TODO: make a unified route type... [key in PossibleRoute] not ideal
+	// also PossibleRoute has /(authed)/ which i don't need... eughh
+	const redirectMap: {[route: string]: string | null} = {
+		"/": "/home", // always route this to home i cba to make a proper homepage /auth is good enough
+		"/auth": redirectsToHome,
+
+		"/home": redirectsToAuth,
+		"/editor": redirectsToAuth,
+		"/leaderboard": redirectsToAuth,
+		"/profile": redirectsToAuth
+	};
+
+
+	const redirectPath = redirectMap[url.pathname];
+
+	if(redirectPath) {
+		return redirect(303, redirectPath);
 	}
 
 
