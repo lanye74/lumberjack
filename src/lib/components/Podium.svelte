@@ -131,8 +131,7 @@
 
 			<div class="user-info">
 				<p class="name">{user.fullName}</p>
-				<p class="point
-				s">{pointsFormatter(user.points)} pts.</p>
+				<p class="points">{pointsFormatter(user.points)} pts.</p>
 			</div>
 
 			<div class="podium-bar"></div>
