@@ -1,10 +1,16 @@
 <script lang="ts">
     import LeaderboardEntry from "$lib/components/LeaderboardEntry.svelte";
+    import Podium from "$lib/components/Podium.svelte";
 
 
 
 	export let data;
 	const {leaderboard} = data;
+
+
+	// i really shouldn't non-null assert but bleh
+	const topThree = leaderboard!.slice(0, 3);
+	const lastSeven = leaderboard!.slice(-7);
 </script>
 
 <style>
@@ -18,10 +24,15 @@
 
 
 
+
+
 {#if leaderboard !== null}
+	<!-- TODO: i dislike section being declared in-component here, but not below. cope i guess? -->
+	<Podium users={topThree} />
+
 	<section class="leaderboard">
-		{#each leaderboard as user, index}
-			<LeaderboardEntry {user} {index} />
+		{#each lastSeven as user, index}
+			<LeaderboardEntry {user} index={index + 3} />
 		{/each}
 	</section>
 {:else}
