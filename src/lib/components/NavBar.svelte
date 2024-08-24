@@ -1,10 +1,11 @@
 <script lang="ts">
 	import LinkIcon from "./LinkIcon.svelte";
-	import type {LumberjackRoute} from "../../app.js";
+	import type {AuthedRoute} from "../../app.js";
 
 
 
-	const routes: LumberjackRoute[] = ["/home", "/editor", "/leaderboard", "/profile"];
+	// const routes: AuthedRoute[] = ["/home", "/editor", "/leaderboard", "/profile"];
+	const routes: AuthedRoute[] = ["/home", "/leaderboard", "/profile"];
 </script>
 
 <style>
@@ -24,7 +25,7 @@
 		justify-content: space-between;
 
 		/* effective top padding: 2rem */
-		padding: 1rem 2rem;
+		padding: 1rem 4rem;
 
 		box-sizing: border-box;
 

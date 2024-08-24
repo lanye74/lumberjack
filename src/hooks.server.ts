@@ -60,7 +60,8 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 		"/auth": redirectsToHome,
 
 		"/home": redirectsToAuth,
-		"/editor": redirectsToAuth,
+		// "/editor": redirectsToAuth,
+		"/editor": "/home",
 		"/leaderboard": redirectsToAuth,
 		"/profile": redirectsToAuth
 	};

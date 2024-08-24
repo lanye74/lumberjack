@@ -66,7 +66,6 @@ export function enableCorrectTransitionForNavigation(navigation: OnNavigate, cur
 			document.documentElement.classList.add("sliding-in-from-left");
 			document.documentElement.classList.remove("sliding-in-from-right");
 		} else {
-			console.log("right")
 			document.documentElement.classList.add("sliding-in-from-right");
 			document.documentElement.classList.remove("sliding-in-from-left");
 		}

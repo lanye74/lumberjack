@@ -36,14 +36,14 @@ Log where you are, instantly
 		- can use my github io if domain is taking a while
 	- [ ] ensure that there’s some amount of hot-reloading available on the pwa
 6. design the app
-	- [ ] i probably want a tab system at the bottom
+	- [x] i probably want a tab system at the bottom
 		- do i need to make my own icons? should i? probably can just ~~rob~~ borrow material icons
-	- [ ] bottom bar will probably consist of clock, points/leaderboard, settings
-	- [ ] learn figma for designs/mockups?
+	- [x] bottom bar will probably consist of clock, points/leaderboard, settings
+	- [ ] ~~learn figma for designs/mockups?~~ i tried but i realized i suck at designing
 		- it'd be silly
 7. turn the design into the app
-	- [ ] test a sveltekit project to make sure i'm not crazy
-	- [ ] build the app
+	- [x] test a sveltekit project to make sure i'm not crazy
+	- [x] build the app
 		- this is a tiny bullet point but it will probably take up the majority of the time
 8. iterate
 9. think long-term
@@ -58,6 +58,15 @@ stuff that's not important for getting the app off of the ground, but ideal for 
 - [ ] admin panel to view/export statistics
 
 
+## other ideas related to gamification
+- possibly bonus points for visiting underserved schools?
+- this would require an actual homepage instead of josh's "just throw the clock in on the front page"
+- bounties??
+- ranked splits lmao (actually do it though)
+- points --> themes
+- profile borders???
+	- discord cat ears border (real and true)
+- idk
 
 
 holy SHIT i just realized that steps 1–7 need to be done within the next month

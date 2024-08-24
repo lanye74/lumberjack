@@ -15,7 +15,7 @@ export default function generateGreeting(user: User, currentTime: Date) {
 	} else if(hour >= 17 && hour < 21) {
 		salutation = "Good evening";
 	} else {
-		salutation = "Welcome";
+		salutation = "Hey";
 	}
 
 

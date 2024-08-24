@@ -12,7 +12,7 @@
 	// THIS WHOLE NAVIGATION THING MEANS PEOPLE WILL WANT SWIPE CONTROLS
 	// POSSIBLY SHELF THIS TRANSITION AND ADD IT BACK AS A FEATURE
 	onNavigate(navigation => {
-		enableCorrectTransitionForNavigation(navigation, $page.route.id);
+		return enableCorrectTransitionForNavigation(navigation, $page.route.id);
 	});
 </script>
 
