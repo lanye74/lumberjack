@@ -12,6 +12,14 @@
 	// THIS WHOLE NAVIGATION THING MEANS PEOPLE WILL WANT SWIPE CONTROLS
 	// POSSIBLY SHELF THIS TRANSITION AND ADD IT BACK AS A FEATURE
 	onNavigate(navigation => {
+		// @ts-ignore
+		if(!document.startViewTransition) return;
+
+		if(navigation.to?.route.id === $page.route.id) return;
+
+
+		// TODO: please for the love of god stop page transitions when clicking on the page you're already on
+		// why did it break? god knows (god is dead)
 		return enableCorrectTransitionForNavigation(navigation, $page.route.id);
 	});
 </script>

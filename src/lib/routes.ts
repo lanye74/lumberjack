@@ -51,12 +51,6 @@ export function getPageTransitionDirection(currentRoute: string | null, targetRo
 
 
 export function enableCorrectTransitionForNavigation(navigation: OnNavigate, currentPageRoute: string | null) {
-	// @ts-ignore
-	if(!document.startViewTransition) return;
-
-	if(navigation.to?.route.id === currentPageRoute) return;
-
-
 	return new Promise<void>(resolve => {
 		const slideDirection = getPageTransitionDirection(currentPageRoute, navigation.to?.route.id);
 

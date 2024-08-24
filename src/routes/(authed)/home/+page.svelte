@@ -21,13 +21,14 @@
 		flex-direction: column;
 
 		margin: 2rem;
-		box-sizing: border-box;
-	}
-
-	#greeting-box {
-		border-radius: 0.25rem;
-		border: 0.25rem solid #ccc;
 		padding: 2rem;
+		box-sizing: border-box;
+
+		border-radius: 0.25rem;
+		/* TODO: put these colors in properties */
+		border: 0.25rem solid #aaa;
+		/* and probably this box shadow as well */
+		box-shadow: 0 0.5rem 1rem #0003;
 
 		gap: 2rem;
 		overflow-wrap: break-word;

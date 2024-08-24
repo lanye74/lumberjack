@@ -11,13 +11,28 @@
 
 	export let users: UserPublicInfo[];
 
+	const podiumPlaces = ["first", "second", "third"];
 
 
-	const podiumPlaces = ["first", "second", "third"]
+	const pointsFormatter = new Intl.NumberFormat().format;
+	const pixelFormatter = new Intl.NumberFormat("en-US", {maximumFractionDigits: 1, useGrouping: false}).format;
+
+
+	let columnWidth: number;
+	$: iconSize = `${pixelFormatter(columnWidth * 0.8)}px`;
 </script>
 
 <style>
 	.podium {
+		margin: 2rem;
+		padding: 2rem;
+
+		border-radius: 0.25rem;
+		border: 0.25rem solid #aaa;
+		box-shadow: 0 0.5rem 1rem #0003;
+
+		box-sizing: border-box;
+
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		grid-template-rows: auto;
@@ -26,24 +41,41 @@
 		align-items: end;
 		justify-content: center;
 
-		margin: 2rem;
-		padding: 0 2rem;
-
 		gap: 1rem;
 	}
 
 	.podium-place {
 		display: flex;
 		flex-direction: column;
+		align-items: center;
 	}
 
 	.image-wrapper {
+		display: flex;
+		justify-content: center;
+
 		border-radius: 50%;
 		color: #aaa;
 
-		/* height: 10rem;
-		width: 10rem;
-		font-size: 10rem; */
+		width: 80%;
+		font-size: var(--icon-size);
+
+		margin-bottom: 1rem;
+	}
+
+
+
+	.user-info p {
+		margin: 0 0 0.25rem 0;
+		text-align: center;
+	}
+
+	.user-info .name {
+		font: bold 1.5rem var(--font-serif);
+	}
+
+	.user-info .points {
+		font: italic 1.25rem var(--font-serif);
 	}
 
 
@@ -59,6 +91,7 @@
 	.place-third.podium-place {
 		grid-area: third;
 	}
+
 
 
 	.podium-bar {
@@ -88,12 +121,18 @@
 
 <section class="podium">
 	{#each users as user, index}
-		<div class={`podium-place place-${podiumPlaces[index]}`}>
+		<div class={`podium-place place-${podiumPlaces[index]}`} bind:clientWidth={columnWidth}>
 			<!-- TODO: investigate using this without a wrapper -->
-			<div class="image-wrapper">
+			<div class="image-wrapper" style:--icon-size={iconSize}>
 				<ImageWithIconFallback class="image-fallback"
 					src={user.avatarUrl} alt="User profile picture"
 					iconId="fa-solid:user-circle" />
+			</div>
+
+			<div class="user-info">
+				<p class="name">{user.fullName}</p>
+				<p class="point
+				s">{pointsFormatter(user.points)} pts.</p>
 			</div>
 
 			<div class="podium-bar"></div>
