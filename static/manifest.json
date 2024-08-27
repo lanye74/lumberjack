@@ -5,13 +5,13 @@
 
 	"icons": [
 		{
-			"src": "static/icons/lumberjack-512.png",
+			"src": "icons/lumberjack-512.png",
 			"type": "image/png",
 			"sizes": "512x512",
 			"icon": "any maskable"
 		},
 		{
-			"src": "static/icons/lumberjack-192.png",
+			"src": "icons/lumberjack-192.png",
 			"type": "image/png",
 			"sizes": "192x192",
 			"icon": "any maskable"
