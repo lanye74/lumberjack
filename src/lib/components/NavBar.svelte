@@ -11,6 +11,7 @@
 <style>
 	nav {
 		position: fixed;
+		z-index: 100;
 		bottom: 0;
 
 		width: 100%;

@@ -22,6 +22,11 @@ export async function GET({url, locals}) {
 
 	const {data: {user}} = codeExchangeResponse;
 
+	if(!user.email?.includes("jessamine.kyschools.us")) {
+		// TODO: use return new Response(message, {status: 403})
+		return error(403, "You must be part of the JCS domain to access this server!");
+	}
+
 
 	const {full_name, avatar_url} = user!.user_metadata;
 	const {id: google_user_id} = user!;

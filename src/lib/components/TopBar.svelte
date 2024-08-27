@@ -1,9 +1,9 @@
 <style>
 	header {
 		position: sticky;
+		z-index: 100;
 		top: 0;
 
-		height: fit-content;
 		width: 100%;
 
 		background-color: var(--jcs-blue);
