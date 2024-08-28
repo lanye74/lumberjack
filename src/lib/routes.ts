@@ -1,20 +1,23 @@
 import type {OnNavigate} from "@sveltejs/kit";
+import type {RoutePageTitleMap, RedirectableRouthWithGroup} from "./types/routes.js";
 
 
 
-const routePageTitleMappings = {
+const routePageTitleMappings: RoutePageTitleMap = {
 	"/(authed)/home": "Home",
 	"/(authed)/editor": "Log editor",
 	"/(authed)/leaderboard": "Leaderboard",
 	"/(authed)/profile": "User profile",
 
-	"/auth/": "Sign in",
+	"/auth": "Sign in",
 	"/auth/error": "Error!",
+
+	"/": "Landing"
 };
 
-type PossibleRoute = keyof typeof routePageTitleMappings;
 
-const allRoutes = Object.keys(routePageTitleMappings) as PossibleRoute[];
+
+const allRoutes = Object.keys(routePageTitleMappings);
 
 
 
@@ -76,6 +79,6 @@ export function enableCorrectTransitionForNavigation(navigation: OnNavigate, cur
 
 
 
-function isRouteInMappings(route: string): route is PossibleRoute {
-	return allRoutes.includes(route as PossibleRoute);
+function isRouteInMappings(route: string): route is RedirectableRouthWithGroup {
+	return allRoutes.includes(route);
 }

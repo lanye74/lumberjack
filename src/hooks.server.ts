@@ -57,7 +57,9 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 
 	const redirectMap: RedirectMap = {
 		"/": "/home", // always route this to home i cba to make a proper homepage /auth is good enough
+
 		"/auth": redirectsToHome,
+		"/auth/error": null,
 
 		"/home": redirectsToAuth,
 		// "/editor": redirectsToAuth,
