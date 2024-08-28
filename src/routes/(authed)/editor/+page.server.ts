@@ -2,11 +2,7 @@ import {logEditorLogPrefix} from "$lib/consoleColorPrefixes.js";
 
 
 
-export async function load(loadEvent) {
-	const supabase = loadEvent.locals.supabase;
-	// if we made it this far, i.e. we were authed in the hook and thus allowed to access this, then of course we're still authed here
-	// so we don't need to worry about verifying that we have a session/user etc
-
+export async function load({locals: {supabase}}) {
 	let output: LoadLogsOutput = {
 		recentLogs: null
 	};

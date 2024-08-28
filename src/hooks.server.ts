@@ -6,16 +6,16 @@ import {sequence} from "@sveltejs/kit/hooks";
 
 
 
-const supabaseHandle: Handle = async({event: requestEvent, resolve}) => {
-	requestEvent.locals.supabase = createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
-		cookies: generateSupabaseClientCookieMethods(requestEvent.cookies)
+const supabaseHandle: Handle = async({event, resolve}) => {
+	event.locals.supabase = createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+		cookies: generateSupabaseClientCookieMethods(event.cookies)
 	});
 
 	// i don't trust javascript setting stuff by reference so i'm destructuring it after setting
-	const {locals: {supabase}} = requestEvent;
+	const {locals: {supabase}} = event;
 
 
-	requestEvent.locals.safeGetSession = async () => {
+	event.locals.safeGetSession = async () => {
 		// check for the existence of a session
 		const {data: {session}} = await supabase.auth.getSession();
 		if(!session) return {session: null, user: null};
@@ -33,7 +33,7 @@ const supabaseHandle: Handle = async({event: requestEvent, resolve}) => {
 
 	const allowedHeaders = ["content-range", "x-supabase-api-version"];
 
-	return resolve(requestEvent, {
+	return resolve(event, {
 		filterSerializedResponseHeaders: (name) => allowedHeaders.includes(name)
 	});
 }

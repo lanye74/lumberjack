@@ -5,14 +5,11 @@ import {redirect} from "@sveltejs/kit";
 
 
 export const actions = {
-	signIn: async (requestEvent) => {
-		const {locals} = requestEvent;
+	signIn: async ({url, locals: {supabase}}) => {
+		const redirectLocation = new URL("/auth/callback", url);
 
 
-		const redirectLocation = new URL("/auth/callback", requestEvent.url);
-
-
-		const {data, error} = await locals.supabase.auth.signInWithOAuth({
+		const {data, error} = await supabase.auth.signInWithOAuth({
 			provider: "google",
 			options: {
 				redirectTo: redirectLocation.toString()

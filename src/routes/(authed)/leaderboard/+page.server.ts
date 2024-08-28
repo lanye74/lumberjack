@@ -3,8 +3,7 @@ import {leaderboardLogPrefix} from "$lib/consoleColorPrefixes.js";
 
 
 // TODO: make this non-blocking and use skeleton loaders
-export async function load(loadEvent) {
-	const supabase = loadEvent.locals.supabase;
+export async function load({locals: {supabase}}) {
 	// if we made it this far, i.e. we were authed in the hook and thus allowed to access this, then of course we're still authed here
 	// so we don't need to worry about verifying that we have a session/user etc
 
