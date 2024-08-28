@@ -46,7 +46,7 @@ export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocatio
 	                possibleVisitPurposes.includes(userPurposeMultiple);
 
 	// TODO: return specific errors
-	const errorMessage = isValid === false ? "Invalid form!" : null;
+	const errorMessage = isValid === false ? "You didn't complete the form!" : null;
 
 
 	return {

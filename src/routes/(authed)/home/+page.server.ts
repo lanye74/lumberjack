@@ -3,6 +3,7 @@ import {submitLocationLogPrefix} from "$lib/consoleColorPrefixes.js";
 
 
 
+// TODO: this is the worst thing ever and needs to be refactored
 export const actions = {
 	submitLocation: async (requestEvent) => {
 		const formData = await requestEvent.request.formData();
@@ -11,7 +12,7 @@ export const actions = {
 		if(parsedForm.isValid === false) {
 			return {
 				error: true,
-				message: "Don't submit invalid data >:("
+				message: parsedForm.errorMessage
 			};
 		}
 
@@ -25,7 +26,7 @@ export const actions = {
 		const currentTime = new Date().toISOString();
 
 
-		const {error} = await supabase.from("location_logs")
+		const {error: submitLocationError} = await supabase.from("location_logs")
 			.insert({
 				timestamp: currentTime,
 				google_user_id: user.id,
@@ -36,13 +37,52 @@ export const actions = {
 			});
 
 
-		if(error) {
-			console.error(...submitLocationLogPrefix, "Error submitting location", error);
+		if(submitLocationError) {
+			console.error(...submitLocationLogPrefix, "Error submitting location", submitLocationError);
+
+			return {
+				error: true,
+				message: "Unable to submit location! Please try again."
+			};
 		}
 
+
+		const {data: readPointsData, error: readPointsError} = await supabase.from("public_user_data")
+			.select("points")
+			.eq("google_user_id", user.id)
+			.single();
+
+
+		if(readPointsError) {
+			console.error(...submitLocationLogPrefix, "Error reading points", readPointsError);
+
+			return {
+				error: true,
+				message: "Your location was logged, but we couldn't update your points!"
+			};
+		}
+
+
+		const points = (readPointsData?.points ?? 0) as number;
+
+		const {error: updatePointsError} = await supabase.from("public_user_data")
+			.update({points: points + 1000})
+			.eq("google_user_id", user.id);
+
+
+		if(updatePointsError) {
+			console.error(...submitLocationLogPrefix, "Error submitting location", updatePointsError);
+
+			return {
+				error: true,
+				message: "Your location was logged, but we couldn't update your points!"
+			};
+		}
+
+
 		return {
-			error: error !== null,
-			message: "succeed"
+			error: false,
+			message: "Success! You've earned 1,000 points!"
 		};
 	}
 }

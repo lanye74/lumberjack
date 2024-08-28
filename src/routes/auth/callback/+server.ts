@@ -42,6 +42,8 @@ export async function GET({url, locals: {supabase}}) {
 
 	// TODO: can i access the `auth` schema --> identities table myself and not have to keep my own copy?
 	// i really need to dig into how sensible (read: experienced) people do this
+
+	// shouldn't need to worry about upserting/insert points because it has a default value of 0
 	const updatePublicDataResponse = await supabase.from("public_user_data")
 		.upsert({google_user_id, full_name, avatar_url: avatarUrlResized});
 
