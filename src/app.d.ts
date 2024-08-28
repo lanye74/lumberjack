@@ -25,7 +25,3 @@ type SessionData = {
 	session: Session | null;
 	user: User | null;
 };
-
-
-
-type AuthedRoute = "/home" | "/editor" | "/leaderboard" | "/profile";

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import LinkIcon from "./LinkIcon.svelte";
-	import type {AuthedRoute} from "../../app.js";
+	import type {AuthedRoute} from "$lib/types/routes.js";
 
 
 

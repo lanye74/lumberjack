@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {invalidate} from "$app/navigation";
 	import {onMount} from "svelte";
-    import {page} from "$app/stores";
+	import {page} from "$app/stores";
 
 	import {authStateLogPrefix} from "$lib/consoleColorPrefixes.js";
 	import {mapRouteToPageTitle} from "$lib/routes.js";

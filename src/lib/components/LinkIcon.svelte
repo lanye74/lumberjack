@@ -1,7 +1,7 @@
 <script lang="ts">
 	import "iconify-icon";
 
-    import type {AuthedRoute} from "../../app.js";
+    import type {AuthedRoute} from "$lib/types/routes.js";
     import {onNavigate} from "$app/navigation";
 
 

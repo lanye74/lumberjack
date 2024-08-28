@@ -4,6 +4,8 @@ import {type Cookies, type Handle, redirect} from "@sveltejs/kit";
 import {type CookieMethodsServer, createServerClient} from "@supabase/ssr";
 import {sequence} from "@sveltejs/kit/hooks";
 
+import type {RedirectableRoute, RedirectMap} from "$lib/types/routes.js";
+
 
 
 const supabaseHandle: Handle = async({event, resolve}) => {
@@ -53,9 +55,7 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 	const redirectsToHome = session ? "/home" : null;
 
 
-	// TODO: make a unified route type... [key in PossibleRoute] not ideal
-	// also PossibleRoute has /(authed)/ which i don't need... eughh
-	const redirectMap: {[route: string]: string | null} = {
+	const redirectMap: RedirectMap = {
 		"/": "/home", // always route this to home i cba to make a proper homepage /auth is good enough
 		"/auth": redirectsToHome,
 
@@ -67,7 +67,7 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 	};
 
 
-	const redirectPath = redirectMap[url.pathname];
+	const redirectPath = redirectMap[url.pathname as RedirectableRoute];
 
 	if(redirectPath) {
 		return redirect(303, redirectPath);

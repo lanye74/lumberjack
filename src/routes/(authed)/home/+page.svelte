@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {currentDate, currentFormattedTime} from "$lib/time.js";
 	import generateGreeting from "$lib/generateGreeting.js";
-    import SubmitLocationForm from "$lib/components/SubmitLocationForm.svelte";
+	import SubmitLocationForm from "$lib/components/SubmitLocationForm.svelte";
 
 
 
@@ -53,8 +53,6 @@
 
 
 
-<!-- <section bind:clientWidth={sectionWidth} bind:clientHeight={sectionHeight}
-         in:fly={{x: sectionWidth, duration: 500}} out:fly={{x: sectionHeight, duration: 500}}> -->
 <section>
 	<!-- TODO: is it better to wrap this in its own section? -->
 	<div id="greeting-box">

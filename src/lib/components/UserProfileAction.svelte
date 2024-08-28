@@ -1,6 +1,7 @@
 <script lang="ts">
 	import "iconify-icon";
-    import type {MouseEventHandler} from "svelte/elements";
+
+	import type {MouseEventHandler} from "svelte/elements";
 
 
 

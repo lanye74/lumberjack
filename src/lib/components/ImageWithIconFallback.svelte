@@ -1,6 +1,6 @@
 <script lang="ts">
 	import "iconify-icon";
-    import {onMount} from "svelte";
+	import {onMount} from "svelte";
 
 
 

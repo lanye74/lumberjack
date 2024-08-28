@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {onNavigate} from "$app/navigation";
-    import {page} from "$app/stores";
+	import {page} from "$app/stores";
 
 	import {enableCorrectTransitionForNavigation} from "$lib/routes.js";
 	import NavBar from "$lib/components/NavBar.svelte";

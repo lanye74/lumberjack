@@ -1,4 +1,5 @@
 import {leaderboardLogPrefix} from "$lib/consoleColorPrefixes.js";
+import type {LoadLeaderboardOutput, UserPublicInfo, UserPublicInfoRow} from "$lib/types/database.js";
 
 
 
@@ -41,27 +42,3 @@ export async function load({locals: {supabase}}) {
 
 	return output;
 }
-
-
-
-type LoadLeaderboardOutput = {
-	leaderboard: UserPublicInfo[] | null;
-};
-
-
-
-type UserPublicInfo = {
-	googleUserId: string;
-	fullName: string;
-	avatarUrl: string;
-	points: number;
-};
-
-
-
-type UserPublicInfoRow = {
-	google_user_id: string;
-	full_name: string;
-	avatar_url: string;
-	points: number;
-};

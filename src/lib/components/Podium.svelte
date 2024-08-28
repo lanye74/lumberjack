@@ -1,13 +1,8 @@
 <script lang="ts">
-    import ImageWithIconFallback from "./ImageWithIconFallback.svelte";
+	import ImageWithIconFallback from "./ImageWithIconFallback.svelte";
+	import type {UserPublicInfo} from "$lib/types/database.js";
 
-	// TODO: move these types to a unified location
-	type UserPublicInfo = {
-		googleUserId: string;
-		fullName: string;
-		avatarUrl: string;
-		points: number;
-	};
+
 
 	export let users: UserPublicInfo[];
 

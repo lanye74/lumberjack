@@ -1,4 +1,5 @@
 import {logEditorLogPrefix} from "$lib/consoleColorPrefixes.js";
+import type {LoadLogsOutput, LocationLog, LocationLogRow} from "$lib/types/database.js";
 
 
 
@@ -46,25 +47,3 @@ export async function load({locals: {supabase}}) {
 
 	return output;
 }
-
-
-
-type LoadLogsOutput = {
-	recentLogs: LocationLog[] | null;
-};
-
-
-
-type LocationLog = {
-	timestamp: string;
-	googleUserId: string;
-	location: string;
-};
-
-
-
-type LocationLogRow = {
-	timestamp: string;
-	google_user_id: string;
-	location: string;
-};

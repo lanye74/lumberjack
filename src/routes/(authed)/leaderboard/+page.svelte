@@ -1,6 +1,6 @@
 <script lang="ts">
-    import LeaderboardEntry from "$lib/components/LeaderboardEntry.svelte";
-    import Podium from "$lib/components/Podium.svelte";
+	import LeaderboardEntry from "$lib/components/LeaderboardEntry.svelte";
+	import Podium from "$lib/components/Podium.svelte";
 
 
 
@@ -11,6 +11,9 @@
 	// i really shouldn't non-null assert but bleh
 	const topThree = leaderboard!.slice(0, 3);
 	const lastSeven = leaderboard!.slice(-7);
+
+
+	// IMPORTANT TODO: make sure this works when there are <10 users in the database
 </script>
 
 <style>
