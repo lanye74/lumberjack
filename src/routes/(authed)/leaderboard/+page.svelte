@@ -27,8 +27,6 @@
 
 
 
-
-
 {#if leaderboard !== null}
 	<!-- TODO: i dislike section being declared in-component here, but not below. cope i guess? -->
 	<Podium users={topThree} />

@@ -1,8 +1,8 @@
 <script lang="ts">
+	import {invalidateAll} from "$app/navigation";
+
 	import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
 	import UserProfileAction from "$lib/components/UserProfileAction.svelte";
-
-	import {invalidateAll} from "$app/navigation";
 
 
 

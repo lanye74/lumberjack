@@ -1,10 +1,11 @@
 <script lang="ts">
 	import ImageWithIconFallback from "./ImageWithIconFallback.svelte";
+    import type {UserPublicInfo} from "$lib/types/database.js";
 
 
 
-	// TODO: provide UserPublicInfo type for user
-	export let user, index: number;
+	export let user: UserPublicInfo
+	export let index: number;
 
 
 
