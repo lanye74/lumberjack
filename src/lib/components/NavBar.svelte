@@ -6,6 +6,10 @@
 
 	// const routes: AuthedRoute[] = ["/home", "/editor", "/leaderboard", "/profile"];
 	const routes: AuthedRoute[] = ["/home", "/leaderboard", "/profile"];
+
+
+
+	export let height;
 </script>
 
 <style>
@@ -26,7 +30,7 @@
 		justify-content: space-between;
 
 		/* effective top padding: 2rem */
-		padding: 1rem 4rem;
+		padding: 1rem 3rem;
 
 		box-sizing: border-box;
 
@@ -43,7 +47,7 @@
 
 
 
-<nav id="bottom-bar">
+<nav id="bottom-bar" bind:clientHeight={height}>
 	{#each routes as path}
 		<LinkIcon {path} />
 	{/each}

@@ -22,7 +22,7 @@ export async function GET({url, locals: {supabase}}) {
 
 	const {data: {user}} = codeExchangeResponse;
 
-	if(!user.email?.endsWith("@jessamine.kyschools.us") ||
+	if(!user.email?.endsWith("@jessamine.kyschools.us") &&
 	   !user.email?.endsWith("@stu.jessamine.kyschools.us")) {
 		// TODO: use return new Response(message, {status: 403})
 

@@ -2,6 +2,7 @@
 	import {currentDate, currentFormattedTime} from "$lib/time.js";
 	import generateGreeting from "$lib/generateGreeting.js";
 	import SubmitLocationForm from "$lib/components/SubmitLocationForm.svelte";
+	import Toast from "$lib/components/Toast.svelte";
 
 
 
@@ -69,9 +70,9 @@
 
 	{#if form}
 		{#if form.error}
-			<p>something went wrong!!!! message: {form.message}</p>
+			<Toast duration={4000}>{form.message}</Toast>
 		{:else}
-			<p>yay!!!</p>
+			<Toast duration={4000}>{form.message}</Toast>
 		{/if}
 	{/if}
 </section>
