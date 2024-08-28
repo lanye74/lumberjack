@@ -4,7 +4,7 @@
 	"description": "Log where you are, instantly",
 	"type": "module",
 	"scripts": {
-		"dev": "vite dev --host 0.0.0.0 --port 443",
+		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview --host 0.0.0.0 --port 443",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
