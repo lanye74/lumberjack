@@ -1,6 +1,7 @@
 <script lang="ts">
 	import LeaderboardEntry from "$lib/components/LeaderboardEntry.svelte";
 	import Podium from "$lib/components/Podium.svelte";
+    import type {UserPublicInfo} from "$lib/types/database.js";
 
 
 
@@ -8,9 +9,20 @@
 	const {leaderboard} = data;
 
 
-	// i really shouldn't non-null assert but bleh
-	const topThree = leaderboard!.slice(0, 3);
-	const lastSeven = leaderboard!.slice(-7);
+	let topThree: UserPublicInfo[] = [];
+	let lastSeven: UserPublicInfo[] = [];
+
+
+	if(leaderboard) {
+		topThree = leaderboard.slice(0, Math.min(leaderboard.length, 3));
+
+		// ew nested if
+		// guard clauses won't save me here
+		if(leaderboard.length > 3) {
+			// we should never receive more than 10, but just in case
+			lastSeven = leaderboard.slice(3, Math.min(leaderboard.length, 10));
+		}
+	}
 
 
 	// IMPORTANT TODO: make sure this works when there are <10 users in the database
@@ -34,6 +46,7 @@
 	<section class="leaderboard">
 		{#each lastSeven as user, index}
 			<LeaderboardEntry {user} index={index + 3} />
+			<!-- TODO: display fallback if no entries -->
 		{/each}
 	</section>
 {:else}
