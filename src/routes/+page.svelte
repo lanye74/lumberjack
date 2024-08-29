@@ -6,6 +6,8 @@
 
 <h1>this is the generic landing page</h1>
 
+<p>you're really not supposed to be here... if you got here let me know how you did!</p>
+
 
 
 {#if !data.session}

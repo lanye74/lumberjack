@@ -83,7 +83,6 @@
 
 	h3, p {
 		margin: 0;
-		padding: 0.25rem 1rem;
 	}
 
 
@@ -94,10 +93,23 @@
 
 		border-top-left-radius: 0.5rem;
 		border-top-right-radius: 0.5rem;
+		border: 0.25rem solid var(--jcs-blue);
+		border-bottom: 0;
+
+		padding: 0.25rem 0.75rem;
 	}
 
 	p {
 		font-size: 1.25rem;
+		box-sizing: border-box;
+
+		border-bottom-left-radius: 0.5rem;
+		border-bottom-right-radius: 0.5rem;
+		border: 0.25rem solid #ccc;
+		border-top: none;
+
+		padding: 0.375rem 0.75rem;
+
 	}
 </style>
 

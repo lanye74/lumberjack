@@ -38,6 +38,9 @@ export async function load({locals: {supabase}}) {
 	}));
 
 
+	// output.leaderboard = output.leaderboard.slice(0, 2);
+
+
 	// console.log(...leaderboardLogPrefix, "Leaderboard state fetched successfully", output);
 
 	return output;
