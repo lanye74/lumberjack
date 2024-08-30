@@ -25,5 +25,4 @@ export const currentFormattedTime = derived(currentDate, ($date => {
 
 
 
-// TODO: standardize "NavBar" to Navbar
-export const navBarHeight = writable(0);
+export const navbarHeight = writable(0);

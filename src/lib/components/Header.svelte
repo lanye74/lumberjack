@@ -27,6 +27,6 @@
 
 
 
-<header id="top-bar">
+<header>
 	<h1>JCS Lumberjack</h1>
 </header>

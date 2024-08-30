@@ -56,6 +56,7 @@
 
 <section>
 	<!-- TODO: is it better to wrap this in its own section? -->
+	<!-- TODO: yes -->
 	<div id="greeting-box">
 		<h2>{greeting}</h2>
 
@@ -64,15 +65,12 @@
 
 
 
+	<!-- TODO: this should get a section too -->
 	<SubmitLocationForm />
 
 
 
 	{#if form}
-		{#if form.error}
-			<Toast duration={4000}>{form.message}</Toast>
-		{:else}
-			<Toast duration={4000}>{form.message}</Toast>
-		{/if}
+		<Toast duration={4000}>{form.message}</Toast>
 	{/if}
 </section>

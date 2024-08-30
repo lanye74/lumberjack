@@ -48,7 +48,7 @@
 
 
 
-<nav id="bottom-bar" bind:clientHeight={height}>
+<nav bind:clientHeight={height}>
 	{#each routes as path}
 		<LinkIcon {path} />
 	{/each}
