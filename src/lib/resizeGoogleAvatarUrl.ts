@@ -5,13 +5,14 @@ import {resizeGoogleAvatarUrlLogPrefix} from "./consoleColorPrefixes.js";
 const targetSizes = [32, 64, 96, 128, 192, 256, 384, 512, 1024];
 const maxSizeIndex = targetSizes.length - 1;
 
-const sizeRegex = new RegExp(/s(\d+)(-[a-z])?/);
+const sizeRegex = new RegExp(/=s(\d+)(-[a-z])?/);
 
 
 
 export default function resizeGoogleAvatarUrl(url: string) {
 	// probably should find a better way to validate this but eh
-	if(!url.includes("googleusercontent")) {
+	if(!url?.includes("googleusercontent")) {
+		console.log(...resizeGoogleAvatarUrlLogPrefix, "Found URL without googleusercontent:", url);
 		return url;
 	}
 
@@ -30,7 +31,7 @@ export default function resizeGoogleAvatarUrl(url: string) {
 
 	if(sizeIndex === -1) {
 		// kms
-		console.log(...resizeGoogleAvatarUrlLogPrefix, "Received size not in targetSizes array:", parsedSize);
+		console.log(...resizeGoogleAvatarUrlLogPrefix, "Received size not in targetSizes array:", parsedSize, url);
 		return url;
 	}
 
@@ -40,7 +41,7 @@ export default function resizeGoogleAvatarUrl(url: string) {
 
 
 	// the $2 represents the second capturing group, so any trailing data (the -c stuff) gets kept
-	const newUrl = url.replace(sizeRegex, `s${newSize}$2`);
+	const newUrl = url.replace(sizeRegex, `=s${newSize}$2`);
 
 
 	return newUrl;

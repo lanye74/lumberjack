@@ -63,7 +63,7 @@
 <style>
 	.wrapper {
 		position: fixed;
-		bottom: calc(var(--navbar-height) + 8rem);
+		bottom: calc(var(--navbar-height) + 4vh);
 		right: 0;
 
 		padding-left: 1rem;

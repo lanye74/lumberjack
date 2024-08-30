@@ -45,7 +45,7 @@
 			<LeaderboardEntry {user} index={index + 3} />
 		{/each}
 
-		{#if lastSeven.length < 10 && topThree.length > 0}
+		{#if lastSeven.length < 7 && topThree.length > 0}
 			<p class="last-seven-placeholder">More entries will show here as the leaderboard populates!</p>
 		{/if}
 	</section>
