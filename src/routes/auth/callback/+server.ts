@@ -20,7 +20,17 @@ export async function GET({url, locals: {supabase}}) {
 	}
 
 
-	const {data: {user}} = codeExchangeResponse;
+
+	// pulling from codeexchangeresponse is unreliable at times
+	const {data, error: getUserError} = await supabase.auth.getUser();
+
+	if(getUserError) {
+		return error(500, "Error while logging you in!");
+	}
+
+
+	const user = data.user!;
+
 
 	if(!user.email?.endsWith("@jessamine.kyschools.us") &&
 	   !user.email?.endsWith("@stu.jessamine.kyschools.us")) {
