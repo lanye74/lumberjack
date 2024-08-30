@@ -1,4 +1,4 @@
-import {derived, readable} from "svelte/store";
+import {derived, readable, writable} from "svelte/store";
 
 
 
@@ -22,3 +22,8 @@ export const currentFormattedTime = derived(currentDate, ($date => {
 		second: "2-digit"
 	}).format($date);
 }));
+
+
+
+// TODO: standardize "NavBar" to Navbar
+export const navBarHeight = writable(0);

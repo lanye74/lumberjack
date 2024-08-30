@@ -46,6 +46,7 @@
 <style>
 	.wrapper {
 		position: absolute;
+		/* TODO: use navbarheight to inform this placement */
 		bottom: 12vh;
 		right: 0;
 

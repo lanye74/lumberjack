@@ -4,6 +4,7 @@
 
 	import {enableCorrectTransitionForNavigation} from "$lib/routes.js";
 	import NavBar from "$lib/components/NavBar.svelte";
+	import {navBarHeight} from "$lib/stores.js";
 	import TopBar from "$lib/components/TopBar.svelte";
 
 
@@ -26,7 +27,9 @@
 
 <style>
 	.bottom-padding {
-		height: calc(8.25rem);
+		/* 0.25rem needs to be added here to match the top border
+		   for one reason or another bind:clientHeight does not include it */
+		height: calc(var(--height) + 0.25rem);
 	}
 
 
@@ -93,6 +96,6 @@
 
 
 
-<div class="bottom-padding"></div>
+<div class="bottom-padding" style:--height={`${$navBarHeight}px`}></div>
 
-<NavBar />
+<NavBar bind:height={$navBarHeight} />

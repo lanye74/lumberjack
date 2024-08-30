@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {currentDate, currentFormattedTime} from "$lib/time.js";
+	import {currentDate, currentFormattedTime} from "$lib/stores.js";
 	import generateGreeting from "$lib/generateGreeting.js";
 	import SubmitLocationForm from "$lib/components/SubmitLocationForm.svelte";
 	import Toast from "$lib/components/Toast.svelte";
