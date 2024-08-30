@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ImageWithIconFallback from "./ImageWithIconFallback.svelte";
-    import type {UserPublicInfo} from "$lib/types/database.js";
+	import type {UserPublicInfo} from "$lib/types/database.js";
 
 
 

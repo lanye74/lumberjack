@@ -6,30 +6,49 @@
 
 
 
-	let currentlySelectedPurpose: string;
+	let currentlySelectedPurpose: string = "";
+
 
 
 	// my `function` syntax.....
 	const performClientSideValidation: SubmitFunction = ({formData, cancel}) => {
 		const {isValid, errorMessage} = parseSubmitLocationForm(formData);
 
-		if(isValid === false) {
-			cancel();
-			console.error("Invalid form submitted!");
-
-
-			// simulate that that form did fail, so that we can display the error
-			applyAction({
-				type: "failure",
-				status: 400,
-
-				data: {
-					error: true,
-					message: errorMessage,
-					source: "client"
+		if(isValid === true) {
+			// fun fact:
+			// as i'm continuing to learn svelte and sveltekit, whenever i have problems i can't solve (for example making currentlySelectedPurpose actually reset) i'll ask an LLM for pointers
+			// i hate the idea of AI replacing jobs with a passion but i do enjoy having a semi-intelligent interface between me (a mortal) and the entire sum of humanity's knowledge
+			// i try to solve problems by myself but really the issue is that i was focusing too much on running things based on the state of form, $page, etc.
+			// chatgpt-4o mini is useless and i spend an hour banging my head into a wall. no, stop asking me to use onMount, it doesn't re-run after form submission
+			// i feed my code to claude 3.5 sonnet and it immediately shows me how to provide a callback in SubmitFunction that runs after the form completes (which is what i was really trying to emulate the whole time)
+			// maybe it's a training cutoff diff. but thank you claude
+			// if i stared at the use:enhance documentation perhaps i would've realized my error but i mistakenly assumed that it entirely wasn't possible. honestly, i enjoy reading documentation—but sveltekit's drives me insane
+			// oh well. i know who to ask questions to instead of chatgpt now lmao
+			return ({result, update}) => {
+				if(result.type === "success") {
+					currentlySelectedPurpose = "";
 				}
-			});
+
+				update({reset: true});
+			}
 		}
+
+
+		cancel();
+		console.error("Invalid form submitted!");
+
+
+		// simulate that that form did fail, so that we can display the error
+		applyAction({
+			type: "failure",
+			status: 400,
+
+			data: {
+				error: true,
+				message: errorMessage
+				// source: "client"
+			}
+		});
 	}
 </script>
 
