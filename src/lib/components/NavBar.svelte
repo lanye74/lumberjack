@@ -9,7 +9,10 @@
 
 
 
-	export let height;
+	// TODO: figure out how to export this as a binding i can pass around for anything that wants it
+	// export let height;
+
+	let height;
 </script>
 
 <style>

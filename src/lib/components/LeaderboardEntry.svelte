@@ -42,6 +42,7 @@
 		grid-column: 1;
 
 		font: bold 2.5rem var(--font-serif);
+		text-align: right;
 	}
 
 	.image-wrapper {
