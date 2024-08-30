@@ -1,5 +1,6 @@
 <script lang="ts">
 	import {onMount} from "svelte";
+	import {navbarHeight} from "$lib/stores.js";
 
 
 
@@ -15,46 +16,60 @@
 	const flyOutTime = 750;
 
 
+
+	let initialLoadTimer: NodeJS.Timeout, visibleTimer: NodeJS.Timeout, flyOutTimer: NodeJS.Timeout;
+
+
 	onMount(() => {
-		let initialLoadTimer = setTimeout(() => {
+		flyIn();
+
+		return clearTimers;
+	});
+
+
+
+	function flyIn() {
+		initialLoadTimer = setTimeout(() => {
 			isVisible = true;
 		});
 
 
-
-		let flyOutTimer: NodeJS.Timeout;
-
-		const visibleTimer = setTimeout(() => {
-			isVisible = false;
-			isUnloading = true;
-
-
-			flyOutTimer = setTimeout(() => {
-				renderComponent = false;
-			}, flyOutTime + 100);
+		visibleTimer = setTimeout(() => {
+			dismiss();
 		}, duration + flyInTime);
+	}
 
 
 
+	function dismiss() {
+		isVisible = false;
+		isUnloading = true;
 
-		return () => {
-			clearInterval(initialLoadTimer);
-			clearInterval(visibleTimer);
-			clearInterval(flyOutTimer);
-		}
-	});
+
+		flyOutTimer = setTimeout(() => {
+			renderComponent = false;
+		}, flyOutTime + 100);
+	}
+
+
+
+	function clearTimers() {
+		clearInterval(initialLoadTimer);
+		clearInterval(visibleTimer);
+		clearInterval(flyOutTimer);
+	}
 </script>
 
 <style>
 	.wrapper {
-		position: absolute;
-		/* TODO: use navbarheight to inform this placement */
-		bottom: 12vh;
+		position: fixed;
+		bottom: calc(var(--navbar-height) + 8rem);
 		right: 0;
 
 		padding-left: 1rem;
 
 		overflow: hidden;
+		cursor: pointer;
 	}
 
 	.toast {
@@ -119,7 +134,10 @@
 
 {#if renderComponent}
 	<!-- TODO: can i use svelte transition directives instead of this? -->
-	<div class="wrapper" class:is-flying-in={isVisible} class:is-flying-out={isUnloading}>
+	<!-- TODO: (2) wrap this in a button instead of a div -->
+	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<div class="wrapper" class:is-flying-in={isVisible} class:is-flying-out={isUnloading} style:--navbar-height={`${$navbarHeight}px`} on:click={dismiss} role="dialog">
 		<div class="toast">
 			<!-- TODO: possibly put an icon & progress bar here -->
 			<h3>Lumberjack</h3>

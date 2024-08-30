@@ -3,6 +3,7 @@
 	import type {SubmitFunction} from "@sveltejs/kit";
 
 	import {jcsSites, possibleVisitPurposes, parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
+	import {navbarHeight} from "$lib/stores.js";
 
 
 
@@ -133,7 +134,6 @@
 		border: none;
 		border-radius: 0.25rem;
 		padding: 0.5rem 2rem;
-		margin-top: 1rem;
 
 		background-color: var(--jcs-blue);
 
@@ -141,8 +141,13 @@
 		font: bold 2rem var(--font-serif);
 
 		cursor: pointer;
-
 		position: relative;
+		/* TODO: use below code
+		         and also don't commit a hate crime on UX while doing so. if you scroll with below code, it will block the lower content unless i make navbar height bigger */
+		/* position: fixed; */
+
+		/* width: calc(100% - 4rem); */
+		/* bottom: calc(var(--navbar-height) + 2rem); */
 	}
 
 
@@ -205,5 +210,5 @@
 	</fieldset>
 
 
-	<button type="submit">Submit</button>
+	<button type="submit" style:--navbar-height={`${$navbarHeight}px`}>Submit</button>
 </form>
