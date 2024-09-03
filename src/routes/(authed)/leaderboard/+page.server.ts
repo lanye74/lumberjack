@@ -33,7 +33,7 @@ export async function load({locals: {supabase}}) {
 	output.leaderboard = topPoints.map<UserPublicInfo>(user => ({
 		googleUserId: user.google_user_id,
 		fullName: user.full_name,
-		avatarUrl: user.avatar_url,
+		avatarUrl: user.avatar_url ?? "", // if things goes terribly wrong in login this could be null
 		points: user.points
 	}));
 

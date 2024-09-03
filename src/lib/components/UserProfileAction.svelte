@@ -29,6 +29,8 @@
 		gap: 2rem;
 
 		align-items: center;
+
+		color: #000;
 	}
 
 	iconify-icon {

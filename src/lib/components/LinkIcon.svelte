@@ -26,7 +26,7 @@
 	}
 
 	a {
-		color: black;
+		color: #000;
 
 		/* increase touch area for icon */
 		padding: 1rem;

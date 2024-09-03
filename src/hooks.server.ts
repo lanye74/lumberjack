@@ -71,7 +71,8 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 	};
 
 
-	const redirectPath = redirectMap[url.pathname as RedirectableRoute] ?? defaultRedirect;
+	const redirectPath = redirectMap[url.pathname as RedirectableRoute];
+
 
 	if(redirectPath) {
 		return redirect(303, redirectPath);

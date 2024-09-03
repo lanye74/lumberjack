@@ -82,6 +82,8 @@
 	select {
 		border: 0.25rem solid #ccc;
 		border-radius: 0.25rem;
+
+		color: #000;
 	}
 
 	select:focus, input[type="text"]:focus {

@@ -13,19 +13,10 @@ export async function GET({url, locals: {supabase}}) {
 	}
 
 
-	const codeExchangeResponse = await supabase.auth.exchangeCodeForSession(code);
+	const {data, error: codeExchangeResponseError} = await supabase.auth.exchangeCodeForSession(code);
 
-	if(codeExchangeResponse.error) {
+	if(codeExchangeResponseError) {
 		return redirect(303, "/auth/error");
-	}
-
-
-
-	// pulling from codeexchangeresponse is unreliable at times
-	const {data, error: getUserError} = await supabase.auth.getUser();
-
-	if(getUserError) {
-		return error(500, "Error while logging you in!");
 	}
 
 
