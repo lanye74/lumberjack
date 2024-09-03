@@ -51,25 +51,27 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 	locals.user = user;
 
 
-	const redirectsToAuth = !session ? "/auth" : null;
-	const redirectsToHome = session ? "/home" : null;
+	const redirectIfNotAuthenticated = !session ? "/auth" : null;
+	const redirectIfAuthenticated = session ? "/home" : null;
+
+	const defaultRedirect = session ? "/home" : "/auth";
 
 
 	const redirectMap: RedirectMap = {
 		"/": "/home", // always route this to home i cba to make a proper homepage /auth is good enough
 
-		"/auth": redirectsToHome,
+		"/auth": redirectIfAuthenticated,
 		"/auth/error": null,
 
-		"/home": redirectsToAuth,
-		// "/editor": redirectsToAuth,
+		"/home": redirectIfNotAuthenticated,
+		// "/editor": redirectIfNotAuthenticated,
 		"/editor": "/home",
-		"/leaderboard": redirectsToAuth,
-		"/profile": redirectsToAuth
+		"/leaderboard": redirectIfNotAuthenticated,
+		"/profile": redirectIfNotAuthenticated
 	};
 
 
-	const redirectPath = redirectMap[url.pathname as RedirectableRoute];
+	const redirectPath = redirectMap[url.pathname as RedirectableRoute] ?? defaultRedirect;
 
 	if(redirectPath) {
 		return redirect(303, redirectPath);
