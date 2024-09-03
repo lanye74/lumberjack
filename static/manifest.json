@@ -19,5 +19,7 @@
 	],
 
 	"display": "standalone",
-	"start_url": "/home"
+	"start_url": "/home",
+
+	"theme_color": "#003a70"
 }
