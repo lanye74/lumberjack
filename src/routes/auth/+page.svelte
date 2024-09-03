@@ -24,7 +24,7 @@
 
 	h1 {
 		color: var(--jcs-cyan);
-		font: 750 4rem var(--font-sans-serif);
+		font: bold 4rem var(--font-sans-serif);
 
 		margin: 0;
 	}
@@ -67,7 +67,8 @@
 		<div class="text">
 			<h1>Welcome to JCS Lumberjack!</h1>
 
-			<p>Log where you are, instantly</p>
+			<!-- TODO: find a better slogan than "Log where you are, instantly", and reflect it across the app -->
+			<p>Press the sign in button below to get started.</p>
 		</div>
 
 

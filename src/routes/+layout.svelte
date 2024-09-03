@@ -62,11 +62,13 @@
 	@font-face {
 		font-family: "Lora";
 		src: url("/Lora-Variable.ttf") format("truetype-variations");
+		font-weight: 400 700;
 	}
 
 	@font-face {
 		font-family: "Avenir";
 		src: url("/AvenirNext_Variable.ttf") format("truetype-variations");
+		font-weight: 400 1000;
 	}
 
 	@font-face {
