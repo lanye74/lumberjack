@@ -31,6 +31,10 @@
 		justify-items: center;
 
 		gap: 1rem;
+
+		padding: 0 0.5rem;
+
+		border-bottom: 0.25rem solid #888;
 	}
 
 	.podium[data-places="1"] {
@@ -113,6 +117,10 @@
 
 	.podium-bar {
 		width: 100%;
+		border-top-left-radius: 0.5rem;
+		border-top-right-radius: 0.5rem;
+
+		/* box-shadow: 0.25rem 0.5rem 0.5rem #0003; */
 	}
 
 	.place-first .podium-bar {
@@ -123,14 +131,14 @@
 
 	.place-second .podium-bar {
 		height: 5rem;
-		/* oklch(70% 0.01 240) */
-		background-color: #999fa4;
+		/* oklch(75% 0.01 240) */
+		background-color: #a8afb4;
 	}
 
 	.place-third .podium-bar {
 		height: 3rem;
-		/* oklch(45% 0.12 45) */
-		background-color: #893a03;
+		/* oklch(65% 0.12 55) */
+		background-color: #c77a41;
 	}
 
 
