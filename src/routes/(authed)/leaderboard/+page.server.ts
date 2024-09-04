@@ -1,17 +1,41 @@
 import {leaderboardLogPrefix} from "$lib/consoleColorPrefixes.js";
 import type {LoadLeaderboardOutput, UserPublicInfo, UserPublicInfoRow} from "$lib/types/database.js";
+import type {SupabaseClient} from "@supabase/supabase-js";
+
+
+
+let cachedDatabaseState: LoadLeaderboardOutput = {
+	leaderboard: null
+};
 
 
 
 // TODO: make this non-blocking and use skeleton loaders
-export async function load({locals: {supabase}}) {
-	// if we made it this far, i.e. we were authed in the hook and thus allowed to access this, then of course we're still authed here
-	// so we don't need to worry about verifying that we have a session/user etc
+export async function load({cookies, locals: {supabase}}) {
+	// TODO: add an expiry so that a read after x time (probably like thirty mins) will force reload
+	const hasSubmittedPointsRecently = cookies.get("lumberjack_has_submitted_points_recently");
 
-	let output: LoadLeaderboardOutput = {
-		leaderboard: null
-	};
+	// use cached response!!!
+	if((hasSubmittedPointsRecently === undefined || hasSubmittedPointsRecently === "false") &&
+	    cachedDatabaseState.leaderboard !== null
+	) {
+		// console.log("returning cached")
+		return cachedDatabaseState;
+	}
 
+
+	cachedDatabaseState.leaderboard = await readDatabase(supabase);
+
+	cookies.set("lumberjack_has_submitted_points_recently", "false", {path: "/"});
+
+	return cachedDatabaseState;
+}
+
+
+
+// TODO: make this sensible and integrate with cache instead of separate output
+async function readDatabase(supabase: SupabaseClient) {
+	let output: UserPublicInfo[] | null = null;
 
 
 	const getTopUsersByPointsResponse = await supabase.from("public_user_data")
@@ -30,7 +54,7 @@ export async function load({locals: {supabase}}) {
 
 
 	// TODO: i hate converting naming conventions
-	output.leaderboard = topPoints.map<UserPublicInfo>(user => ({
+	output = topPoints.map<UserPublicInfo>(user => ({
 		googleUserId: user.google_user_id,
 		fullName: user.full_name,
 		avatarUrl: user.avatar_url ?? "", // if things goes terribly wrong in login this could be null

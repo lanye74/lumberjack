@@ -55,7 +55,7 @@
 </BorderBox>
 
 <section>
-	<SubmitLocationForm />
+	<SubmitLocationForm {data} />
 </section>
 
 

@@ -101,15 +101,15 @@
 
 
 
-	.place-first.podium-place {
+	.podium-place[data-place="1"] {
 		grid-area: first;
 	}
 
-	.place-second.podium-place {
+	.podium-place[data-place="2"] {
 		grid-area: second;
 	}
 
-	.place-third.podium-place {
+	.podium-place[data-place="3"] {
 		grid-area: third;
 	}
 
@@ -123,19 +123,19 @@
 		/* box-shadow: 0.25rem 0.5rem 0.5rem #0003; */
 	}
 
-	.place-first .podium-bar {
+	.podium-place[data-place="1"] .podium-bar {
 		height: 8rem;
 		/* oklch(85% 0.2 80) */
 		background-color: #ffbd00;
 	}
 
-	.place-second .podium-bar {
+	.podium-place[data-place="2"] .podium-bar {
 		height: 5rem;
 		/* oklch(75% 0.01 240) */
 		background-color: #a8afb4;
 	}
 
-	.place-third .podium-bar {
+	.podium-place[data-place="3"] .podium-bar {
 		height: 3rem;
 		/* oklch(65% 0.12 55) */
 		background-color: #c77a41;
@@ -174,7 +174,7 @@
 		</div>
 	{:else}
 		{#each users as user, index}
-			<div class={`podium-place place-${podiumPlaces[index]}`} bind:clientWidth={columnWidth}>
+			<div class="podium-place" data-place={index + 1} bind:clientWidth={columnWidth}>
 				<!-- TODO: investigate using this without a wrapper -->
 				<div class="image-wrapper" style:--icon-size={iconSize}>
 					<ImageWithIconFallback

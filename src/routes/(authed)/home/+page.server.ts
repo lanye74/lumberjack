@@ -80,6 +80,12 @@ export const actions = {
 		}
 
 
+
+		// IMPORTANT
+		// let the server know to not serve a cached leadboard read
+		requestEvent.cookies.set("lumberjack_has_submitted_points_recently", "true", {path: "/"});
+
+
 		return {
 			error: false,
 			message: "Success! You've earned 1,000 points!"
