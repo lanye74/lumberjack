@@ -96,7 +96,7 @@
 	<!-- svelte-ignore a11y-img-redundant-alt -->
 	<!-- <img src={user.avatarUrl ?? "https://www.ais.unwater.org/ais/aiscm/pdf/lib/tcpdf/images/logo_example.png"} alt="User profile picture"> -->
 	<div class="image-wrapper">
-		<ImageWithIconFallback class="image-fallback"
+		<ImageWithIconFallback
 			src={user.avatarUrl} alt="User profile picture"
 			iconId="fa-solid:user-circle" />
 	</div>

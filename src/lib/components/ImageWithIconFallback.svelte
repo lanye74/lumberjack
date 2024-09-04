@@ -56,5 +56,5 @@
 {#if isLoading || hadError}
 	<iconify-icon class={$$props.class} icon={iconId} />
 {:else}
-	<img class={$$props.class} src={loadedSrc} {alt}>
+	<img src={loadedSrc} {alt}>
 {/if}

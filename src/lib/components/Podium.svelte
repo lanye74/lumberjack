@@ -177,7 +177,7 @@
 			<div class={`podium-place place-${podiumPlaces[index]}`} bind:clientWidth={columnWidth}>
 				<!-- TODO: investigate using this without a wrapper -->
 				<div class="image-wrapper" style:--icon-size={iconSize}>
-					<ImageWithIconFallback class="image-fallback"
+					<ImageWithIconFallback
 						src={user.avatarUrl} alt="User profile picture"
 						iconId="fa-solid:user-circle" />
 				</div>

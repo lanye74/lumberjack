@@ -1,6 +1,7 @@
 <script lang="ts">
 	import {invalidateAll} from "$app/navigation";
 
+	import ImageWithIconFallback from "$lib/components/ImageWithIconFallback.svelte";
 	import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
 	import UserProfileAction from "$lib/components/UserProfileAction.svelte";
 
@@ -44,12 +45,21 @@
 		font: bold 2.25rem var(--font-serif);
 	}
 
-	img {
-		border-radius: 50%;
-		filter: drop-shadow(0.5rem 0.5rem 1rem #0004);
+	.image-wrapper {
+		display: flex;
+		justify-content: center;
 
 		width: 6rem;
 		height: 6rem;
+		font-size: 6rem;
+
+		border-radius: 50%;
+
+		color: #aaa;
+	}
+
+	.image-wrapper:has(img) {
+		filter: drop-shadow(0.5rem 0.5rem 1rem #0004);
 	}
 </style>
 
@@ -58,8 +68,11 @@
 <section class="profile-preview">
 	<!-- TODO: maybe turn this into a card-not-card-block-thing like the "welcome" on the home page? -->
 	<div class="name-icon">
-		<!-- svelte-ignore a11y-img-redundant-alt -->
-		<img src={avatarUrl ?? "https://www.ais.unwater.org/ais/aiscm/pdf/lib/tcpdf/images/logo_example.png"} alt="User profile picture">
+		<div class="image-wrapper">
+			<ImageWithIconFallback
+				src={avatarUrl} alt="User profile picture"
+				iconId="fa-solid:user-circle" />
+		</div>
 
 		<span>{user.user_metadata.full_name}</span>
 	</div>
