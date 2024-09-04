@@ -33,6 +33,11 @@
 		color: #000;
 	}
 
+	button:first-child {
+		border-top: 0.25rem solid #ccc;
+	}
+
+
 	iconify-icon {
 		font-size: 3rem;
 	}

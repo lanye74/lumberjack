@@ -32,6 +32,10 @@
 	}
 
 	/* interestingly, this persists across components, so this still takes effect inside an each block */
+	.user:first-child {
+		border-top: 0.25rem solid #ccc;
+	}
+
 	.user:last-child {
 		border-bottom: none;
 	}
@@ -56,6 +60,7 @@
 		width: 5rem;
 
 		font-size: 5rem;
+		/* TODO: PLEAAAAASE standardize these colors */
 		color: #aaa;
 
 		border-radius: 50%;

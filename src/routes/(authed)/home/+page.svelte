@@ -1,4 +1,5 @@
 <script lang="ts">
+    import BorderBox from "$lib/components/BorderBox.svelte";
 	import {currentDate, currentFormattedTime} from "$lib/stores.js";
 	import generateGreeting from "$lib/generateGreeting.js";
 	import SubmitLocationForm from "$lib/components/SubmitLocationForm.svelte";
@@ -17,22 +18,12 @@
 </script>
 
 <style>
-	#greeting-box {
+	.greeting-box {
 		display: flex;
 		flex-direction: column;
 
-		margin: 2rem;
-		padding: 2rem;
-		box-sizing: border-box;
-
-		border-radius: 0.25rem;
-		/* TODO: put these colors in properties */
-		border: 0.25rem solid #aaa;
-		/* and probably this box shadow as well */
-		box-shadow: 0 0.5rem 1rem #0003;
-
 		gap: 2rem;
-		overflow-wrap: break-word;
+		/* overflow-wrap: break-word; */
 	}
 
 	h2, p {
@@ -54,23 +45,22 @@
 
 
 
-<section>
-	<!-- TODO: is it better to wrap this in its own section? -->
-	<!-- TODO: yes -->
-	<div id="greeting-box">
+<BorderBox>
+	<!-- TODO: i haaaaate that this needs a wrapper -->
+	<div class="greeting-box">
 		<h2>{greeting}</h2>
 
 		<p>What have you been up to? It's currently <span class="time">{$currentFormattedTime}.</span></p>
 	</div>
+</BorderBox>
 
-
-
-	<!-- TODO: this should get a section too -->
+<section>
 	<SubmitLocationForm />
-
-
-
-	{#if form}
-		<Toast duration={4000}>{form.message}</Toast>
-	{/if}
 </section>
+
+
+
+<!-- TODO: make toast a programmatic call and put all of them in their own wrapper -->
+{#if form}
+	<Toast duration={4000}>{form.message}</Toast>
+{/if}

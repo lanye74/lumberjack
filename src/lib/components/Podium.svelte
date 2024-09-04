@@ -22,15 +22,7 @@
 
 <style>
 	.podium {
-		margin: 2rem;
-		padding: 2rem;
-
-		border-radius: 0.25rem;
-		border: 0.25rem solid #aaa;
-		box-shadow: 0 0.5rem 1rem #0003;
-
-		box-sizing: border-box;
-
+		/* TODO: can i make these presets for borderbox? */
 		display: grid;
 		grid-template-rows: auto;
 
@@ -166,7 +158,7 @@
 
 
 
-<section class="podium" data-places={numberPlaces}>
+<div class="podium" data-places={numberPlaces}>
 	{#if users.length === 0}
 		<div class="fallback-text-container">
 			<h3>You're one of the first!</h3>
@@ -191,4 +183,4 @@
 			</div>
 		{/each}
 	{/if}
-</section>
+</div>

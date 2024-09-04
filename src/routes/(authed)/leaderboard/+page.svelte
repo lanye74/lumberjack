@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BorderBox from "$lib/components/BorderBox.svelte";
 	import LeaderboardEntry from "$lib/components/LeaderboardEntry.svelte";
 	import Podium from "$lib/components/Podium.svelte";
 
@@ -38,7 +39,9 @@
 
 {#if leaderboard !== null}
 	<!-- TODO: i dislike section being declared in-component here, but not below. cope i guess? -->
-	<Podium users={topThree} />
+	<BorderBox>
+		<Podium users={topThree} />
+	</BorderBox>
 
 	<section class="leaderboard">
 		{#each lastSeven as user, index}

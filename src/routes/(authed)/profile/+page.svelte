@@ -4,6 +4,7 @@
 	import ImageWithIconFallback from "$lib/components/ImageWithIconFallback.svelte";
 	import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
 	import UserProfileAction from "$lib/components/UserProfileAction.svelte";
+    import BorderBox from "$lib/components/BorderBox.svelte";
 
 
 
@@ -30,15 +31,11 @@
 
 <style>
 	.name-icon {
-		padding: 2rem;
-
 		display: grid;
 		grid-template-columns: auto 1fr;
 		align-items: center;
 
 		gap: 2rem;
-
-		border-bottom: 0.25rem solid #ccc;
 	}
 
 	.name-icon span {
@@ -67,15 +64,18 @@
 
 <section class="profile-preview">
 	<!-- TODO: maybe turn this into a card-not-card-block-thing like the "welcome" on the home page? -->
-	<div class="name-icon">
-		<div class="image-wrapper">
-			<ImageWithIconFallback
+
+	<BorderBox>
+		<div class="name-icon">
+			<div class="image-wrapper">
+				<ImageWithIconFallback
 				src={avatarUrl} alt="User profile picture"
 				iconId="fa-solid:user-circle" />
-		</div>
+			</div>
 
-		<span>{user.user_metadata.full_name}</span>
-	</div>
+			<span>{user.user_metadata.full_name}</span>
+		</div>
+	</BorderBox>
 
 	<div class="options">
 		{#each userProfileActions as action}

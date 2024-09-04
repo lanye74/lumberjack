@@ -40,7 +40,7 @@
 		   (just kidding i stole it from https://sjorswijsman.medium.com/3-easy-css-tricks-for-responsive-websites-i-use-in-every-project-68ec334a1522) */
 		font-size: clamp(12px, calc(60% + 0.8vmin), 20px);
 
-		--fallback-fonts: BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-sans;
+		--fallback-fonts: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, "Roboto", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 		--font-serif: "Lora", var(--fallback-fonts);
 		--font-sans-serif: "Avenir", var(--fallback-fonts);
 		--time-font: "Cascadia Code", var(--fallback-fonts);
