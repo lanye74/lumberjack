@@ -35,3 +35,9 @@ export type UserPublicInfo = {
 	avatarUrl: string;
 	points: number;
 };
+
+
+
+export type LoadPointsOutput = {
+	points: number | null;
+}

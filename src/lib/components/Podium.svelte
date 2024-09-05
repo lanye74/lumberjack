@@ -78,7 +78,7 @@
 		width: 80%;
 		font-size: var(--icon-size);
 
-		margin-bottom: 1rem;
+		margin-bottom: 0.5rem;
 	}
 
 

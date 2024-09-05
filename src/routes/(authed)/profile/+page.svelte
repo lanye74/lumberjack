@@ -27,19 +27,20 @@
 			}
 		}
 	];
+
+
+
+	// TODO: put formatters in a helper file
+	const pointsFormatter = new Intl.NumberFormat().format;
 </script>
 
 <style>
-	.name-icon {
-		display: grid;
-		grid-template-columns: auto 1fr;
+	.page-header {
+		display: flex;
+		flex-direction: row;
 		align-items: center;
 
 		gap: 2rem;
-	}
-
-	.name-icon span {
-		font: bold 2.25rem var(--font-serif);
 	}
 
 	.image-wrapper {
@@ -58,22 +59,48 @@
 	.image-wrapper:has(img) {
 		filter: drop-shadow(0.5rem 0.5rem 1rem #0004);
 	}
+
+
+
+	.user-info {
+		display: flex;
+		flex-direction: column;
+		align-items: left;
+
+		gap: 0.5rem;
+	}
+
+	.user-info h2, .user-info p {
+		margin: 0;
+		text-align: left;
+	}
+
+	.user-info h2 {
+		font: bold 2.25rem var(--font-serif);
+	}
+
+	.user-info p {
+		font: italic 1.5rem var(--font-serif);
+		color: #666;
+	}
 </style>
 
 
 
 <section class="profile-preview">
-	<!-- TODO: maybe turn this into a card-not-card-block-thing like the "welcome" on the home page? -->
-
+	<!-- TODO: once again lamenting the loss of ability to style borderbox directly -->
 	<BorderBox>
-		<div class="name-icon">
+		<div class="page-header">
 			<div class="image-wrapper">
 				<ImageWithIconFallback
 				src={avatarUrl} alt="User profile picture"
 				iconId="fa-solid:user-circle" />
 			</div>
 
-			<span>{user.user_metadata.full_name}</span>
+			<div class="user-info">
+				<h2>{user.user_metadata.full_name}</h2>
+				<p>{pointsFormatter(data.points ?? 0)} points</p>
+			</div>
 		</div>
 	</BorderBox>
 

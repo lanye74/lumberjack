@@ -47,6 +47,8 @@ export const actions = {
 		}
 
 
+		// TODO: use technique outlined here https://github.com/orgs/supabase/discussions/909#discussioncomment-546117
+		// in order to make only one call, instead of reading, then writing
 		const {data: readPointsData, error: readPointsError} = await supabase.from("public_user_data")
 			.select("points")
 			.eq("google_user_id", user.id)
