@@ -134,8 +134,8 @@
 
 	.podium-place[data-place="3"] .podium-bar {
 		height: 3rem;
-		/* oklch(65% 0.12 55) */
-		background-color: #c77a41;
+		/* oklch(60% 0.12 55) */
+		background-color: #b66b31;
 	}
 
 

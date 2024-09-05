@@ -33,13 +33,44 @@
 
 		font: italic 1.5rem var(--font-serif);
 	}
+
+
+
+	.leaderboard-header {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.5rem;
+
+		text-align: center;
+
+		margin-bottom: 2rem;
+	}
+
+	.leaderboard-header h2, .leaderboard-header p {
+		margin: 0;
+	}
+
+	.leaderboard-header h2 {
+		font: bold 2.5rem var(--font-serif);
+	}
+
+	.leaderboard-header p {
+		font: italic 1.25rem var(--font-serif);
+		color: #666;
+	}
 </style>
 
 
 
 {#if leaderboard !== null}
-	<!-- TODO: i dislike section being declared in-component here, but not below. cope i guess? -->
+	<!-- TODO: i can't style borderbox as a flex column with gap here. figure out how to make this not bad -->
 	<BorderBox>
+		<div class="leaderboard-header">
+			<h2>Points Leaderboard</h2>
+			<p>Refreshes when logs are submitted</p>
+		</div>
+
 		<Podium users={topThree} />
 	</BorderBox>
 
