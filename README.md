@@ -5,12 +5,12 @@ Log where you are, instantly
 ## todo list
 1. chores
 	- [x] set up git
-	- [ ] figure out how to spin up a server on appdev (or perhaps another vm? i quite like the ubuntu vm)
-	- [ ] reach out about getting a domain
+	- [x] figure out how to spin up a server on appdev (or perhaps another vm? i quite like the ubuntu vm)
+	- [x] reach out about getting a domain
 2. think about architecture
 	- [x] set up supabase
 	- [x] set up oauth
-		- [ ] move oauth to whatever service account we have instead of this temporary one
+		- [x] move oauth to whatever service account we have instead of this temporary one
 	- [x] primary table will be the timestamped logs
 		- timestamp, location, user id
 		- probably something else i'll realize i'm missing after reaching step 8... talk to josh
@@ -29,17 +29,17 @@ Log where you are, instantly
 		- [x] points system
 			- it's the most primitive thing ever right now but whatever i really cba
 4. bind these methods to buttons in a highly minimal, just-usable ui
-	- [ ] make sure it all works from a raw data standpoint
+	- [x] make sure it all works from a raw data standpoint
 5. investigate pwas
 	- [x] figure out how to set up a pwa
-	- [ ] bind this pwa to the domain and test if it works
+	- [x] bind this pwa to the domain and test if it works
 		- can use my github io if domain is taking a while
 	- [ ] ensure that there’s some amount of hot-reloading available on the pwa
 6. design the app
 	- [x] i probably want a tab system at the bottom
 		- do i need to make my own icons? should i? probably can just ~~rob~~ borrow material icons
 	- [x] bottom bar will probably consist of clock, points/leaderboard, settings
-	- [ ] ~~learn figma for designs/mockups?~~ i tried but i realized i suck at designing
+	- [-] ~~learn figma for designs/mockups?~~ i tried but i realized i suck at designing
 		- it'd be silly
 7. turn the design into the app
 	- [x] test a sveltekit project to make sure i'm not crazy
@@ -60,12 +60,14 @@ stuff that's not important for getting the app off of the ground, but ideal for 
 
 ## other ideas related to gamification
 - possibly bonus points for visiting underserved schools?
-- this would require an actual homepage instead of josh's "just throw the clock in on the front page"
 - bounties??
+	- this would require an actual homepage instead of josh's "just throw the clock in on the front page"
 - ranked splits lmao (actually do it though)
 - points --> themes
 - profile borders???
 	- discord cat ears border (real and true)
+- stealing points?
+- confetti on submit
 - idk
 
 
