@@ -11,6 +11,18 @@ export async function load({cookies, locals: {supabase, user}}) {
 	};
 
 
+	let pointsCookie = cookies.get("lumberjack_user_points");
+
+	// please let me use if-let pattern :( why, javascript
+	if(pointsCookie !== undefined) {
+		output.points = parseInt(pointsCookie);
+
+		return output;
+	}
+
+
+
+	// TODO: refactor into "readFromDatabase" pattern on leaderboard page
 	const getUserPointsResponse = await supabase.from("public_user_data")
 		.select()
 		.eq("google_user_id", user!.id)

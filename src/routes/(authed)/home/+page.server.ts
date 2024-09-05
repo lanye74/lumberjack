@@ -87,6 +87,8 @@ export const actions = {
 		// let the server know to not serve a cached leadboard read
 		requestEvent.cookies.set("lumberjack_has_submitted_points_recently", "true", {path: "/"});
 
+		requestEvent.cookies.set("lumberjack_user_points", `${points + 1000}`, {path: "/"});
+
 
 		return {
 			error: false,
