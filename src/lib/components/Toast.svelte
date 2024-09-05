@@ -31,7 +31,7 @@
 	function flyIn() {
 		initialLoadTimer = setTimeout(() => {
 			isVisible = true;
-		});
+		}, 100);
 
 
 		visibleTimer = setTimeout(() => {
@@ -127,7 +127,6 @@
 		border-top: none;
 
 		padding: 0.375rem 0.75rem;
-
 	}
 </style>
 

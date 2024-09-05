@@ -6,9 +6,6 @@
 
 	export let users: UserPublicInfo[];
 
-	const podiumPlaces = ["first", "second", "third"];
-
-
 	const numberPlaces = Math.min(users.length, 3);
 
 

@@ -10,23 +10,34 @@ let cachedDatabaseState: LoadLeaderboardOutput = {
 
 
 
+const autoRefreshPeriod = 1e3 * 60 * 3; // 3 mins
+
+let lastRefreshTime: number = 0;
+
+
+
 // TODO: make this non-blocking and use skeleton loaders
 export async function load({cookies, locals: {supabase}}) {
 	// TODO: add an expiry so that a read after x time (probably like thirty mins) will force reload
 	const hasSubmittedPointsRecently = cookies.get("lumberjack_has_submitted_points_recently");
+	const currentTime = Date.now();
 
 	// use cached response!!!
+	console.log(currentTime < (lastRefreshTime + autoRefreshPeriod))
 	if((hasSubmittedPointsRecently === undefined || hasSubmittedPointsRecently === "false") &&
-	    cachedDatabaseState.leaderboard !== null
+	    cachedDatabaseState.leaderboard !== null &&
+		// true if we are not at the forced refresh period yet
+		currentTime < (lastRefreshTime + autoRefreshPeriod)
 	) {
-		// console.log("returning cached")
 		return cachedDatabaseState;
 	}
 
 
 	cachedDatabaseState.leaderboard = await readDatabase(supabase);
+	lastRefreshTime = Date.now();
 
 	cookies.set("lumberjack_has_submitted_points_recently", "false", {path: "/"});
+
 
 	return cachedDatabaseState;
 }
