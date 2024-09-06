@@ -83,6 +83,7 @@
 		border: 0.25rem solid #ccc;
 		border-radius: 0.25rem;
 
+		background-color: #fff;
 		color: #000;
 	}
 

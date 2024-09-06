@@ -23,7 +23,6 @@ export async function load({cookies, locals: {supabase}}) {
 	const currentTime = Date.now();
 
 	// use cached response!!!
-	console.log(currentTime < (lastRefreshTime + autoRefreshPeriod))
 	if((hasSubmittedPointsRecently === undefined || hasSubmittedPointsRecently === "false") &&
 	    cachedDatabaseState.leaderboard !== null &&
 		// true if we are not at the forced refresh period yet
