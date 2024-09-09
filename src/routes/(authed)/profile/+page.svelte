@@ -35,14 +35,6 @@
 </script>
 
 <style>
-	.page-header {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-
-		gap: 2rem;
-	}
-
 	.image-wrapper {
 		display: flex;
 		justify-content: center;
@@ -89,18 +81,16 @@
 
 <section class="profile-preview">
 	<!-- TODO: once again lamenting the loss of ability to style borderbox directly -->
-	<BorderBox>
-		<div class="page-header">
-			<div class="image-wrapper">
-				<ImageWithIconFallback
-				src={avatarUrl} alt="User profile picture"
-				iconId="fa-solid:user-circle" />
-			</div>
+	<BorderBox direction="row" alignItems="center" gap={2}>
+		<div class="image-wrapper">
+			<ImageWithIconFallback
+			src={avatarUrl} alt="User profile picture"
+			iconId="fa-solid:user-circle" />
+		</div>
 
-			<div class="user-info">
-				<h2>{user.user_metadata.full_name}</h2>
-				<p>{pointsFormatter(data.points ?? 0)} points</p>
-			</div>
+		<div class="user-info">
+			<h2>{user.user_metadata.full_name}</h2>
+			<p>{pointsFormatter(data.points ?? 0)} points</p>
 		</div>
 	</BorderBox>
 

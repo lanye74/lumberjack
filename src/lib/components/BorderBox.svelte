@@ -1,4 +1,9 @@
-<script lang="ts"></script>
+<script lang="ts">
+	export let direction: string;
+	export let alignItems: string = "normal";
+	export let justifyContent: string = "normal";
+	export let gap: number = 0;
+</script>
 
 
 
@@ -6,6 +11,8 @@
      figure out how to not hate this component! -->
 <style>
 	section {
+		display: flex;
+
 		margin: 2rem;
 		padding: 2rem;
 
@@ -19,6 +26,9 @@
 
 
 
-<section>
+<section style:flex-direction={direction}
+         style:align-items={alignItems}
+		 style:justify-content={justifyContent}
+		 style:gap={`${gap}rem`}>
 	<slot />
 </section>

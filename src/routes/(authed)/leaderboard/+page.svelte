@@ -43,8 +43,6 @@
 		gap: 0.5rem;
 
 		text-align: center;
-
-		margin-bottom: 2rem;
 	}
 
 	.leaderboard-header h2, .leaderboard-header p {
@@ -64,8 +62,7 @@
 
 
 {#if leaderboard !== null}
-	<!-- TODO: i can't style borderbox as a flex column with gap here. figure out how to make this not bad -->
-	<BorderBox>
+	<BorderBox direction="column" gap={2}>
 		<div class="leaderboard-header">
 			<h2>Points Leaderboard</h2>
 			<p>Refreshes when logs are submitted</p>
