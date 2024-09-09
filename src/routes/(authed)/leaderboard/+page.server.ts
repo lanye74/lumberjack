@@ -1,5 +1,5 @@
 import {leaderboardLogPrefix} from "$lib/consoleColorPrefixes.js";
-import type {LoadLeaderboardOutput, UserPublicInfo, UserPublicInfoRow} from "$lib/types/database.js";
+import type {LeaderboardEntry, LeaderboardEntryRow, LoadLeaderboardOutput} from "$lib/types/database.js";
 import type {SupabaseClient} from "@supabase/supabase-js";
 
 
@@ -45,11 +45,20 @@ export async function load({cookies, locals: {supabase}}) {
 
 // TODO: make this sensible and integrate with cache instead of separate output
 async function readDatabase(supabase: SupabaseClient) {
-	let output: UserPublicInfo[] | null = null;
+	let output: LeaderboardEntry[] | null = null;
 
 
-	const getTopUsersByPointsResponse = await supabase.from("public_user_data")
-		.select()
+	// baby's first join operation :)
+	// TODO: probably make this sql operation a constant
+	const getTopUsersByPointsResponse = await supabase.from("ast_leaderboard")
+		.select(`
+			points,
+			public_user_data (
+				google_user_id,
+				full_name,
+				avatar_url
+			)
+		`)
 		.order("points", {ascending: false})
 		.limit(10);
 
@@ -60,14 +69,15 @@ async function readDatabase(supabase: SupabaseClient) {
 	}
 
 
-	const topPoints = getTopUsersByPointsResponse.data as UserPublicInfoRow[];
+	// TODO: typescript doesn't believe me for some reason
+	const topPoints = <LeaderboardEntryRow[]><unknown>getTopUsersByPointsResponse.data;
 
 
 	// TODO: i hate converting naming conventions
-	output = topPoints.map<UserPublicInfo>(user => ({
-		googleUserId: user.google_user_id,
-		fullName: user.full_name,
-		avatarUrl: user.avatar_url ?? "", // if things goes terribly wrong in login this could be null
+	output = topPoints.map<LeaderboardEntry>(user => ({
+		googleUserId: user.public_user_data.google_user_id,
+		fullName: user.public_user_data.full_name,
+		avatarUrl: user.public_user_data.avatar_url ?? "", // if things goes terribly wrong in login this could be null
 		points: user.points
 	}));
 

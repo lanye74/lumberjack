@@ -26,15 +26,23 @@ export type UserPublicInfoRow = {
 	google_user_id: string;
 	full_name: string;
 	avatar_url: string;
-	points: number;
 };
 
 export type UserPublicInfo = {
 	googleUserId: string;
 	fullName: string;
 	avatarUrl: string;
-	points: number;
 };
+
+
+
+// TODO: clean up these types
+export type LeaderboardEntryRow = {
+	points: number;
+	public_user_data: UserPublicInfoRow;
+};
+
+export type LeaderboardEntry = UserPublicInfo & {points: number};
 
 
 

@@ -49,7 +49,7 @@ export const actions = {
 
 		// TODO: use technique outlined here https://github.com/orgs/supabase/discussions/909#discussioncomment-546117
 		// in order to make only one call, instead of reading, then writing
-		const {data: readPointsData, error: readPointsError} = await supabase.from("public_user_data")
+		const {data: readPointsData, error: readPointsError} = await supabase.from("ast_leaderboard")
 			.select("points")
 			.eq("google_user_id", user.id)
 			.single();
@@ -67,7 +67,7 @@ export const actions = {
 
 		const points = (readPointsData?.points ?? 0) as number;
 
-		const {error: updatePointsError} = await supabase.from("public_user_data")
+		const {error: updatePointsError} = await supabase.from("ast_leaderboard")
 			.update({points: points + 1000})
 			.eq("google_user_id", user.id);
 
