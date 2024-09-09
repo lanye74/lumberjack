@@ -19,7 +19,7 @@ export type LocationLog = {
 
 
 export type LoadLeaderboardOutput = {
-	leaderboard: UserPublicInfo[] | null;
+	leaderboard: LeaderboardEntry[] | null;
 };
 
 export type UserPublicInfoRow = {
@@ -42,6 +42,7 @@ export type LeaderboardEntryRow = {
 	public_user_data: UserPublicInfoRow;
 };
 
+// TODO: rename this type
 export type LeaderboardEntry = UserPublicInfo & {points: number};
 
 

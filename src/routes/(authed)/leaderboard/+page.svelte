@@ -63,10 +63,12 @@
 
 {#if leaderboard !== null}
 	<BorderBox direction="column" gap="2rem">
-		<div class="leaderboard-header">
-			<h2>Points Leaderboard</h2>
-			<p>Refreshes when logs are submitted</p>
-		</div>
+		{#if topThree.length > 0}
+			<div class="leaderboard-header">
+				<h2>Points Leaderboard</h2>
+				<p>Refreshes when logs are submitted</p>
+			</div>
+		{/if}
 
 		<Podium users={topThree} />
 	</BorderBox>

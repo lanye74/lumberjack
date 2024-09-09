@@ -1,10 +1,10 @@
 <script lang="ts">
 	import ImageWithIconFallback from "./ImageWithIconFallback.svelte";
-	import type {UserPublicInfo} from "$lib/types/database.js";
+	import type {LeaderboardEntry} from "$lib/types/database.js";
 
 
 
-	export let users: UserPublicInfo[];
+	export let users: LeaderboardEntry[];
 
 	const numberPlaces = Math.min(users.length, 3);
 
@@ -30,7 +30,9 @@
 		gap: 1rem;
 
 		padding: 0 0.5rem;
+	}
 
+	.podium:not([data-places="0"]) {
 		border-bottom: 0.25rem solid #888;
 	}
 

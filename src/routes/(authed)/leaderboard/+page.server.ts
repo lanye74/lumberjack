@@ -50,6 +50,7 @@ async function readDatabase(supabase: SupabaseClient) {
 
 	// baby's first join operation :)
 	// TODO: probably make this sql operation a constant
+	// TODO: i don't need to fetch googleUserId, really
 	const getTopUsersByPointsResponse = await supabase.from("ast_leaderboard")
 		.select(`
 			points,
