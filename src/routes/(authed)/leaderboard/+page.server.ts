@@ -48,7 +48,7 @@ async function readDatabase(supabase: SupabaseClient) {
 	let output: UserPublicInfo[] | null = null;
 
 
-	const getTopUsersByPointsResponse = await supabase.from("public_user_data")
+	const getTopUsersByPointsResponse = await supabase.from("ast_public_user_data")
 		.select()
 		.order("points", {ascending: false})
 		.limit(10);

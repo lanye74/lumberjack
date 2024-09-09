@@ -23,7 +23,7 @@ export async function load({cookies, locals: {supabase, user}}) {
 
 
 	// TODO: refactor into "readFromDatabase" pattern on leaderboard page
-	const getUserPointsResponse = await supabase.from("public_user_data")
+	const getUserPointsResponse = await supabase.from("ast_public_user_data")
 		.select()
 		.eq("google_user_id", user!.id)
 		.single();

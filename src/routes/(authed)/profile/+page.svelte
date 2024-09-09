@@ -80,12 +80,11 @@
 
 
 <section class="profile-preview">
-	<!-- TODO: once again lamenting the loss of ability to style borderbox directly -->
-	<BorderBox direction="row" alignItems="center" gap={2}>
+	<BorderBox direction="row" alignItems="center" gap="2rem">
 		<div class="image-wrapper">
 			<ImageWithIconFallback
-			src={avatarUrl} alt="User profile picture"
-			iconId="fa-solid:user-circle" />
+				src={avatarUrl} alt="User profile picture"
+				iconId="fa-solid:user-circle" />
 		</div>
 
 		<div class="user-info">

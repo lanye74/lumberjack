@@ -19,7 +19,7 @@ export async function load({locals: {supabase}}) {
 	const oneWeekAgo = new Date(currentTime.getTime() - oneWeekInMilliseconds * searchRangeInWeeks);
 
 
-	const getUserLogs = await supabase.from("location_logs")
+	const getUserLogs = await supabase.from("ast_location_logs")
 		.select()
 		.gte("timestamp", oneWeekAgo.toISOString())
 		.order("timestamp", {ascending: true});

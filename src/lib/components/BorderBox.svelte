@@ -2,7 +2,7 @@
 	export let direction: string;
 	export let alignItems: string = "normal";
 	export let justifyContent: string = "normal";
-	export let gap: number = 0;
+	export let gap: string = "0";
 </script>
 
 
@@ -29,6 +29,6 @@
 <section style:flex-direction={direction}
          style:align-items={alignItems}
 		 style:justify-content={justifyContent}
-		 style:gap={`${gap}rem`}>
+		 style:gap={gap}>
 	<slot />
 </section>
