@@ -1,5 +1,5 @@
 import {leaderboardLogPrefix} from "$lib/consoleColorPrefixes.js";
-import type {LeaderboardEntry, LeaderboardEntryRow, LoadLeaderboardOutput} from "$lib/types/database.js";
+import type {PointsLeaderboardEntry, PointsLeaderboardEntryRow, LoadLeaderboardOutput} from "$lib/types/database.js";
 import type {SupabaseClient} from "@supabase/supabase-js";
 
 
@@ -45,7 +45,7 @@ export async function load({cookies, locals: {supabase}}) {
 
 // TODO: make this sensible and integrate with cache instead of separate output
 async function readDatabase(supabase: SupabaseClient) {
-	let output: LeaderboardEntry[] | null = null;
+	let output: PointsLeaderboardEntry[] | null = null;
 
 
 	// baby's first join operation :)
@@ -71,11 +71,11 @@ async function readDatabase(supabase: SupabaseClient) {
 
 
 	// TODO: typescript doesn't believe me for some reason
-	const topPoints = <LeaderboardEntryRow[]><unknown>getTopUsersByPointsResponse.data;
+	const topPoints = <PointsLeaderboardEntryRow[]><unknown>getTopUsersByPointsResponse.data;
 
 
 	// TODO: i hate converting naming conventions
-	output = topPoints.map<LeaderboardEntry>(user => ({
+	output = topPoints.map<PointsLeaderboardEntry>(user => ({
 		googleUserId: user.public_user_data.google_user_id,
 		fullName: user.public_user_data.full_name,
 		avatarUrl: user.public_user_data.avatar_url ?? "", // if things goes terribly wrong in login this could be null

@@ -31,7 +31,8 @@
 		justify-content: space-between;
 
 		/* effective top padding: 2rem */
-		padding: 1rem 3rem;
+		/* bonus bottom padding for easy thumb access */
+		padding: 1rem 3rem 2rem 3rem;
 
 		box-sizing: border-box;
 

@@ -1,10 +1,10 @@
 <script lang="ts">
 	import ImageWithIconFallback from "./ImageWithIconFallback.svelte";
-	import type {LeaderboardEntry} from "$lib/types/database.js";
+	import type {PointsLeaderboardEntry} from "$lib/types/database.js";
 
 
 
-	export let users: LeaderboardEntry[];
+	export let users: PointsLeaderboardEntry[];
 
 	const numberPlaces = Math.min(users.length, 3);
 
@@ -20,6 +20,7 @@
 <style>
 	.podium {
 		/* TODO: can i make these presets for borderbox? */
+		/* TODO: can i make the podium places into their own component? should i? */
 		display: grid;
 		grid-template-rows: auto;
 

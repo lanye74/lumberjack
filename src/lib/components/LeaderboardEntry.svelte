@@ -1,10 +1,10 @@
 <script lang="ts">
 	import ImageWithIconFallback from "./ImageWithIconFallback.svelte";
-	import type {LeaderboardEntry} from "$lib/types/database.js";
+	import type {PointsLeaderboardEntry} from "$lib/types/database.js";
 
 
 
-	export let user: LeaderboardEntry;
+	export let user: PointsLeaderboardEntry;
 	export let index: number;
 
 

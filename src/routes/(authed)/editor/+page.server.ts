@@ -38,7 +38,9 @@ export async function load({locals: {supabase}}) {
 	output.recentLogs = recentUserLogs.map<LocationLog>(log => ({
 		timestamp: log.timestamp,
 		googleUserId: log.google_user_id,
-		location: log.location
+		location: log.location,
+		purpose: log.purpose,
+		didTypePurpose: log.did_type_purpose
 	}));
 
 
