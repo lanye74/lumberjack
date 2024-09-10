@@ -2,10 +2,10 @@
 	import {onNavigate} from "$app/navigation";
 	import {page} from "$app/stores";
 
-	import {enableCorrectTransitionForNavigation} from "$lib/routes.js";
-	import Navbar from "$lib/components/Navbar.svelte";
-	import {navbarHeight} from "$lib/stores.js";
 	import Header from "$lib/components/Header.svelte";
+	import Navbar from "$lib/components/Navbar.svelte";
+	import {enableCorrectTransitionForNavigation} from "$lib/routes.js";
+	import {navbarHeight} from "$lib/stores.js";
 
 
 

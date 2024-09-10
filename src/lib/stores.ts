@@ -20,3 +20,15 @@ export const currentFormattedTime = derived(currentDate, formatTime);
 
 
 export const navbarHeight = writable(0);
+
+
+
+export function createArrayIndexCycler(arrayLength: number) {
+	const {set, subscribe, update} = writable(0);
+
+	return {
+		subscribe,
+		set: (value: number) => set(value),
+		increment: () => update((old) => (old + 1) % arrayLength)
+	}
+}

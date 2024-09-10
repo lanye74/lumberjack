@@ -1,6 +1,7 @@
 import {error} from "@sveltejs/kit";
 
 import type {LoadPointsOutput} from "$lib/types/database.js";
+import {profiles} from "$lib/profiles.js";
 
 
 
@@ -41,8 +42,6 @@ export async function load({cookies, locals: {supabase, user}}) {
 }
 
 
-
-const profiles = ["AST", "Maintenance"];
 
 export const actions = {
 	swapProfile: async ({cookies, locals: {supabase, user}, request}) => {

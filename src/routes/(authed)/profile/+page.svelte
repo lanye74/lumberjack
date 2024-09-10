@@ -1,11 +1,12 @@
 <script lang="ts">
 	import {invalidateAll} from "$app/navigation";
 
-    import BorderBox from "$lib/components/BorderBox.svelte";
+	import BorderBox from "$lib/components/BorderBox.svelte";
 	import ImageWithIconFallback from "$lib/components/ImageWithIconFallback.svelte";
-    import {formatPoints} from "$lib/formatters.js";
-	import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
 	import UserProfileAction from "$lib/components/UserProfileAction.svelte";
+	import {currentProfile, currentProfileIndex, nextProfile} from "$lib/profiles.js";
+	import {formatPoints} from "$lib/formatters.js";
+	import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
 
 
 
@@ -18,28 +19,14 @@
 
 
 
-	// TODO: make this not horrible xd
-	// this is actually the worst code i've ever had the displeasure of writing
-	// like i tried to do this in a expandable way with getIncrementedProfileNumber but it's just so bad
-	const profiles = ["AST", "Maintenance"];
-
-	let selectedProfile = 0;
-
-	function getIncrementedProfileNumber(from: number) {
-		return (from + 1) % profiles.length;
-	}
-
-	// can't reactive declare this because it complains about non-existent cyclical dependencies
-	let nextProfile = getIncrementedProfileNumber(selectedProfile);
-
-
+	// should the
 	$: userProfileActions = [
 		{
-			text: `Swap to ${profiles[nextProfile]}`,
+			text: `Switch to ${$nextProfile}`,
 			iconId: "fa-solid:exchange-alt",
 			callback: async () => {
 				const formData = new FormData();
-				formData.append("new-profile", profiles[nextProfile]);
+				formData.append("new-profile", $nextProfile);
 
 				const response = await fetch("?/swapProfile", {
 					method: "POST",
@@ -48,8 +35,8 @@
 
 
 				if(response.ok) {
-					selectedProfile = getIncrementedProfileNumber(selectedProfile);
-					nextProfile = getIncrementedProfileNumber(nextProfile);
+					// i wonder if there's a better pattern than having to read into the underlying store
+					currentProfileIndex.increment();
 				}
 			}
 		},
@@ -88,7 +75,7 @@
 	.user-info {
 		display: flex;
 		flex-direction: column;
-		align-items: left;
+		align-items: flex-start;
 
 		gap: 0.5rem;
 	}
@@ -120,7 +107,7 @@
 
 		<div class="user-info">
 			<h2>{user.user_metadata.full_name}</h2>
-			<p>Profile: {profiles[selectedProfile]}</p>
+			<p>Profile: {$currentProfile}</p>
 			<p>{formatPoints(data.points ?? 0)} points</p>
 		</div>
 	</BorderBox>

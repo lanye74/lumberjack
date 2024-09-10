@@ -1,9 +1,9 @@
 <script lang="ts">
-    import BorderBox from "$lib/components/BorderBox.svelte";
-	import {currentDate, currentFormattedTime} from "$lib/stores.js";
-	import generateGreeting from "$lib/generateGreeting.js";
+	import BorderBox from "$lib/components/BorderBox.svelte";
 	import SubmitLocationForm from "$lib/components/SubmitLocationForm.svelte";
 	import Toast from "$lib/components/Toast.svelte";
+	import {currentDate, currentFormattedTime} from "$lib/stores.js";
+	import generateGreeting from "$lib/generateGreeting.js";
 
 
 

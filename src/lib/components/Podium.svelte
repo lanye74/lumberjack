@@ -1,6 +1,6 @@
 <script lang="ts">
-    import {formatPixels, formatPoints} from "$lib/formatters.js";
 	import ImageWithIconFallback from "./ImageWithIconFallback.svelte";
+	import {formatPixels, formatPoints} from "$lib/formatters.js";
 	import type {PointsLeaderboardEntry} from "$lib/types/database.js";
 
 
