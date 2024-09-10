@@ -18,7 +18,42 @@
 
 
 
-	const userProfileActions = [
+	// TODO: make this not horrible xd
+	// this is actually the worst code i've ever had the displeasure of writing
+	// like i tried to do this in a expandable way with getIncrementedProfileNumber but it's just so bad
+	const profiles = ["AST", "Maintenance"];
+
+	let selectedProfile = 0;
+
+	function getIncrementedProfileNumber(from: number) {
+		return (from + 1) % profiles.length;
+	}
+
+	// can't reactive declare this because it complains about non-existent cyclical dependencies
+	let nextProfile = getIncrementedProfileNumber(selectedProfile);
+
+
+	$: userProfileActions = [
+		{
+			text: `Swap to ${profiles[nextProfile]}`,
+			iconId: "fa-solid:exchange-alt",
+			callback: async () => {
+				const formData = new FormData();
+				formData.append("new-profile", profiles[nextProfile]);
+
+				const response = await fetch("?/swapProfile", {
+					method: "POST",
+					body: formData
+				});
+
+
+				if(response.ok) {
+					selectedProfile = getIncrementedProfileNumber(selectedProfile);
+					nextProfile = getIncrementedProfileNumber(nextProfile);
+				}
+			}
+		},
+
 		{
 			text: "Sign out",
 			iconId: "fa-solid:sign-out-alt",
@@ -85,6 +120,7 @@
 
 		<div class="user-info">
 			<h2>{user.user_metadata.full_name}</h2>
+			<p>Profile: {profiles[selectedProfile]}</p>
 			<p>{formatPoints(data.points ?? 0)} points</p>
 		</div>
 	</BorderBox>
