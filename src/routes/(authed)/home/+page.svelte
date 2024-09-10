@@ -23,7 +23,7 @@
 	}
 
 	h2 {
-		font: bold 3.25rem var(--font-serif);
+		font: bold 3rem var(--font-serif);
 	}
 
 	p {
