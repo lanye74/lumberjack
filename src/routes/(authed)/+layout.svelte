@@ -5,7 +5,7 @@
 	import {enableCorrectTransitionForNavigation} from "$lib/routes.js";
 	import Navbar from "$lib/components/Navbar.svelte";
 	import {navbarHeight} from "$lib/stores.js";
-	import TopBar from "$lib/components/Header.svelte";
+	import Header from "$lib/components/Header.svelte";
 
 
 
@@ -88,7 +88,7 @@
 
 
 
-<TopBar />
+<Header />
 
 <main>
 	<slot />

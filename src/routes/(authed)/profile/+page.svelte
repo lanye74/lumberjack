@@ -1,10 +1,11 @@
 <script lang="ts">
 	import {invalidateAll} from "$app/navigation";
 
+    import BorderBox from "$lib/components/BorderBox.svelte";
 	import ImageWithIconFallback from "$lib/components/ImageWithIconFallback.svelte";
+    import {formatPoints} from "$lib/formatters.js";
 	import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
 	import UserProfileAction from "$lib/components/UserProfileAction.svelte";
-    import BorderBox from "$lib/components/BorderBox.svelte";
 
 
 
@@ -27,11 +28,6 @@
 			}
 		}
 	];
-
-
-
-	// TODO: put formatters in a helper file
-	const pointsFormatter = new Intl.NumberFormat().format;
 </script>
 
 <style>
@@ -89,7 +85,7 @@
 
 		<div class="user-info">
 			<h2>{user.user_metadata.full_name}</h2>
-			<p>{pointsFormatter(data.points ?? 0)} points</p>
+			<p>{formatPoints(data.points ?? 0)} points</p>
 		</div>
 	</BorderBox>
 

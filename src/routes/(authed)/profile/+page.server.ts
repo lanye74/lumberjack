@@ -2,9 +2,6 @@ import type {LoadPointsOutput} from "$lib/types/database.js";
 
 
 
-// TODO: load this value from a cookie
-// this may also become more useful when i add the current user to the bottom of the leaderboard if they're not on it
-// or highlight the user with a border if they are
 export async function load({cookies, locals: {supabase, user}}) {
 	let output: LoadPointsOutput = {
 		points: null

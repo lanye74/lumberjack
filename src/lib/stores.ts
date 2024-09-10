@@ -1,5 +1,7 @@
 import {derived, readable, writable} from "svelte/store";
 
+import {formatTime} from "./formatters.js";
+
 
 
 export const currentDate = readable(new Date(), (set) => {
@@ -13,15 +15,7 @@ export const currentDate = readable(new Date(), (set) => {
 
 
 
-export const currentFormattedTime = derived(currentDate, ($date => {
-	return Intl.DateTimeFormat("en", {
-		hour: "numeric",
-		hour12: true,
-
-		minute: "2-digit",
-		second: "2-digit"
-	}).format($date);
-}));
+export const currentFormattedTime = derived(currentDate, formatTime);
 
 
 

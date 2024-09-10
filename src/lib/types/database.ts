@@ -26,13 +26,12 @@ export type LoadLeaderboardOutput = {
 	leaderboard: PointsLeaderboardEntry[] | null;
 };
 
-// TODO: clean up these types
 export type PointsLeaderboardEntryRow = {
 	points: number;
 	public_user_data: UserPublicInfoRow;
 };
 
-export type PointsLeaderboardEntry = UserPublicInfo & {points: number};
+export type PointsLeaderboardEntry = {points: number} & UserPublicInfo;
 
 
 

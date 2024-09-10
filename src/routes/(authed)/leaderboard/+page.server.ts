@@ -18,7 +18,6 @@ let lastRefreshTime: number = 0;
 
 // TODO: make this non-blocking and use skeleton loaders
 export async function load({cookies, locals: {supabase}}) {
-	// TODO: add an expiry so that a read after x time (probably like thirty mins) will force reload
 	const hasSubmittedPointsRecently = cookies.get("lumberjack_has_submitted_points_recently");
 	const currentTime = Date.now();
 

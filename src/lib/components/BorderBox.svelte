@@ -5,10 +5,6 @@
 	export let gap: string = "0";
 </script>
 
-
-
-<!-- TODO: despite the fact that this is a refactor that's supposed to clean stuff up, i still hate it!
-     figure out how to not hate this component! -->
 <style>
 	section {
 		display: flex;

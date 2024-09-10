@@ -1,4 +1,5 @@
 <script lang="ts">
+    import {formatPixels, formatPoints} from "$lib/formatters.js";
 	import ImageWithIconFallback from "./ImageWithIconFallback.svelte";
 	import type {PointsLeaderboardEntry} from "$lib/types/database.js";
 
@@ -9,12 +10,9 @@
 	const numberPlaces = Math.min(users.length, 3);
 
 
-	const pointsFormatter = new Intl.NumberFormat().format;
-	const pixelFormatter = new Intl.NumberFormat("en-US", {maximumFractionDigits: 1, useGrouping: false}).format;
-
 
 	let columnWidth: number;
-	$: iconSize = `${pixelFormatter(columnWidth * 0.8)}px`;
+	$: iconSize = `${formatPixels(columnWidth * 0.8)}px`;
 </script>
 
 <style>
@@ -184,7 +182,7 @@
 
 				<div class="user-info">
 					<p class="name">{user.fullName}</p>
-					<p class="points">{pointsFormatter(user.points)} pts.</p>
+					<p class="points">{formatPoints(user.points)} pts.</p>
 				</div>
 
 				<div class="podium-bar"></div>
