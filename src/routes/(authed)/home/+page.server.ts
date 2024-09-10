@@ -55,7 +55,8 @@ export const actions = {
 			.single();
 
 
-		if(readPointsError) {
+		// PGRST116: no rows found. happens for first time entries on the leaderboard
+		if(readPointsError && readPointsError.code !== "PGRST116") {
 			console.error(...submitLocationLogPrefix, "Error reading points", readPointsError);
 
 			return {
@@ -67,13 +68,14 @@ export const actions = {
 
 		const points = (readPointsData?.points ?? 0) as number;
 
+		// TODO: is upsert okay here? i only want to update points
 		const {error: updatePointsError} = await supabase.from("ast_leaderboard")
-			.update({points: points + 1000})
+			.upsert({google_user_id: user.id, points: points + 1000})
 			.eq("google_user_id", user.id);
 
 
 		if(updatePointsError) {
-			console.error(...submitLocationLogPrefix, "Error submitting location", updatePointsError);
+			console.error(...submitLocationLogPrefix, "Error updating points", updatePointsError);
 
 			return {
 				error: true,
