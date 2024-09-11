@@ -1,44 +1,68 @@
 import {error} from "@sveltejs/kit";
+import type {SupabaseClient} from "@supabase/supabase-js";
 
-import type {LoadPointsOutput} from "$lib/types/database.js";
-import {profiles} from "$lib/profiles.js";
+import type {LoadProfileOutput} from "$lib/types/database.js";
+import {defaultProfile, profiles} from "$lib/profiles.js";
 
 
 
 export async function load({cookies, locals: {supabase, user}}) {
-	let output: LoadPointsOutput = {
-		points: null
+	let output: LoadProfileOutput = {
+		points: null,
+		profile: defaultProfile
 	};
 
 
-	let pointsCookie = cookies.get("lumberjack_user_points");
+	let pointsCookie = cookies.get("lumberjack_user_points")?.toString();
 
-	// please let me use if-let pattern :( why, javascript
-	if(pointsCookie !== undefined) {
-		output.points = parseInt(pointsCookie);
+	output.points = pointsCookie ? parseInt(pointsCookie) : await fetchUserPoints(supabase, user!.id);
 
-		return output;
+	if(!pointsCookie && output.points !== null) {
+		// TODO: make a cookie manager
+		cookies.set("lumberjack_user_points", `${output.points}`, {path: "/"});
 	}
 
 
 
-	// TODO: refactor into "readFromDatabase" pattern on leaderboard page
-	const getUserPointsResponse = await supabase.from("ast_leaderboard")
-		.select()
-		.eq("google_user_id", user!.id)
-		.single();
+	// this should never not be set, but in case it isn't
+	let profileCookie = cookies.get("lumberjack_user_profile")?.toString();
 
+	output.profile = profileCookie ? profileCookie : await fetchUserProfile(supabase, user!.id);
 
-	if(getUserPointsResponse.error) {
-		// whatever bro
-		// console.error(...needAPrefixHere, getUserPointsResponse.error);
-		return output;
+	if(!profileCookie) {
+		cookies.set("lumberjack_user_profile", output.profile, {path: "/"});
 	}
-
-	output.points = getUserPointsResponse.data.points ?? 0;
 
 
 	return output;
+}
+
+
+
+async function fetchUserPoints(supabase: SupabaseClient, userId: string) {
+	const {data, error} = await supabase.from("ast_leaderboard")
+		.select("points")
+		.eq("google_user_id", userId)
+		.single();
+
+
+	if(error && error.code !== "PGRST116") {
+		return null;
+	}
+
+
+	return data?.points ?? 0;
+}
+
+
+
+async function fetchUserProfile(supabase: SupabaseClient, userId: string): Promise<string> {
+	const {data} = await supabase.from("public_user_data")
+		.select("profile")
+		.eq("google_user_id", userId)
+		.single();
+
+	return (data?.profile ?? defaultProfile) as string;
 }
 
 

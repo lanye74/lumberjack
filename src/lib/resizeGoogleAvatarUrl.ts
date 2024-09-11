@@ -12,7 +12,7 @@ const sizeRegex = new RegExp(/=s(\d+)(-[a-z])?/);
 export default function resizeGoogleAvatarUrl(url: string) {
 	// probably should find a better way to validate this but eh
 	if(!url?.includes("googleusercontent")) {
-		console.log(...resizeGoogleAvatarUrlLogPrefix, "Found URL without googleusercontent:", url);
+		console.error(...resizeGoogleAvatarUrlLogPrefix, "Found URL without googleusercontent:", url);
 		return url;
 	}
 
@@ -21,7 +21,7 @@ export default function resizeGoogleAvatarUrl(url: string) {
 	const match = sizeRegex.exec(url);
 
 	if(!match) {
-		console.log(...resizeGoogleAvatarUrlLogPrefix, "Found avatar URL that didn't need to be transformed:", url);
+		console.error(...resizeGoogleAvatarUrlLogPrefix, "Found avatar URL that didn't need to be transformed:", url);
 		return url;
 	}
 
@@ -31,7 +31,7 @@ export default function resizeGoogleAvatarUrl(url: string) {
 
 	if(sizeIndex === -1) {
 		// kms
-		console.log(...resizeGoogleAvatarUrlLogPrefix, "Received size not in targetSizes array:", parsedSize, url);
+		console.error(...resizeGoogleAvatarUrlLogPrefix, "Received size not in targetSizes array:", parsedSize, url);
 		return url;
 	}
 

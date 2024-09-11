@@ -49,6 +49,7 @@ type UserPublicInfo = {
 
 
 
-export type LoadPointsOutput = {
+export type LoadProfileOutput = {
 	points: number | null;
+	profile: string;
 }

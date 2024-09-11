@@ -5,6 +5,7 @@ import {createArrayIndexCycler} from "./stores.js";
 
 
 export const profiles = ["AST", "Maintenance"];
+export const defaultProfile = profiles[0];
 
 
 

@@ -24,7 +24,7 @@
 
 <section style:flex-direction={direction}
          style:align-items={alignItems}
-		 style:justify-content={justifyContent}
-		 style:gap={gap}>
+         style:justify-content={justifyContent}
+         style:gap={gap}>
 	<slot />
 </section>

@@ -42,11 +42,7 @@ export async function load({cookies, locals: {supabase}}) {
 
 
 
-// TODO: make this sensible and integrate with cache instead of separate output
-async function readDatabase(supabase: SupabaseClient) {
-	let output: PointsLeaderboardEntry[] | null = null;
-
-
+async function readDatabase(supabase: SupabaseClient): Promise<PointsLeaderboardEntry[] | null> {
 	// baby's first join operation :)
 	// TODO: probably make this sql operation a constant
 	// TODO: i don't need to fetch googleUserId, really
@@ -65,7 +61,7 @@ async function readDatabase(supabase: SupabaseClient) {
 	if(getTopUsersByPointsResponse.error) {
 		// whatever bro
 		console.error(...leaderboardLogPrefix, getTopUsersByPointsResponse.error);
-		return output;
+		return null;
 	}
 
 
@@ -74,16 +70,10 @@ async function readDatabase(supabase: SupabaseClient) {
 
 
 	// TODO: i hate converting naming conventions
-	output = topPoints.map<PointsLeaderboardEntry>(user => ({
+	return topPoints.map<PointsLeaderboardEntry>(user => ({
 		googleUserId: user.public_user_data.google_user_id,
 		fullName: user.public_user_data.full_name,
 		avatarUrl: user.public_user_data.avatar_url ?? "", // if things goes terribly wrong in login this could be null
 		points: user.points
 	}));
-
-
-
-	// console.log(...leaderboardLogPrefix, "Leaderboard state fetched successfully", output);
-
-	return output;
 }

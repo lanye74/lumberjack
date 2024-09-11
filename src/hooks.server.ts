@@ -3,7 +3,9 @@ import {PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL} from "$env/static/public"
 import {type Cookies, type Handle, redirect} from "@sveltejs/kit";
 import {type CookieMethodsServer, createServerClient} from "@supabase/ssr";
 import {sequence} from "@sveltejs/kit/hooks";
+import type {SupabaseClient} from "@supabase/supabase-js";
 
+import {defaultProfile} from "$lib/profiles.js";
 import type {RedirectableRoute, RedirectMap} from "$lib/types/routes.js";
 
 
@@ -51,23 +53,21 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 	locals.user = user;
 
 
-	const redirectIfNotAuthenticated = !session ? "/auth" : null;
-	const redirectIfAuthenticated = session ? "/home" : null;
-
-	const defaultRedirect = session ? "/home" : "/auth";
+	const mustBeAuthenticated = !session ? "/auth" : null;
+	const mustNotBeAuthenticated = session ? "/home" : null;
 
 
 	const redirectMap: RedirectMap = {
 		"/": "/home", // always route this to home i cba to make a proper homepage /auth is good enough
 
-		"/auth": redirectIfAuthenticated,
+		"/auth": mustNotBeAuthenticated,
 		"/auth/error": null,
 
-		"/home": redirectIfNotAuthenticated,
+		"/home": mustBeAuthenticated,
 		// "/editor": redirectIfNotAuthenticated,
 		"/editor": "/home",
-		"/leaderboard": redirectIfNotAuthenticated,
-		"/profile": redirectIfNotAuthenticated
+		"/leaderboard": mustBeAuthenticated,
+		"/profile": mustBeAuthenticated
 	};
 
 
@@ -80,6 +80,40 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 
 
 	return resolve(requestEvent);
+}
+
+
+
+const setProfileCookie: Handle = async ({event: requestEvent, resolve}) => {
+	const {session, supabase} = requestEvent.locals;
+
+	if(!session) {
+		return resolve(requestEvent);
+	}
+
+	const cookie = requestEvent.cookies.get("lumberjack_user_profile")?.toString();
+	const profile = cookie ?? await fetchUserProfile(supabase, requestEvent.locals.user!.id);
+
+	requestEvent.cookies.set("lumberjack_user_profile", profile, {path: "/"});
+
+	return resolve(requestEvent);
+}
+
+
+
+// TODO: unify this code with the one in routes/(authed)/profile/+page.server.ts
+async function fetchUserProfile(supabase: SupabaseClient, userId: string) {
+	const {data, error} = await supabase.from("public_user_data")
+		.select("profile")
+		.eq("google_user_id", userId)
+		.single();
+
+	// should never be missing this entry error, but it could i guess
+	if(!error || error.code === "PGRST116") {
+		return data?.profile ?? defaultProfile;
+	}
+
+	return defaultProfile;
 }
 
 
@@ -98,4 +132,4 @@ function generateSupabaseClientCookieMethods(cookies: Cookies): CookieMethodsSer
 
 
 
-export const handle: Handle = sequence(supabaseHandle, authGuardHandle);
+export const handle: Handle = sequence(supabaseHandle, authGuardHandle, setProfileCookie);

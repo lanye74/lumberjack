@@ -17,8 +17,6 @@
 
 <style>
 	.podium {
-		/* TODO: can i make these presets for borderbox? */
-		/* TODO: can i make the podium places into their own component? should i? */
 		display: grid;
 		grid-template-rows: auto;
 
