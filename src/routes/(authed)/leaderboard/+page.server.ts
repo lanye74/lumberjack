@@ -1,52 +1,78 @@
-import {leaderboardLogPrefix} from "$lib/consoleColorPrefixes.js";
-import type {PointsLeaderboardEntry, PointsLeaderboardEntryRow, LoadLeaderboardOutput} from "$lib/types/database.js";
 import type {SupabaseClient} from "@supabase/supabase-js";
 
+import {leaderboardLogPrefix} from "$lib/consoleColorPrefixes.js";
+import {mapProfileToPrefix} from "$lib/profiles.js";
+import type {PointsLeaderboardEntry, PointsLeaderboardEntryRow} from "$lib/types/database.js";
 
 
-let cachedDatabaseState: LoadLeaderboardOutput = {
-	leaderboard: null
+
+// TODO: PLEAAAASE clean this up
+const leaderboards = {
+	ast: {
+		lastRefreshTime: 0,
+		cachedState: null
+	},
+
+	maint: {
+		lastRefreshTime: 0,
+		cachedState: null
+	}
 };
 
 
 
 const autoRefreshPeriod = 1e3 * 60 * 3; // 3 mins
 
-let lastRefreshTime: number = 0;
-
 
 
 // TODO: make this non-blocking and use skeleton loaders
 export async function load({cookies, locals: {supabase}}) {
+	// TODO: make keyof typeof leaderboards a standard type
+	const targetLeaderboardPrefix = mapProfileToPrefix(cookies.get("lumberjack_user_profile")?.toString()) as keyof typeof leaderboards;
+	const targetLeaderboard = leaderboards[targetLeaderboardPrefix];
+
+
 	const hasSubmittedPointsRecently = cookies.get("lumberjack_has_submitted_points_recently")?.toString();
+
 	const currentTime = Date.now();
+
 
 	// use cached response!!!
 	if((hasSubmittedPointsRecently === undefined || hasSubmittedPointsRecently === "false") &&
-	    cachedDatabaseState.leaderboard !== null &&
+	    targetLeaderboard.cachedState !== null &&
 		// true if we are not at the forced refresh period yet
-		currentTime < (lastRefreshTime + autoRefreshPeriod)
+		currentTime < (targetLeaderboard.lastRefreshTime + autoRefreshPeriod)
 	) {
-		return cachedDatabaseState;
+		return {
+			leaderboard: targetLeaderboard.cachedState
+		};
 	}
 
 
-	cachedDatabaseState.leaderboard = await readDatabase(supabase);
-	lastRefreshTime = Date.now();
+	const dataFromLeaderboard = await readDatabase(supabase, targetLeaderboardPrefix);
+	// @ts-ignore
+	// TODO: types
+	// also, i still don't trust pass by reference
+	leaderboards[targetLeaderboardPrefix].cachedState = dataFromLeaderboard;
+
+	leaderboards[targetLeaderboardPrefix].lastRefreshTime = Date.now();
 
 	cookies.set("lumberjack_has_submitted_points_recently", "false", {path: "/"});
 
 
-	return cachedDatabaseState;
+	return {
+		leaderboard: dataFromLeaderboard
+	};
 }
 
 
 
-async function readDatabase(supabase: SupabaseClient): Promise<PointsLeaderboardEntry[] | null> {
+async function readDatabase(supabase: SupabaseClient, leaderboardPrefix: string): Promise<PointsLeaderboardEntry[] | null> {
+	console.log(leaderboardPrefix)
 	// baby's first join operation :)
 	// TODO: probably make this sql operation a constant
 	// TODO: i don't need to fetch googleUserId, really
-	const getTopUsersByPointsResponse = await supabase.from("ast_leaderboard")
+	const getTopUsersByPointsResponse = await supabase.from(`${leaderboardPrefix}_leaderboard`)
 		.select(`
 			points,
 			public_user_data (
