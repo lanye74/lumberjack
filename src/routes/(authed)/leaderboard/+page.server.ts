@@ -68,7 +68,6 @@ export async function load({cookies, locals: {supabase}}) {
 
 
 async function readDatabase(supabase: SupabaseClient, leaderboardPrefix: string): Promise<PointsLeaderboardEntry[] | null> {
-	console.log(leaderboardPrefix)
 	// baby's first join operation :)
 	// TODO: probably make this sql operation a constant
 	// TODO: i don't need to fetch googleUserId, really

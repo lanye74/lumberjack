@@ -11,6 +11,7 @@
 
 
 	export let data;
+
 	const user = data.user!;
 	const profile = data.profile!;
 
@@ -20,6 +21,8 @@
 	let avatarUrl = user.user_metadata.avatar_url as string;
 	avatarUrl = resizeGoogleAvatarUrl(avatarUrl);
 
+
+	let pointsText = formatPoints(data.points ?? 0);
 
 
 	// should the
@@ -37,9 +40,17 @@
 				});
 
 
+
 				if(response.ok) {
 					// i wonder if there's a better pattern than having to read into the underlying store
 					currentProfileIndex.increment();
+
+					// TODO: this sucks
+					const json = await response.json();
+
+					const points = JSON.parse(json.data)[2] as number;
+
+					pointsText = formatPoints(points ?? 0);
 				}
 			}
 		},
@@ -111,7 +122,7 @@
 		<div class="user-info">
 			<h2>{user.user_metadata.full_name}</h2>
 			<p>Profile: {$currentProfile}</p>
-			<p>{formatPoints(data.points ?? 0)} points</p>
+			<p>{pointsText} points</p>
 		</div>
 	</BorderBox>
 

@@ -2,7 +2,7 @@ import {error} from "@sveltejs/kit";
 import type {SupabaseClient} from "@supabase/supabase-js";
 
 import type {LoadProfileAndPointsOutput} from "$lib/types/database.js";
-import {defaultProfile, profiles} from "$lib/profiles.js";
+import {defaultProfile, mapProfileToPrefix, profiles} from "$lib/profiles.js";
 
 
 
@@ -11,17 +11,6 @@ export async function load({cookies, locals: {supabase, user}}) {
 		points: null,
 		profile: defaultProfile
 	};
-
-
-	let pointsCookie = cookies.get("lumberjack_user_points")?.toString();
-
-	output.points = pointsCookie ? parseInt(pointsCookie) : await fetchUserPoints(supabase, user!.id);
-
-	if(!pointsCookie && output.points !== null) {
-		// TODO: make a cookie manager
-		cookies.set("lumberjack_user_points", `${output.points}`, {path: "/"});
-	}
-
 
 
 	// this should never not be set, but in case it isn't
@@ -34,13 +23,29 @@ export async function load({cookies, locals: {supabase, user}}) {
 	}
 
 
+	// TODO: why is the cookie storing the pretty name instead of the shortened name?
+	const profilePrefix = mapProfileToPrefix(output.profile);
+
+
+
+	const pointsCookie = cookies.get("lumberjack_user_points")?.toString();
+	const pointsJson = JSON.parse(pointsCookie ?? '{"ast": null,"maint":null}');
+
+	output.points = pointsJson[profilePrefix] ?? await fetchUserPoints(supabase, profilePrefix, user!.id);
+	pointsJson[profilePrefix] = output.points;
+
+	// TODO: make a cookie manager
+	cookies.set("lumberjack_user_points", JSON.stringify(pointsJson), {path: "/"});
+
+
 	return output;
 }
 
 
 
-async function fetchUserPoints(supabase: SupabaseClient, userId: string) {
-	const {data, error} = await supabase.from("ast_leaderboard")
+// TODO: standardize this argument name "profile"
+async function fetchUserPoints(supabase: SupabaseClient, profile: string, userId: string) {
+	const {data, error} = await supabase.from(`${profile}_leaderboard`)
 		.select("points")
 		.eq("google_user_id", userId)
 		.single();
@@ -92,5 +97,28 @@ export const actions = {
 
 
 		cookies.set("lumberjack_user_profile", selectedProfile, {path: "/"});
+
+
+
+		// Once again: why is this being stored in pretty form??
+		const profile = mapProfileToPrefix(selectedProfile);
+
+
+
+		const pointsCookie = cookies.get("lumberjack_user_points")?.toString();
+		const pointsJson = JSON.parse(pointsCookie ?? '{"ast": null,"maint":null}');
+
+		// TODO: error handling????????
+		let pointsValue = pointsJson[profile] ?? await fetchUserPoints(supabase, profile, user!.id);
+		pointsJson[profile] = pointsValue;
+
+		// TODO: make a cookie manager
+		cookies.set("lumberjack_user_points", JSON.stringify(pointsJson), {path: "/"});
+
+
+		return {
+			profile,
+			points: pointsValue
+		}
 	}
 }
