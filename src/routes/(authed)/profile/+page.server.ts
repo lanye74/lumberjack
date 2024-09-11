@@ -1,13 +1,13 @@
 import {error} from "@sveltejs/kit";
 import type {SupabaseClient} from "@supabase/supabase-js";
 
-import type {LoadProfileOutput} from "$lib/types/database.js";
+import type {LoadProfileAndPointsOutput} from "$lib/types/database.js";
 import {defaultProfile, profiles} from "$lib/profiles.js";
 
 
 
 export async function load({cookies, locals: {supabase, user}}) {
-	let output: LoadProfileOutput = {
+	let output: LoadProfileAndPointsOutput = {
 		points: null,
 		profile: defaultProfile
 	};
@@ -69,6 +69,7 @@ async function fetchUserProfile(supabase: SupabaseClient, userId: string): Promi
 
 export const actions = {
 	swapProfile: async ({cookies, locals: {supabase, user}, request}) => {
+		// TODO: pull user points
 		const formData = await request.formData();
 
 		const selectedProfile = formData.get("new-profile")?.toString();

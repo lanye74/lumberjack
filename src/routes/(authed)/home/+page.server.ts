@@ -1,12 +1,13 @@
 import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
 import {submitLocationLogPrefix} from "$lib/consoleColorPrefixes.js";
+import {mapProfileToPrefix} from "$lib/profiles.js";
 
 
 
 // TODO: this is the worst thing ever and needs to be refactored
 export const actions = {
-	submitLocation: async (requestEvent) => {
-		const formData = await requestEvent.request.formData();
+	submitLocation: async ({cookies, locals, request}) => {
+		const formData = await request.formData();
 		const parsedForm = parseSubmitLocationForm(formData);
 
 		if(parsedForm.isValid === false) {
@@ -17,16 +18,18 @@ export const actions = {
 		}
 
 
-		const {supabase} = requestEvent.locals;
+		const {supabase} = locals;
 		// :c
-		const user = requestEvent.locals.user!;
+		const user = locals.user!;
 
+		// once again, should never not exist. but it could i guess xd
+		const profile = mapProfileToPrefix(cookies.get("lumberjack_user_profile")?.toString());
 
 		const {userLocation, userPurpose, didTypePurpose} = parsedForm;
 		const currentTime = new Date().toISOString();
 
 
-		const {error: submitLocationError} = await supabase.from("ast_location_logs")
+		const {error: submitLocationError} = await supabase.from(`${profile}_location_logs`)
 			.insert({
 				timestamp: currentTime,
 				google_user_id: user.id,
@@ -49,7 +52,7 @@ export const actions = {
 
 		// TODO: use technique outlined here https://github.com/orgs/supabase/discussions/909#discussioncomment-546117
 		// in order to make only one call, instead of reading, then writing
-		const {data: readPointsData, error: readPointsError} = await supabase.from("ast_leaderboard")
+		const {data: readPointsData, error: readPointsError} = await supabase.from(`${profile}_leaderboard`)
 			.select("points")
 			.eq("google_user_id", user.id)
 			.single();
@@ -69,7 +72,7 @@ export const actions = {
 		const points = (readPointsData?.points ?? 0) as number;
 
 		// TODO: is upsert okay here? i only want to update points
-		const {error: updatePointsError} = await supabase.from("ast_leaderboard")
+		const {error: updatePointsError} = await supabase.from(`${profile}_leaderboard`)
 			.upsert({google_user_id: user.id, points: points + 1000})
 			.eq("google_user_id", user.id);
 
@@ -87,9 +90,9 @@ export const actions = {
 
 		// IMPORTANT
 		// let the server know to not serve a cached leadboard read
-		requestEvent.cookies.set("lumberjack_has_submitted_points_recently", "true", {path: "/"});
+		cookies.set("lumberjack_has_submitted_points_recently", "true", {path: "/"});
 
-		requestEvent.cookies.set("lumberjack_user_points", `${points + 1000}`, {path: "/"});
+		cookies.set("lumberjack_user_points", `${points + 1000}`, {path: "/"});
 
 
 		return {

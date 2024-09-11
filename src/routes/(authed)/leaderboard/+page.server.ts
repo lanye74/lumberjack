@@ -18,7 +18,7 @@ let lastRefreshTime: number = 0;
 
 // TODO: make this non-blocking and use skeleton loaders
 export async function load({cookies, locals: {supabase}}) {
-	const hasSubmittedPointsRecently = cookies.get("lumberjack_has_submitted_points_recently");
+	const hasSubmittedPointsRecently = cookies.get("lumberjack_has_submitted_points_recently")?.toString();
 	const currentTime = Date.now();
 
 	// use cached response!!!

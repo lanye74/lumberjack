@@ -55,7 +55,7 @@ export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocatio
 
 		userLocation: isValid ? userLocation : null,
 		userPurpose: isValid ? userPurpose : null,
-		didTypePurpose: isValid ? didTypePurpose : null
+		didTypePurpose: isValid ? didTypePurpose : null,
 	} as ParsedSubmitLocationForm;
 }
 

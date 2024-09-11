@@ -4,7 +4,15 @@ import {createArrayIndexCycler} from "./stores.js";
 
 
 
-export const profiles = ["AST", "Maintenance"];
+// TODO: name these sensibly
+const profileNameMap = {
+	"AST": "ast",
+	"Maintenance": "maint"
+};
+
+
+
+export const profiles = Object.keys(profileNameMap);
 export const defaultProfile = profiles[0];
 
 
@@ -24,3 +32,10 @@ currentProfileIndex.subscribe(nextProfileIndex.increment);
 
 
 export const nextProfile = derived(nextProfileIndex, (index) => profiles[index]);
+
+
+
+export function mapProfileToPrefix(profile?: string) {
+	// @ts-ignore
+	return profileNameMap[profile ?? defaultProfile] ?? defaultProfile;
+}
