@@ -1,20 +1,21 @@
 import {error} from "@sveltejs/kit";
 import type {SupabaseClient} from "@supabase/supabase-js";
 
+import {defaultProfilePrefix, mapPrettyNameToProfilePrefix, profilePretties} from "$lib/profiles.js";
 import type {LoadProfileAndPointsOutput} from "$lib/types/database.js";
-import {defaultProfile, mapPrettyNameToProfilePrefix, prettyProfiles, profiles} from "$lib/profiles.js";
+import type {ProfilePrefix, ProfilePretty} from "$lib/types/profiles.js";
 
 
 
 export async function load({cookies, locals: {supabase, user}}) {
 	let output: LoadProfileAndPointsOutput = {
 		points: null,
-		profile: defaultProfile
+		profile: defaultProfilePrefix
 	};
 
 
 	// this should never not be set, but in case it isn't
-	let profileCookie = cookies.get("lumberjack_user_profile")?.toString();
+	let profileCookie = cookies.get("lumberjack_user_profile")?.toString() as ProfilePrefix;
 
 	const profile = profileCookie ? profileCookie : await fetchUserProfile(supabase, user!.id);
 	output.profile = profile;
@@ -57,13 +58,13 @@ async function fetchUserPoints(supabase: SupabaseClient, profile: string, userId
 
 
 
-async function fetchUserProfile(supabase: SupabaseClient, userId: string): Promise<string> {
+async function fetchUserProfile(supabase: SupabaseClient, userId: string): Promise<ProfilePrefix> {
 	const {data} = await supabase.from("public_user_data")
 		.select("profile")
 		.eq("google_user_id", userId)
 		.single();
 
-	return (data?.profile ?? defaultProfile) as string;
+	return (data?.profile ?? defaultProfilePrefix);
 }
 
 
@@ -73,11 +74,11 @@ export const actions = {
 		// TODO: pull user points
 		const formData = await request.formData();
 
-		const profile = formData.get("new-profile")?.toString();
-		const profilePrefix = mapPrettyNameToProfilePrefix(profile);
+		const profilePretty = formData.get("new-profile")?.toString() as ProfilePretty | undefined;
+		const profilePrefix = mapPrettyNameToProfilePrefix(profilePretty);
 
 		// TODO: make this check run client side lmao
-		if(profile === undefined || !prettyProfiles.includes(profile)) {
+		if(profilePretty === undefined || !profilePretties.includes(profilePretty)) {
 			// TODO: make this not return an error and instead be sensible
 			return error(400, "No profile provided!");
 		}

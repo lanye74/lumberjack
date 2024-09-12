@@ -1,51 +1,47 @@
 import {derived} from "svelte/store";
 
 import {createArrayIndexCycler} from "./stores.js";
+import type {ProfilePrefixToPrettyMap, ProfilePrefix, ProfilePretty} from "./types/profiles.js";
 
 
 
-// TODO: name these sensibly
-const profileNameMap = {
+const profilePrefixToPrettyMap: ProfilePrefixToPrettyMap = {
 	"ast": "AST",
 	"maint": "Maintenance"
 };
 
 
 
-export const profiles = Object.keys(profileNameMap);
-export const defaultProfile = profiles[0];
+export const profilePrefixes = Object.keys(profilePrefixToPrettyMap) as ProfilePrefix[];
+export const defaultProfilePrefix = profilePrefixes[0];
 
-export const prettyProfiles = Object.values(profileNameMap);
+export const profilePretties = Object.values(profilePrefixToPrettyMap) as ProfilePretty[];
+const defaultProfilePretty = profilePretties[0];
 
 
 
-export const currentProfileIndex = createArrayIndexCycler(profiles.length);
+export const currentProfileIndex = createArrayIndexCycler(profilePrefixes.length);
 // can't export reactive, export a derived
-export const currentProfile = derived(currentProfileIndex, (index) => mapProfilePrefixToPrettyName(profiles[index]));
+export const currentProfile = derived(currentProfileIndex, (index) => mapProfilePrefixToPrettyName(profilePrefixes[index]));
 
 
 
 
 // this will start at 0
-const nextProfileIndex = createArrayIndexCycler(profiles.length);
+const nextProfileIndex = createArrayIndexCycler(profilePrefixes.length);
 // then be incremented by the initial subscription event where it receives its value
 // now it's always one ahead as it should be
 currentProfileIndex.subscribe(nextProfileIndex.increment);
 
-
-export const nextProfile = derived(nextProfileIndex, (index) => mapProfilePrefixToPrettyName(profiles[index]));
-
+export const nextProfile = derived(nextProfileIndex, (index) => mapProfilePrefixToPrettyName(profilePrefixes[index]));
 
 
-export function mapProfilePrefixToPrettyName(profile?: string) {
-	// @ts-ignore
-	return profileNameMap[profile ?? defaultProfile] ?? defaultProfile;
+
+export function mapProfilePrefixToPrettyName(profile?: ProfilePrefix) {
+	return profilePrefixToPrettyMap[profile ?? defaultProfilePrefix] ?? defaultProfilePrefix;
 }
 
-
-
 // TODO: arghhhhh this is so bad
-export function mapPrettyNameToProfilePrefix(profile?: string) {
-	// @ts-ignore
-	return profiles[prettyProfiles.indexOf(profile ?? defaultProfile)];
+export function mapPrettyNameToProfilePrefix(profile?: ProfilePretty) {
+	return profilePrefixes[profilePretties.indexOf(profile ?? defaultProfilePretty)];
 }

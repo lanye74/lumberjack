@@ -62,14 +62,10 @@ stuff that's not important for getting the app off of the ground, but ideal for 
 - possibly bonus points for visiting underserved schools?
 - bounties??
 	- this would require an actual homepage instead of josh's "just throw the clock in on the front page"
-- ranked splits lmao (actually do it though)
+- ranked splits xd (actually do it though)
 - points --> themes
 - profile borders???
 	- discord cat ears border (real and true)
 - stealing points?
 - confetti on submit
 - idk
-
-
-holy SHIT i just realized that steps 1–7 need to be done within the next month
-i'm not gonna have time for literally anything else...

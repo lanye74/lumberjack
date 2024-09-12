@@ -4,7 +4,7 @@
 	import BorderBox from "$lib/components/BorderBox.svelte";
 	import ImageWithIconFallback from "$lib/components/ImageWithIconFallback.svelte";
 	import UserProfileAction from "$lib/components/UserProfileAction.svelte";
-	import {currentProfile, currentProfileIndex, nextProfile, profiles} from "$lib/profiles.js";
+	import {currentProfile, currentProfileIndex, nextProfile, profilePrefixes} from "$lib/profiles.js";
 	import {formatPoints} from "$lib/formatters.js";
 	import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
 
@@ -15,7 +15,7 @@
 	const user = data.user!;
 	const profile = data.profile!;
 
-	currentProfileIndex.set(profiles.indexOf(profile));
+	currentProfileIndex.set(profilePrefixes.indexOf(profile));
 
 
 	let avatarUrl = user.user_metadata.avatar_url as string;

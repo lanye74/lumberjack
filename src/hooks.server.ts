@@ -5,7 +5,7 @@ import {type CookieMethodsServer, createServerClient} from "@supabase/ssr";
 import {sequence} from "@sveltejs/kit/hooks";
 import type {SupabaseClient} from "@supabase/supabase-js";
 
-import {defaultProfile} from "$lib/profiles.js";
+import {defaultProfilePrefix} from "$lib/profiles.js";
 import type {RedirectableRoute, RedirectMap} from "$lib/types/routes.js";
 
 
@@ -93,9 +93,9 @@ const setProfileCookie: Handle = async ({event: requestEvent, resolve}) => {
 	}
 
 	const cookie = requestEvent.cookies.get("lumberjack_user_profile")?.toString();
-	const profile = cookie ?? await fetchUserProfile(supabase, requestEvent.locals.user!.id);
+	const profilePrefix = cookie ?? await fetchUserProfile(supabase, requestEvent.locals.user!.id);
 
-	requestEvent.cookies.set("lumberjack_user_profile", profile, {path: "/"});
+	requestEvent.cookies.set("lumberjack_user_profile", profilePrefix, {path: "/"});
 
 	return resolve(requestEvent);
 }
@@ -111,10 +111,10 @@ async function fetchUserProfile(supabase: SupabaseClient, userId: string) {
 
 	// should never be missing this entry error, but it could i guess
 	if(!error || error.code === "PGRST116") {
-		return data?.profile ?? defaultProfile;
+		return data?.profile ?? defaultProfilePrefix;
 	}
 
-	return defaultProfile;
+	return defaultProfilePrefix;
 }
 
 

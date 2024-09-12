@@ -27,7 +27,6 @@ export default defineConfig(args => {
 	return {
 		plugins: [
 			sveltekit(),
-			// @ts-ignore
 			SvelteKitPWA({...pwaManifest})
 		],
 

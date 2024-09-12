@@ -1,6 +1,6 @@
 import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
 import {submitLocationLogPrefix} from "$lib/consoleColorPrefixes.js";
-import {defaultProfile} from "$lib/profiles.js";
+import {defaultProfilePrefix} from "$lib/profiles.js";
 
 
 
@@ -23,13 +23,13 @@ export const actions = {
 		const user = locals.user!;
 
 		// once again, should never not exist. but it could i guess xd
-		const profile = cookies.get("lumberjack_user_profile")?.toString() ?? defaultProfile;
+		const profilePrefix = cookies.get("lumberjack_user_profile")?.toString() ?? defaultProfilePrefix;
 
 		const {userLocation, userPurpose, didTypePurpose} = parsedForm;
 		const currentTime = new Date().toISOString();
 
 
-		const {error: submitLocationError} = await supabase.from(`${profile}_location_logs`)
+		const {error: submitLocationError} = await supabase.from(`${profilePrefix}_location_logs`)
 			.insert({
 				timestamp: currentTime,
 				google_user_id: user.id,
@@ -52,7 +52,7 @@ export const actions = {
 
 		// TODO: use technique outlined here https://github.com/orgs/supabase/discussions/909#discussioncomment-546117
 		// in order to make only one call, instead of reading, then writing
-		const {data: readPointsData, error: readPointsError} = await supabase.from(`${profile}_leaderboard`)
+		const {data: readPointsData, error: readPointsError} = await supabase.from(`${profilePrefix}_leaderboard`)
 			.select("points")
 			.eq("google_user_id", user.id)
 			.single();
@@ -72,7 +72,7 @@ export const actions = {
 		const points = (readPointsData?.points ?? 0) as number;
 
 		// TODO: is upsert okay here? i only want to update points
-		const {error: updatePointsError} = await supabase.from(`${profile}_leaderboard`)
+		const {error: updatePointsError} = await supabase.from(`${profilePrefix}_leaderboard`)
 			.upsert({google_user_id: user.id, points: points + 1000})
 			.eq("google_user_id", user.id);
 
@@ -97,7 +97,7 @@ export const actions = {
 		const pointsCookie = cookies.get("lumberjack_user_points")?.toString();
 		const pointsJson = JSON.parse(pointsCookie ?? '{"ast": null,"maint":null}');
 
-		pointsJson[profile] = points + 1000;
+		pointsJson[profilePrefix] = points + 1000;
 
 		// TODO: make a cookie manager
 		cookies.set("lumberjack_user_points", JSON.stringify(pointsJson), {path: "/"});

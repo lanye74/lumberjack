@@ -1,3 +1,7 @@
+import type {ProfilePrefix} from "./profiles.js";
+
+
+
 export type LoadLogsOutput = {
 	recentLogs: LocationLog[] | null;
 };
@@ -51,5 +55,5 @@ type UserPublicInfo = {
 
 export type LoadProfileAndPointsOutput = {
 	points: number | null;
-	profile: string;
+	profile: ProfilePrefix;
 };

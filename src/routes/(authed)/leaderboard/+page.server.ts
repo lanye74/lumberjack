@@ -1,13 +1,15 @@
 import type {SupabaseClient} from "@supabase/supabase-js";
 
+import {defaultProfilePrefix} from "$lib/profiles.js";
+import type {LeaderboardCache} from "$lib/types/leaderboard.js";
 import {leaderboardLogPrefix} from "$lib/consoleColorPrefixes.js";
-import {defaultProfile} from "$lib/profiles.js";
 import type {PointsLeaderboardEntry, PointsLeaderboardEntryRow} from "$lib/types/database.js";
+import type {ProfilePrefix} from "$lib/types/profiles.js";
 
 
 
 // TODO: PLEAAAASE clean this up
-const leaderboards = {
+const leaderboards: LeaderboardCache = {
 	ast: {
 		lastRefreshTime: 0,
 		cachedState: null
@@ -27,9 +29,8 @@ const autoRefreshPeriod = 1e3 * 60 * 3; // 3 mins
 
 // TODO: make this non-blocking and use skeleton loaders
 export async function load({cookies, locals: {supabase}}) {
-	// TODO: make keyof typeof leaderboards a standard type
-	const targetLeaderboardPrefix = (cookies.get("lumberjack_user_profile")?.toString() ?? defaultProfile) as keyof typeof leaderboards;
-	const targetLeaderboard = leaderboards[targetLeaderboardPrefix];
+	const profilePrefix = (cookies.get("lumberjack_user_profile")?.toString() ?? defaultProfilePrefix) as ProfilePrefix;
+	const leaderboard = leaderboards[profilePrefix];
 
 
 	const hasSubmittedPointsRecently = cookies.get("lumberjack_has_submitted_points_recently")?.toString();
@@ -39,23 +40,20 @@ export async function load({cookies, locals: {supabase}}) {
 
 	// use cached response!!!
 	if((hasSubmittedPointsRecently === undefined || hasSubmittedPointsRecently === "false") &&
-	    targetLeaderboard.cachedState !== null &&
+	    leaderboard.cachedState !== null &&
 		// true if we are not at the forced refresh period yet
-		currentTime < (targetLeaderboard.lastRefreshTime + autoRefreshPeriod)
+		currentTime < (leaderboard.lastRefreshTime + autoRefreshPeriod)
 	) {
 		return {
-			leaderboard: targetLeaderboard.cachedState
+			leaderboard: leaderboard.cachedState
 		};
 	}
 
 
-	const dataFromLeaderboard = await readDatabase(supabase, targetLeaderboardPrefix);
-	// @ts-ignore
-	// TODO: types
-	// also, i still don't trust pass by reference
-	leaderboards[targetLeaderboardPrefix].cachedState = dataFromLeaderboard;
-
-	leaderboards[targetLeaderboardPrefix].lastRefreshTime = Date.now();
+	const dataFromLeaderboard = await readDatabase(supabase, profilePrefix);
+	// i still don't trust pass by reference
+	leaderboards[profilePrefix].cachedState = dataFromLeaderboard;
+	leaderboards[profilePrefix].lastRefreshTime = Date.now();
 
 	cookies.set("lumberjack_has_submitted_points_recently", "false", {path: "/"});
 
