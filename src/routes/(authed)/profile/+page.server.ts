@@ -17,6 +17,7 @@ export async function load({cookies, locals: {supabase, user}}) {
 	let profileCookie = cookies.get("lumberjack_user_profile")?.toString();
 
 	const profile = profileCookie ? profileCookie : await fetchUserProfile(supabase, user!.id);
+	output.profile = profile;
 
 	if(!profileCookie) {
 		cookies.set("lumberjack_user_profile", profile, {path: "/"});
