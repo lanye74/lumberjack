@@ -18,16 +18,14 @@ function generateDefaultPointsCookie() {
 
 
 
-function getUserPointsCookie(cookies: Cookies, setIfMissing: boolean = true) {
+function getUserPointsCookie(cookies: Cookies) {
 	const pointsCookie = cookies.get("lumberjack_user_points")?.toString();
-	const pointsJson = pointsCookie ? JSON.parse(pointsCookie) as PointsCookieJson : generateDefaultPointsCookie();
+	const pointsJson = JSON.parse(pointsCookie ?? "0");
 
-	if(!pointsCookie && setIfMissing) {
-		cookies.set("lumberjack_user_points", JSON.stringify(pointsJson), {path: "/"});
-	}
-
-
-	return pointsJson;
+	// quick check if cookie needs to be version-migrated (or if default condition is triggered above)
+	return (pointsCookie === undefined || typeof pointsJson === "number")
+		? generateDefaultPointsCookie()
+		: pointsJson;
 }
 
 
@@ -35,7 +33,8 @@ function getUserPointsCookie(cookies: Cookies, setIfMissing: boolean = true) {
 // returns current profile's points
 // TODO: name these better
 export async function setUserPointsCookie(cookies: Cookies, supabase: SupabaseClient, profilePrefix: ProfilePrefix, userId: string) {
-	const pointsJson = getUserPointsCookie(cookies, false);
+	const pointsJson = generateDefaultPointsCookie();
+
 
 	// TODO: error handling????????
 	const pointsValue = pointsJson[profilePrefix] ?? await dbFetchUserPoints(supabase, profilePrefix, userId);
@@ -50,7 +49,7 @@ export async function setUserPointsCookie(cookies: Cookies, supabase: SupabaseCl
 
 
 export function updateUserPointsCookie(cookies: Cookies, profilePrefix: ProfilePrefix, value: number) {
-	const pointsJson = getUserPointsCookie(cookies, false);
+	const pointsJson = getUserPointsCookie(cookies);
 	pointsJson[profilePrefix] = value;
 
 	cookies.set("lumberjack_user_points", JSON.stringify(pointsJson), {path: "/"});
