@@ -1,9 +1,9 @@
 import {error} from "@sveltejs/kit";
-import type {SupabaseClient} from "@supabase/supabase-js";
 
 import {defaultProfilePrefix, mapPrettyNameToProfilePrefix, profilePretties} from "$lib/profiles.js";
 import type {LoadProfileAndPointsOutput} from "$lib/types/database.js";
-import type {ProfilePrefix, ProfilePretty} from "$lib/types/profiles.js";
+import type {ProfilePretty} from "$lib/types/profiles.js";
+import {getProfileCookie, setUserPointsCookie} from "$lib/cookies.js";
 
 
 
@@ -14,57 +14,15 @@ export async function load({cookies, locals: {supabase, user}}) {
 	};
 
 
-	// this should never not be set, but in case it isn't
-	let profileCookie = cookies.get("lumberjack_user_profile")?.toString() as ProfilePrefix;
+	// TODO: Promise.all?
+	const profilePrefix = await getProfileCookie(cookies, supabase, user!.id);
+	output.profile = profilePrefix;
 
-	const profile = profileCookie ? profileCookie : await fetchUserProfile(supabase, user!.id);
-	output.profile = profile;
-
-	if(!profileCookie) {
-		cookies.set("lumberjack_user_profile", profile, {path: "/"});
-	}
-
-
-	const pointsCookie = cookies.get("lumberjack_user_points")?.toString();
-	const pointsJson = JSON.parse(pointsCookie ?? '{"ast": null,"maint":null}');
-
-	output.points = pointsJson[profile] ?? await fetchUserPoints(supabase, profile, user!.id);
-	pointsJson[profile] = output.points;
-
-	// TODO: make a cookie manager
-	cookies.set("lumberjack_user_points", JSON.stringify(pointsJson), {path: "/"});
+	const currentProfilePoints = await setUserPointsCookie(cookies, supabase, profilePrefix, user!.id);
+	output.points = currentProfilePoints;
 
 
 	return output;
-}
-
-
-
-// TODO: standardize this argument name "profile"
-async function fetchUserPoints(supabase: SupabaseClient, profile: string, userId: string) {
-	const {data, error} = await supabase.from(`${profile}_leaderboard`)
-		.select("points")
-		.eq("google_user_id", userId)
-		.single();
-
-
-	if(error && error.code !== "PGRST116") {
-		return null;
-	}
-
-
-	return data?.points ?? 0;
-}
-
-
-
-async function fetchUserProfile(supabase: SupabaseClient, userId: string): Promise<ProfilePrefix> {
-	const {data} = await supabase.from("public_user_data")
-		.select("profile")
-		.eq("google_user_id", userId)
-		.single();
-
-	return (data?.profile ?? defaultProfilePrefix);
 }
 
 
@@ -94,24 +52,14 @@ export const actions = {
 		}
 
 
+		// TODO: make this a manager method
 		cookies.set("lumberjack_user_profile", profilePrefix, {path: "/"});
-
-
-		const pointsCookie = cookies.get("lumberjack_user_points")?.toString();
-		// TODO: extract this default into an object
-		const pointsJson = JSON.parse(pointsCookie ?? '{"ast": null,"maint":null}');
-
-		// TODO: error handling????????
-		let pointsValue = pointsJson[profilePrefix] ?? await fetchUserPoints(supabase, profilePrefix, user!.id);
-		pointsJson[profilePrefix] = pointsValue;
-
-		// TODO: make a cookie manager
-		cookies.set("lumberjack_user_points", JSON.stringify(pointsJson), {path: "/"});
+		const currentProfilePoints = await setUserPointsCookie(cookies, supabase, profilePrefix, user!.id);
 
 
 		return {
 			profile: profilePrefix,
-			points: pointsValue
+			points: currentProfilePoints
 		}
 	}
 }

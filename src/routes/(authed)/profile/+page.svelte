@@ -107,6 +107,11 @@
 		font: italic 1.5rem var(--font-serif);
 		color: #666;
 	}
+
+	.bold {
+		font: inherit;
+		font-weight: 600;
+	}
 </style>
 
 
@@ -121,7 +126,7 @@
 
 		<div class="user-info">
 			<h2>{user.user_metadata.full_name}</h2>
-			<p>Profile: {$currentProfile}</p>
+			<p>Profile: <span class="bold">{$currentProfile}</span></p>
 			<p>{pointsText} points</p>
 		</div>
 	</BorderBox>

@@ -1,6 +1,8 @@
 import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
 import {submitLocationLogPrefix} from "$lib/consoleColorPrefixes.js";
 import {defaultProfilePrefix} from "$lib/profiles.js";
+import {updateUserPointsCookie} from "$lib/cookies.js";
+import type {ProfilePrefix} from "$lib/types/profiles.js";
 
 
 
@@ -23,7 +25,7 @@ export const actions = {
 		const user = locals.user!;
 
 		// once again, should never not exist. but it could i guess xd
-		const profilePrefix = cookies.get("lumberjack_user_profile")?.toString() ?? defaultProfilePrefix;
+		const profilePrefix = (cookies.get("lumberjack_user_profile")?.toString() ?? defaultProfilePrefix) as ProfilePrefix;
 
 		const {userLocation, userPurpose, didTypePurpose} = parsedForm;
 		const currentTime = new Date().toISOString();
@@ -92,15 +94,8 @@ export const actions = {
 		// let the server know to not serve a cached leadboard read
 		cookies.set("lumberjack_has_submitted_points_recently", "true", {path: "/"});
 
+		updateUserPointsCookie(cookies, profilePrefix, points + 1000);
 
-
-		const pointsCookie = cookies.get("lumberjack_user_points")?.toString();
-		const pointsJson = JSON.parse(pointsCookie ?? '{"ast": null,"maint":null}');
-
-		pointsJson[profilePrefix] = points + 1000;
-
-		// TODO: make a cookie manager
-		cookies.set("lumberjack_user_points", JSON.stringify(pointsJson), {path: "/"});
 
 
 		return {

@@ -1,0 +1,100 @@
+import type {Cookies} from "@sveltejs/kit";
+import type {SupabaseClient} from "@supabase/supabase-js";
+import type {ProfilePrefix} from "./types/profiles.js";
+import {defaultProfilePrefix} from "./profiles.js";
+
+
+
+type PointsCookieJson = {[key in ProfilePrefix]: number | null};
+
+const defaultPointsCookie: PointsCookieJson = {
+	ast: null,
+	maint: null
+};
+
+function generateDefaultPointsCookie() {
+	return Object.assign({}, defaultPointsCookie);
+}
+
+
+
+function getUserPointsCookie(cookies: Cookies, setIfMissing: boolean = true) {
+	const pointsCookie = cookies.get("lumberjack_user_points")?.toString();
+	const pointsJson = pointsCookie ? JSON.parse(pointsCookie) as PointsCookieJson : generateDefaultPointsCookie();
+
+	if(!pointsCookie && setIfMissing) {
+		cookies.set("lumberjack_user_points", JSON.stringify(pointsJson), {path: "/"});
+	}
+
+
+	return pointsJson;
+}
+
+
+
+// returns current profile's points
+// TODO: name these better
+export async function setUserPointsCookie(cookies: Cookies, supabase: SupabaseClient, profilePrefix: ProfilePrefix, userId: string) {
+	const pointsJson = getUserPointsCookie(cookies, false);
+
+	// TODO: error handling????????
+	const pointsValue = pointsJson[profilePrefix] ?? await dbFetchUserPoints(supabase, profilePrefix, userId);
+	pointsJson[profilePrefix] = pointsValue;
+
+
+	cookies.set("lumberjack_user_points", JSON.stringify(pointsJson), {path: "/"});
+
+
+	return pointsValue;
+}
+
+
+
+export function updateUserPointsCookie(cookies: Cookies, profilePrefix: ProfilePrefix, value: number) {
+	const pointsJson = getUserPointsCookie(cookies, false);
+	pointsJson[profilePrefix] = value;
+
+	cookies.set("lumberjack_user_points", JSON.stringify(pointsJson), {path: "/"});
+}
+
+
+
+export async function getProfileCookie(cookies: Cookies, supabase: SupabaseClient, userId: string) {
+	let profileCookie = cookies.get("lumberjack_user_profile")?.toString() as ProfilePrefix;
+
+	const profile = profileCookie ? profileCookie : await dbFetchUserProfile(supabase, userId);
+
+
+	return profile;
+}
+
+
+
+
+
+
+async function dbFetchUserPoints(supabase: SupabaseClient, profilePrefix: string, userId: string) {
+	const {data, error} = await supabase.from(`${profilePrefix}_leaderboard`)
+		.select("points")
+		.eq("google_user_id", userId)
+		.single();
+
+
+	if(error && error.code !== "PGRST116") {
+		return null;
+	}
+
+
+	return data?.points as number ?? 0;
+}
+
+
+
+async function dbFetchUserProfile(supabase: SupabaseClient, userId: string): Promise<ProfilePrefix> {
+	const {data} = await supabase.from("public_user_data")
+		.select("profile")
+		.eq("google_user_id", userId)
+		.single();
+
+	return (data?.profile as ProfilePrefix ?? defaultProfilePrefix);
+}
