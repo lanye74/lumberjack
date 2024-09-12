@@ -136,7 +136,10 @@
 	<!-- TODO: (2) wrap this in a button instead of a div -->
 	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<div class="wrapper" class:is-flying-in={isVisible} class:is-flying-out={isUnloading} style:--navbar-height={`${$navbarHeight}px`} on:click={dismiss} role="dialog">
+	<div class="wrapper" class:is-flying-in={isVisible} class:is-flying-out={isUnloading}
+         style:--navbar-height={`${$navbarHeight}px`}
+         on:click={dismiss}
+         aria-live="assertive" role="alert">
 		<div class="toast">
 			<!-- TODO: possibly put an icon & progress bar here -->
 			<h3>Lumberjack</h3>

@@ -180,11 +180,11 @@
 
 
 <form method="POST" action="?/submitLocation" use:enhance={performClientSideValidation}>
-	<!-- TODO: a11y here -->
+	<!-- TODO: more a11y here -->
 	<fieldset>
-		<legend>Location</legend>
+		<legend id="location-legend">Location</legend>
 
-		<select name="location-selector">
+		<select name="location-selector" aria-labelledby="location-legend">
 			<option selected hidden value={""}>Select a site...</option>
 			{#each jcsSites as site}
 				<option>{site}</option>
@@ -194,9 +194,9 @@
 
 
 	<fieldset>
-		<legend>Purpose for visiting</legend>
+		<legend id="purpose-legend">Purpose for visiting</legend>
 
-		<select name="purpose-selector" bind:value={currentlySelectedPurpose}>
+		<select name="purpose-selector" aria-labelledby="purpose-legend" bind:value={currentlySelectedPurpose}>
 			<option selected hidden value={""}>Select a reason...</option>
 			{#each possibleVisitPurposes as purpose}
 				<option>{purpose}</option>
@@ -207,7 +207,7 @@
 			<div class="text-purpose-container">
 				<!-- bar thing -->
 				<span></span>
-				<input type="text" name="location-purpose" placeholder="Type a reason...">
+				<input type="text" name="location-purpose" aria-labelledby="purpose-legend" placeholder="Type a reason...">
 			</div>
 		{/if}
 	</fieldset>
