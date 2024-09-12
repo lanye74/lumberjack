@@ -93,6 +93,7 @@ export async function getUserProfilePrefixCookie(cookies: Cookies, supabase: Sup
 
 
 
+
 export function setHasSubmittedLogRecentlyCookie(cookies: Cookies, state: boolean) {
 	cookies.set("lumberjack_has_submitted_log_recently", `${state}`, {path: "/"});
 }

@@ -3,7 +3,7 @@ import type {SupabaseClient} from "@supabase/supabase-js";
 import type {LeaderboardCache} from "$lib/types/leaderboard.js";
 import {leaderboardLogPrefix} from "$lib/consoleColorPrefixes.js";
 import type {PointsLeaderboardEntry, PointsLeaderboardEntryRow} from "$lib/types/database.js";
-import {getUserProfilePrefixCookie, setHasSubmittedLogRecentlyCookie} from "$lib/cookies.js";
+import {getHasSubmittedLogRecentlyCookie, getUserProfilePrefixCookie, setHasSubmittedLogRecentlyCookie} from "$lib/cookies.js";
 
 
 
@@ -32,13 +32,13 @@ export async function load({cookies, locals: {supabase, user}}) {
 	const leaderboard = leaderboards[profilePrefix];
 
 
-	const hasSubmittedPointsRecently = cookies.get("lumberjack_has_submitted_points_recently")?.toString();
+	const hasSubmittedPointsRecently = getHasSubmittedLogRecentlyCookie(cookies);
 
 	const currentTime = Date.now();
 
 
 	// use cached response!!!
-	if((hasSubmittedPointsRecently === "false") &&
+	if((hasSubmittedPointsRecently === false) &&
 	    leaderboard.cachedState !== null &&
 		// true if we are not at the forced refresh period yet
 		currentTime < (leaderboard.lastRefreshTime + autoRefreshPeriod)
