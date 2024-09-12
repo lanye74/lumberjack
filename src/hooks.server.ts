@@ -3,10 +3,9 @@ import {PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL} from "$env/static/public"
 import {type Cookies, type Handle, redirect} from "@sveltejs/kit";
 import {type CookieMethodsServer, createServerClient} from "@supabase/ssr";
 import {sequence} from "@sveltejs/kit/hooks";
-import type {SupabaseClient} from "@supabase/supabase-js";
 
-import {defaultProfilePrefix} from "$lib/profiles.js";
 import type {RedirectableRoute, RedirectMap} from "$lib/types/routes.js";
+import {getUserProfilePrefixCookie, setUserProfileCookie} from "$lib/cookies.js";
 
 
 
@@ -92,29 +91,12 @@ const setProfileCookie: Handle = async ({event: requestEvent, resolve}) => {
 		return resolve(requestEvent);
 	}
 
-	const cookie = requestEvent.cookies.get("lumberjack_user_profile")?.toString();
-	const profilePrefix = cookie ?? await fetchUserProfile(supabase, requestEvent.locals.user!.id);
 
-	requestEvent.cookies.set("lumberjack_user_profile", profilePrefix, {path: "/"});
+	// this will set it if it does not exist
+	await getUserProfilePrefixCookie(requestEvent.cookies, supabase, requestEvent.locals.user!.id);
+
 
 	return resolve(requestEvent);
-}
-
-
-
-// TODO: unify this code with the one in routes/(authed)/profile/+page.server.ts
-async function fetchUserProfile(supabase: SupabaseClient, userId: string) {
-	const {data, error} = await supabase.from("public_user_data")
-		.select("profile")
-		.eq("google_user_id", userId)
-		.single();
-
-	// should never be missing this entry error, but it could i guess
-	if(!error || error.code === "PGRST116") {
-		return data?.profile ?? defaultProfilePrefix;
-	}
-
-	return defaultProfilePrefix;
 }
 
 

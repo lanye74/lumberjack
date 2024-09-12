@@ -3,7 +3,7 @@ import {error} from "@sveltejs/kit";
 import {defaultProfilePrefix, mapPrettyNameToProfilePrefix, profilePretties} from "$lib/profiles.js";
 import type {LoadProfileAndPointsOutput} from "$lib/types/database.js";
 import type {ProfilePretty} from "$lib/types/profiles.js";
-import {getProfileCookie, setUserPointsCookie} from "$lib/cookies.js";
+import {getProfileCookie, setUserPointsCookie, setUserProfileCookie} from "$lib/cookies.js";
 
 
 
@@ -52,11 +52,12 @@ export const actions = {
 		}
 
 
-		// TODO: make this a manager method
-		cookies.set("lumberjack_user_profile", profilePrefix, {path: "/"});
+		setUserProfileCookie(cookies, profilePrefix);
+
 		const currentProfilePoints = await setUserPointsCookie(cookies, supabase, profilePrefix, user!.id);
 
 
+		// TODO: rename these
 		return {
 			profile: profilePrefix,
 			points: currentProfilePoints

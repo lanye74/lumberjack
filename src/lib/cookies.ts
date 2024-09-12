@@ -1,7 +1,7 @@
 import type {Cookies} from "@sveltejs/kit";
 import type {SupabaseClient} from "@supabase/supabase-js";
 import type {ProfilePrefix} from "./types/profiles.js";
-import {defaultProfilePrefix} from "./profiles.js";
+import {defaultProfilePrefix, profilePrefixes} from "./profiles.js";
 
 
 
@@ -41,7 +41,6 @@ export async function setUserPointsCookie(cookies: Cookies, supabase: SupabaseCl
 	const pointsValue = pointsJson[profilePrefix] ?? await dbFetchUserPoints(supabase, profilePrefix, userId);
 	pointsJson[profilePrefix] = pointsValue;
 
-
 	cookies.set("lumberjack_user_points", JSON.stringify(pointsJson), {path: "/"});
 
 
@@ -68,6 +67,51 @@ export async function getProfileCookie(cookies: Cookies, supabase: SupabaseClien
 	return profile;
 }
 
+
+
+
+
+export function setUserProfileCookie(cookies: Cookies, profilePrefix: ProfilePrefix) {
+	cookies.set("lumberjack_user_profile", profilePrefix, {path: "/"});
+}
+
+
+
+export async function getUserProfilePrefixCookie(cookies: Cookies, supabase: SupabaseClient, userId: string) {
+	let profilePrefix = cookies.get("lumberjack_user_profile")?.toString();
+
+
+	// unfortunate typecast here
+	if(!profilePrefix || !profilePrefixes.includes(profilePrefix as ProfilePrefix)) {
+		profilePrefix = await dbFetchUserProfile(supabase, userId);
+	}
+
+	setUserProfileCookie(cookies, profilePrefix as ProfilePrefix);
+
+	return profilePrefix as ProfilePrefix;
+}
+
+
+
+
+export function setHasSubmittedLogRecentlyCookie(cookies: Cookies, state: boolean) {
+	cookies.set("lumberjack_has_submitted_log_recently", `${state}`, {path: "/"});
+}
+
+
+
+export function getHasSubmittedLogRecentlyCookie(cookies: Cookies) {
+	const value = cookies.get("lumberjack_has_submitted_log_recently")?.toString();
+
+	if(value === undefined) {
+		setHasSubmittedLogRecentlyCookie(cookies, false);
+
+		return false;
+	}
+
+
+	return value === "true";
+}
 
 
 
