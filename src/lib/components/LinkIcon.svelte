@@ -16,8 +16,17 @@
 		"/profile": "fa-solid:user-circle"
 	};
 
+	const ariaLabelMappings: {[key in AuthedRoute]: string} = {
+		"/home": "Navigate to home page",
+		"/editor": "Navigate to log editor",
+		"/leaderboard": "Navigate to the points leaderboad",
+		"/profile": "Navigate to your profile page"
+	};
+
+
 
 	const mappedIconName = routeIconMappings[path];
+	const mappedAriaLabel = ariaLabelMappings[path]
 </script>
 
 <style>
@@ -50,7 +59,7 @@
 
 
 
-<a href={path} data-sveltekit-preload-data="hover">
+<a href={path} data-sveltekit-preload-data="hover" aria-label={mappedAriaLabel}>
 	<!-- TODO: the icons don't populate in edge?????? -->
 	<iconify-icon icon={mappedIconName} />
 </a>
