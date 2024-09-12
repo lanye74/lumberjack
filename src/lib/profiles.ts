@@ -6,8 +6,8 @@ import {createArrayIndexCycler} from "./stores.js";
 
 // TODO: name these sensibly
 const profileNameMap = {
-	"AST": "ast",
-	"Maintenance": "maint"
+	"ast": "AST",
+	"maint": "Maintenance"
 };
 
 
@@ -15,11 +15,13 @@ const profileNameMap = {
 export const profiles = Object.keys(profileNameMap);
 export const defaultProfile = profiles[0];
 
+export const prettyProfiles = Object.values(profileNameMap);
+
 
 
 export const currentProfileIndex = createArrayIndexCycler(profiles.length);
 // can't export reactive, export a derived
-export const currentProfile = derived(currentProfileIndex, (index) => profiles[index]);
+export const currentProfile = derived(currentProfileIndex, (index) => mapProfilePrefixToPrettyName(profiles[index]));
 
 
 
@@ -31,11 +33,19 @@ const nextProfileIndex = createArrayIndexCycler(profiles.length);
 currentProfileIndex.subscribe(nextProfileIndex.increment);
 
 
-export const nextProfile = derived(nextProfileIndex, (index) => profiles[index]);
+export const nextProfile = derived(nextProfileIndex, (index) => mapProfilePrefixToPrettyName(profiles[index]));
 
 
 
-export function mapProfileToPrefix(profile?: string) {
+export function mapProfilePrefixToPrettyName(profile?: string) {
 	// @ts-ignore
 	return profileNameMap[profile ?? defaultProfile] ?? defaultProfile;
+}
+
+
+
+// TODO: arghhhhh this is so bad
+export function mapPrettyNameToProfilePrefix(profile?: string) {
+	// @ts-ignore
+	return profiles[prettyProfiles.indexOf(profile ?? defaultProfile)];
 }

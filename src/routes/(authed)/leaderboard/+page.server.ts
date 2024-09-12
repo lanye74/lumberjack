@@ -1,7 +1,7 @@
 import type {SupabaseClient} from "@supabase/supabase-js";
 
 import {leaderboardLogPrefix} from "$lib/consoleColorPrefixes.js";
-import {mapProfileToPrefix} from "$lib/profiles.js";
+import {defaultProfile} from "$lib/profiles.js";
 import type {PointsLeaderboardEntry, PointsLeaderboardEntryRow} from "$lib/types/database.js";
 
 
@@ -28,7 +28,7 @@ const autoRefreshPeriod = 1e3 * 60 * 3; // 3 mins
 // TODO: make this non-blocking and use skeleton loaders
 export async function load({cookies, locals: {supabase}}) {
 	// TODO: make keyof typeof leaderboards a standard type
-	const targetLeaderboardPrefix = mapProfileToPrefix(cookies.get("lumberjack_user_profile")?.toString()) as keyof typeof leaderboards;
+	const targetLeaderboardPrefix = (cookies.get("lumberjack_user_profile")?.toString() ?? defaultProfile) as keyof typeof leaderboards;
 	const targetLeaderboard = leaderboards[targetLeaderboardPrefix];
 
 
