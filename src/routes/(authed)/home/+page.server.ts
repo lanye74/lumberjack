@@ -19,17 +19,15 @@ export const actions = {
 
 
 		const {supabase} = locals;
-		// :c
 		const user = locals.user!;
 
-		// once again, should never not exist. but it could i guess xd
-		const profilePrefix = await createCookieManager(cookies, supabase).getProfile(user.id);
+		const currentProfile = await createCookieManager(cookies, supabase).getProfile(user.id);
 
 		const {userLocation, userPurpose, didTypePurpose} = parsedForm;
 		const currentTime = new Date().toISOString();
 
 
-		const {error: submitLocationError} = await supabase.from(`${profilePrefix}_location_logs`)
+		const {error: submitLocationError} = await supabase.from(`${currentProfile}_location_logs`)
 			.insert({
 				timestamp: currentTime,
 				google_user_id: user.id,
@@ -52,7 +50,7 @@ export const actions = {
 
 		// TODO: use technique outlined here https://github.com/orgs/supabase/discussions/909#discussioncomment-546117
 		// in order to make only one call, instead of reading, then writing
-		const {data: readPointsData, error: readPointsError} = await supabase.from(`${profilePrefix}_leaderboard`)
+		const {data: readPointsData, error: readPointsError} = await supabase.from(`${currentProfile}_leaderboard`)
 			.select("points")
 			.eq("google_user_id", user.id)
 			.single();
@@ -72,7 +70,7 @@ export const actions = {
 		const points = (readPointsData?.points ?? 0) as number;
 
 		// TODO: is upsert okay here? i only want to update points
-		const {error: updatePointsError} = await supabase.from(`${profilePrefix}_leaderboard`)
+		const {error: updatePointsError} = await supabase.from(`${currentProfile}_leaderboard`)
 			.upsert({google_user_id: user.id, points: points + 1000})
 			.eq("google_user_id", user.id);
 
@@ -92,7 +90,7 @@ export const actions = {
 		// let the server know to not serve a cached leadboard read
 		createCookieManager(cookies).setLogSubmissionStatus(true);
 
-		createCookieManager(cookies).setProfilePoints(profilePrefix, points + 1000);
+		createCookieManager(cookies).setProfilePoints(currentProfile, points + 1000);
 
 
 

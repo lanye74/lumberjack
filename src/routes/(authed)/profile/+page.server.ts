@@ -1,29 +1,21 @@
 import {error} from "@sveltejs/kit";
 
 import createCookieManager from "$lib/createCookieManager.js";
-import {defaultProfilePrefix, mapPrettyNameToProfilePrefix, profilePretties} from "$lib/profiles.js";
-import type {LoadProfileAndPointsOutput} from "$lib/types/database.js";
+import {mapPrettyNameToProfilePrefix, profilePretties} from "$lib/profiles.js";
 import type {ProfilePretty} from "$lib/types/profiles.js";
 
 
 
 export async function load({cookies, locals: {supabase, user}}) {
-	let output: LoadProfileAndPointsOutput = {
-		points: null,
-		profile: defaultProfilePrefix
-	};
-
-
 	// TODO: Promise.all?
-	const profilePrefix = await createCookieManager(cookies, supabase).getProfile(user!.id);
-	output.profile = profilePrefix;
-
-	// FLAG: this is a database read
-	const currentProfilePoints = await createCookieManager(cookies, supabase).getProfilePoints(profilePrefix, user!.id);
-	output.points = currentProfilePoints;
+	const currentProfile = await createCookieManager(cookies, supabase).getProfile(user!.id);
+	const profilePoints = await createCookieManager(cookies, supabase).getProfilePoints(currentProfile, user!.id);
 
 
-	return output;
+	return {
+		profilePoints,
+		currentProfile
+	};
 }
 
 
@@ -34,7 +26,7 @@ export const actions = {
 		const formData = await request.formData();
 
 		const profilePretty = formData.get("new-profile")?.toString() as ProfilePretty | undefined;
-		const profilePrefix = mapPrettyNameToProfilePrefix(profilePretty);
+		const currentProfile = mapPrettyNameToProfilePrefix(profilePretty);
 
 		// TODO: make this check run client side lmao
 		if(profilePretty === undefined || !profilePretties.includes(profilePretty)) {
@@ -44,7 +36,7 @@ export const actions = {
 
 
 		const changeProfileResponse = await supabase.from("public_user_data")
-			.upsert({profile: profilePrefix})
+			.upsert({profile: currentProfile})
 			.eq("google_user_id", user!.id);
 
 
@@ -53,15 +45,15 @@ export const actions = {
 		}
 
 
-		createCookieManager(cookies).setProfile(profilePrefix);
+		createCookieManager(cookies).setProfile(currentProfile);
 
-		const currentProfilePoints = await createCookieManager(cookies, supabase).getProfilePoints(profilePrefix, user!.id);
+		const profilePoints = await createCookieManager(cookies, supabase).getProfilePoints(currentProfile, user!.id);
 
 
 		// TODO: rename these
 		return {
-			profile: profilePrefix,
-			points: currentProfilePoints
+			profilePoints,
+			currentProfile
 		}
 	}
 }

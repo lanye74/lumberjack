@@ -13,7 +13,7 @@
 	export let data;
 
 	const user = data.user!;
-	const profile = data.profile!;
+	const profile = data.currentProfile!;
 
 	currentProfileIndex.set(profilePrefixes.indexOf(profile));
 
@@ -22,7 +22,7 @@
 	avatarUrl = resizeGoogleAvatarUrl(avatarUrl);
 
 
-	let pointsText = formatPoints(data.points ?? 0);
+	let pointsText = formatPoints(data.profilePoints ?? 0);
 
 
 	// should the
@@ -48,8 +48,7 @@
 					// TODO: this sucks
 					const json = await response.json();
 
-					const points = JSON.parse(json.data)[2] as number;
-
+					const points = JSON.parse(json.data)[1] as number;
 					pointsText = formatPoints(points ?? 0);
 				}
 			}

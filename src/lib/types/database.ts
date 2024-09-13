@@ -54,6 +54,6 @@ type UserPublicInfo = {
 
 
 export type LoadProfileAndPointsOutput = {
-	points: number | null;
-	profile: ProfilePrefix;
+	profilePoints: number | null;
+	currentProfile: ProfilePrefix;
 };

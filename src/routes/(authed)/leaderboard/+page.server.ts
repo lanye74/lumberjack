@@ -28,8 +28,8 @@ const autoRefreshPeriod = 1e3 * 60 * 3; // 3 mins
 
 // TODO: make this non-blocking and use skeleton loaders
 export async function load({cookies, locals: {supabase, user}}) {
-	const profilePrefix = await createCookieManager(cookies, supabase).getProfile(user!.id);
-	const leaderboard = leaderboards[profilePrefix];
+	const currentProfile = await createCookieManager(cookies, supabase).getProfile(user!.id);
+	const leaderboard = leaderboards[currentProfile];
 
 
 	const hasSubmittedPointsRecently = createCookieManager(cookies).getLogSubmissionStatus();
@@ -49,10 +49,10 @@ export async function load({cookies, locals: {supabase, user}}) {
 	}
 
 
-	const dataFromLeaderboard = await readDatabase(supabase, profilePrefix);
+	const dataFromLeaderboard = await readDatabase(supabase, currentProfile);
 	// i still don't trust pass by reference
-	leaderboards[profilePrefix].cachedState = dataFromLeaderboard;
-	leaderboards[profilePrefix].lastRefreshTime = Date.now();
+	leaderboards[currentProfile].cachedState = dataFromLeaderboard;
+	leaderboards[currentProfile].lastRefreshTime = Date.now();
 
 	createCookieManager(cookies).setLogSubmissionStatus(false);
 
