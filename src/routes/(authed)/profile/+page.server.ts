@@ -1,6 +1,6 @@
 import {error} from "@sveltejs/kit";
 
-import cookieManager from "$lib/cookies.js";
+import createCookieManager from "$lib/createCookieManager.js";
 import {defaultProfilePrefix, mapPrettyNameToProfilePrefix, profilePretties} from "$lib/profiles.js";
 import type {LoadProfileAndPointsOutput} from "$lib/types/database.js";
 import type {ProfilePretty} from "$lib/types/profiles.js";
@@ -15,10 +15,10 @@ export async function load({cookies, locals: {supabase, user}}) {
 
 
 	// TODO: Promise.all?
-	const profilePrefix = await cookieManager(cookies, supabase).getProfile(user!.id);
+	const profilePrefix = await createCookieManager(cookies, supabase).getProfile(user!.id);
 	output.profile = profilePrefix;
 
-	const currentProfilePoints = await cookieManager(cookies, supabase).updatePoints(profilePrefix, user!.id);
+	const currentProfilePoints = await createCookieManager(cookies, supabase).updatePoints(profilePrefix, user!.id);
 	output.points = currentProfilePoints;
 
 
@@ -52,9 +52,9 @@ export const actions = {
 		}
 
 
-		cookieManager(cookies).setProfile(profilePrefix);
+		createCookieManager(cookies).setProfile(profilePrefix);
 
-		const currentProfilePoints = await cookieManager(cookies, supabase).updatePoints(profilePrefix, user!.id);
+		const currentProfilePoints = await createCookieManager(cookies, supabase).updatePoints(profilePrefix, user!.id);
 
 
 		// TODO: rename these

@@ -4,7 +4,7 @@ import {type Cookies, type Handle, redirect} from "@sveltejs/kit";
 import {type CookieMethodsServer, createServerClient} from "@supabase/ssr";
 import {sequence} from "@sveltejs/kit/hooks";
 
-import cookieManager from "$lib/cookies.js";
+import createCookieManager from "$lib/createCookieManager.js";
 import type {RedirectableRoute, RedirectMap} from "$lib/types/routes.js";
 
 
@@ -93,7 +93,7 @@ const setProfileCookieHandle: Handle = async ({event: requestEvent, resolve}) =>
 
 
 	// this will set it if it does not exist
-	await cookieManager(requestEvent.cookies, supabase).getProfile(requestEvent.locals.user!.id);
+	await createCookieManager(requestEvent.cookies, supabase).getProfile(requestEvent.locals.user!.id);
 
 
 	return resolve(requestEvent);

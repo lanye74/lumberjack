@@ -21,7 +21,7 @@ function generateDefaultPointsCookie() {
 
 
 
-export default function cookieManager(cookies: Cookies, supabase?: SupabaseClient) {
+export default function createCookieManager(cookies: Cookies, supabase?: SupabaseClient) {
 	return {
 		getPoints: () => getPointsCookie(cookies),
 		updatePoints: (profilePrefix: ProfilePrefix, userId: string) => updatePointsCookie(cookies, supabase!, profilePrefix, userId),
