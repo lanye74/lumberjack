@@ -1,9 +1,9 @@
 import type {SupabaseClient} from "@supabase/supabase-js";
 
+import cookieManager from "$lib/cookies.js";
 import type {LeaderboardCache} from "$lib/types/leaderboard.js";
 import {leaderboardLogPrefix} from "$lib/consoleColorPrefixes.js";
 import type {PointsLeaderboardEntry, PointsLeaderboardEntryRow} from "$lib/types/database.js";
-import {getHasSubmittedLogRecentlyCookie, getUserProfilePrefixCookie, setHasSubmittedLogRecentlyCookie} from "$lib/cookies.js";
 
 
 
@@ -28,11 +28,11 @@ const autoRefreshPeriod = 1e3 * 60 * 3; // 3 mins
 
 // TODO: make this non-blocking and use skeleton loaders
 export async function load({cookies, locals: {supabase, user}}) {
-	const profilePrefix = await getUserProfilePrefixCookie(cookies, supabase, user!.id);
+	const profilePrefix = await cookieManager(cookies, supabase).getProfile(user!.id);
 	const leaderboard = leaderboards[profilePrefix];
 
 
-	const hasSubmittedPointsRecently = getHasSubmittedLogRecentlyCookie(cookies);
+	const hasSubmittedPointsRecently = cookieManager(cookies).getLogSubmissionStatus();
 
 	const currentTime = Date.now();
 
@@ -54,7 +54,7 @@ export async function load({cookies, locals: {supabase, user}}) {
 	leaderboards[profilePrefix].cachedState = dataFromLeaderboard;
 	leaderboards[profilePrefix].lastRefreshTime = Date.now();
 
-	setHasSubmittedLogRecentlyCookie(cookies, false);
+	cookieManager(cookies).setLogSubmissionStatus(false);
 
 
 	return {

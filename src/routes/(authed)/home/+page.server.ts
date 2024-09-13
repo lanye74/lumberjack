@@ -1,6 +1,6 @@
+import cookieManager from "$lib/cookies.js";
 import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
 import {submitLocationLogPrefix} from "$lib/consoleColorPrefixes.js";
-import {getUserProfilePrefixCookie, setHasSubmittedLogRecentlyCookie, updateUserPointsCookie} from "$lib/cookies.js";
 
 
 
@@ -23,7 +23,7 @@ export const actions = {
 		const user = locals.user!;
 
 		// once again, should never not exist. but it could i guess xd
-		const profilePrefix = await getUserProfilePrefixCookie(cookies, supabase, user.id);
+		const profilePrefix = await cookieManager(cookies, supabase).getProfile(user.id);
 
 		const {userLocation, userPurpose, didTypePurpose} = parsedForm;
 		const currentTime = new Date().toISOString();
@@ -90,9 +90,9 @@ export const actions = {
 
 		// IMPORTANT
 		// let the server know to not serve a cached leadboard read
-		setHasSubmittedLogRecentlyCookie(cookies, true);
+		cookieManager(cookies).setLogSubmissionStatus(true);
 
-		updateUserPointsCookie(cookies, profilePrefix, points + 1000);
+		cookieManager(cookies).setPoints(profilePrefix, points + 1000);
 
 
 

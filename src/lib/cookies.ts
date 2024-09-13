@@ -1,7 +1,8 @@
 import type {Cookies} from "@sveltejs/kit";
-import type {SupabaseClient} from "@supabase/supabase-js";
-import type {ProfilePrefix} from "./types/profiles.js";
+import {SupabaseClient} from "@supabase/supabase-js";
+
 import {defaultProfilePrefix, profilePrefixes} from "./profiles.js";
+import type {ProfilePrefix} from "./types/profiles.js";
 
 
 
@@ -18,12 +19,31 @@ function generateDefaultPointsCookie() {
 
 
 
-function getUserPointsCookie(cookies: Cookies) {
-	const pointsCookie = cookies.get("lumberjack_user_points")?.toString();
+
+
+export default function cookieManager(cookies: Cookies, supabase?: SupabaseClient) {
+	return {
+		getPoints: () => getPointsCookie(cookies),
+		updatePoints: (profilePrefix: ProfilePrefix, userId: string) => updatePointsCookie(cookies, supabase!, profilePrefix, userId),
+		setPoints: (profilePrefix: ProfilePrefix, points: number) => setPointsCookie(cookies, profilePrefix, points),
+
+		getProfile: (userId: string) => getProfileCookie(cookies, supabase!, userId),
+		setProfile: (profilePrefix: ProfilePrefix) => setProfileCookie(cookies, profilePrefix),
+
+		getLogSubmissionStatus: () => getLogSubmissionStatusCookie(cookies),
+		setLogSubmissionStatus: (state: boolean) => setLogSubmissionStatusCookie(cookies, state)
+	};
+}
+
+
+
+// TODO: this still sucks
+function getPointsCookie(cookies: Cookies): PointsCookieJson {
+	const pointsCookie = cookies.get("lumberjack_user_points");
 	const pointsJson = JSON.parse(pointsCookie ?? "0");
 
 	// quick check if cookie needs to be version-migrated (or if default condition is triggered above)
-	return (pointsCookie === undefined || typeof pointsJson === "number")
+	return (pointsCookie === undefined || typeof pointsJson !== "object")
 		? generateDefaultPointsCookie()
 		: pointsJson;
 }
@@ -31,25 +51,20 @@ function getUserPointsCookie(cookies: Cookies) {
 
 
 // returns current profile's points
-// TODO: name these better
-export async function setUserPointsCookie(cookies: Cookies, supabase: SupabaseClient, profilePrefix: ProfilePrefix, userId: string) {
-	const pointsJson = generateDefaultPointsCookie();
+async function updatePointsCookie(cookies: Cookies, supabase: SupabaseClient, profilePrefix: ProfilePrefix, userId: string) {
+	const pointsJson = getPointsCookie(cookies);
+	const points = pointsJson[profilePrefix] ?? await fetchUserPoints(supabase, profilePrefix, userId);
 
-
-	// TODO: error handling????????
-	const pointsValue = pointsJson[profilePrefix] ?? await dbFetchUserPoints(supabase, profilePrefix, userId);
-	pointsJson[profilePrefix] = pointsValue;
-
+	pointsJson[profilePrefix] = points;
 	cookies.set("lumberjack_user_points", JSON.stringify(pointsJson), {path: "/"});
 
-
-	return pointsValue;
+	return points;
 }
 
 
 
-export function updateUserPointsCookie(cookies: Cookies, profilePrefix: ProfilePrefix, value: number) {
-	const pointsJson = getUserPointsCookie(cookies);
+function setPointsCookie(cookies: Cookies, profilePrefix: ProfilePrefix, value: number) {
+	const pointsJson = getPointsCookie(cookies);
 	pointsJson[profilePrefix] = value;
 
 	cookies.set("lumberjack_user_points", JSON.stringify(pointsJson), {path: "/"});
@@ -57,54 +72,38 @@ export function updateUserPointsCookie(cookies: Cookies, profilePrefix: ProfileP
 
 
 
-export async function getProfileCookie(cookies: Cookies, supabase: SupabaseClient, userId: string) {
-	let profileCookie = cookies.get("lumberjack_user_profile")?.toString() as ProfilePrefix;
-
-	const profile = profileCookie ? profileCookie : await dbFetchUserProfile(supabase, userId);
 
 
-	return profile;
+async function getProfileCookie(cookies: Cookies, supabase: SupabaseClient, userId: string) {
+	let profileCookie = cookies.get("lumberjack_user_profile") as ProfilePrefix;
+
+	return (profileCookie === undefined || !profilePrefixes.includes(profileCookie))
+		? await fetchUserProfile(supabase, userId)
+		: profileCookie;
 }
 
 
 
-
-
-export function setUserProfileCookie(cookies: Cookies, profilePrefix: ProfilePrefix) {
+function setProfileCookie(cookies: Cookies, profilePrefix: ProfilePrefix) {
 	cookies.set("lumberjack_user_profile", profilePrefix, {path: "/"});
 }
 
 
 
-export async function getUserProfilePrefixCookie(cookies: Cookies, supabase: SupabaseClient, userId: string) {
-	let profilePrefix = cookies.get("lumberjack_user_profile")?.toString();
 
 
-	// unfortunate typecast here
-	if(!profilePrefix || !profilePrefixes.includes(profilePrefix as ProfilePrefix)) {
-		profilePrefix = await dbFetchUserProfile(supabase, userId);
-	}
-
-	setUserProfileCookie(cookies, profilePrefix as ProfilePrefix);
-
-	return profilePrefix as ProfilePrefix;
-}
-
-
-
-
-
-export function setHasSubmittedLogRecentlyCookie(cookies: Cookies, state: boolean) {
+function setLogSubmissionStatusCookie(cookies: Cookies, state: boolean) {
 	cookies.set("lumberjack_has_submitted_log_recently", `${state}`, {path: "/"});
 }
 
 
 
-export function getHasSubmittedLogRecentlyCookie(cookies: Cookies) {
-	const value = cookies.get("lumberjack_has_submitted_log_recently")?.toString();
+function getLogSubmissionStatusCookie(cookies: Cookies) {
+	const value = cookies.get("lumberjack_has_submitted_log_recently");
 
-	if(value === undefined) {
-		setHasSubmittedLogRecentlyCookie(cookies, false);
+	if(value === undefined ||
+	   (value !== "true" && value !== "false")) {
+		setLogSubmissionStatusCookie(cookies, false);
 
 		return false;
 	}
@@ -117,7 +116,7 @@ export function getHasSubmittedLogRecentlyCookie(cookies: Cookies) {
 
 
 
-async function dbFetchUserPoints(supabase: SupabaseClient, profilePrefix: string, userId: string) {
+async function fetchUserPoints(supabase: SupabaseClient, profilePrefix: string, userId: string) {
 	const {data, error} = await supabase.from(`${profilePrefix}_leaderboard`)
 		.select("points")
 		.eq("google_user_id", userId)
@@ -134,11 +133,11 @@ async function dbFetchUserPoints(supabase: SupabaseClient, profilePrefix: string
 
 
 
-async function dbFetchUserProfile(supabase: SupabaseClient, userId: string): Promise<ProfilePrefix> {
+async function fetchUserProfile(supabase: SupabaseClient, userId: string): Promise<ProfilePrefix> {
 	const {data} = await supabase.from("public_user_data")
 		.select("profile")
 		.eq("google_user_id", userId)
 		.single();
 
-	return (data?.profile as ProfilePrefix ?? defaultProfilePrefix);
+	return data?.profile as ProfilePrefix ?? defaultProfilePrefix;
 }

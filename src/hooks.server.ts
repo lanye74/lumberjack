@@ -4,8 +4,8 @@ import {type Cookies, type Handle, redirect} from "@sveltejs/kit";
 import {type CookieMethodsServer, createServerClient} from "@supabase/ssr";
 import {sequence} from "@sveltejs/kit/hooks";
 
+import cookieManager from "$lib/cookies.js";
 import type {RedirectableRoute, RedirectMap} from "$lib/types/routes.js";
-import {getUserProfilePrefixCookie, setUserProfileCookie} from "$lib/cookies.js";
 
 
 
@@ -84,7 +84,7 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 
 
 // TODO: make this a general "set cookies from database" function
-const setProfileCookie: Handle = async ({event: requestEvent, resolve}) => {
+const setProfileCookieHandle: Handle = async ({event: requestEvent, resolve}) => {
 	const {session, supabase} = requestEvent.locals;
 
 	if(!session) {
@@ -93,7 +93,7 @@ const setProfileCookie: Handle = async ({event: requestEvent, resolve}) => {
 
 
 	// this will set it if it does not exist
-	await getUserProfilePrefixCookie(requestEvent.cookies, supabase, requestEvent.locals.user!.id);
+	await cookieManager(requestEvent.cookies, supabase).getProfile(requestEvent.locals.user!.id);
 
 
 	return resolve(requestEvent);
@@ -115,4 +115,4 @@ function generateSupabaseClientCookieMethods(cookies: Cookies): CookieMethodsSer
 
 
 
-export const handle: Handle = sequence(supabaseHandle, authGuardHandle, setProfileCookie);
+export const handle: Handle = sequence(supabaseHandle, authGuardHandle, setProfileCookieHandle);
