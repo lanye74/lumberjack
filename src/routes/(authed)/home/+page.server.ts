@@ -92,7 +92,7 @@ export const actions = {
 		// let the server know to not serve a cached leadboard read
 		createCookieManager(cookies).setLogSubmissionStatus(true);
 
-		createCookieManager(cookies).setPoints(profilePrefix, points + 1000);
+		createCookieManager(cookies).setProfilePoints(profilePrefix, points + 1000);
 
 
 

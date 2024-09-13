@@ -18,7 +18,8 @@ export async function load({cookies, locals: {supabase, user}}) {
 	const profilePrefix = await createCookieManager(cookies, supabase).getProfile(user!.id);
 	output.profile = profilePrefix;
 
-	const currentProfilePoints = await createCookieManager(cookies, supabase).updatePoints(profilePrefix, user!.id);
+	// FLAG: this is a database read
+	const currentProfilePoints = await createCookieManager(cookies, supabase).getProfilePoints(profilePrefix, user!.id);
 	output.points = currentProfilePoints;
 
 
@@ -54,7 +55,7 @@ export const actions = {
 
 		createCookieManager(cookies).setProfile(profilePrefix);
 
-		const currentProfilePoints = await createCookieManager(cookies, supabase).updatePoints(profilePrefix, user!.id);
+		const currentProfilePoints = await createCookieManager(cookies, supabase).getProfilePoints(profilePrefix, user!.id);
 
 
 		// TODO: rename these

@@ -23,14 +23,13 @@ function generateDefaultPointsCookie() {
 
 export default function createCookieManager(cookies: Cookies, supabase?: SupabaseClient) {
 	return {
-		getPoints: () => getPointsCookie(cookies),
-		updatePoints: (profilePrefix: ProfilePrefix, userId: string) => updatePointsCookie(cookies, supabase!, profilePrefix, userId),
-		setPoints: (profilePrefix: ProfilePrefix, points: number) => setPointsCookie(cookies, profilePrefix, points),
+		getProfilePoints: (profilePrefix: ProfilePrefix, userId: string) => getProfilePoints(cookies, supabase!, profilePrefix, userId),
+		setProfilePoints: (profilePrefix: ProfilePrefix, points: number) => setProfilePointsCookie(cookies, profilePrefix, points),
 
-		getProfile: (userId: string) => getProfileCookie(cookies, supabase!, userId),
+		getProfile: (userId: string) => getProfile(cookies, supabase!, userId),
 		setProfile: (profilePrefix: ProfilePrefix) => setProfileCookie(cookies, profilePrefix),
 
-		getLogSubmissionStatus: () => getLogSubmissionStatusCookie(cookies),
+		getLogSubmissionStatus: () => getLogSubmissionStatus(cookies),
 		setLogSubmissionStatus: (state: boolean) => setLogSubmissionStatusCookie(cookies, state)
 	};
 }
@@ -51,7 +50,7 @@ function getPointsCookie(cookies: Cookies): PointsCookieJson {
 
 
 // returns current profile's points
-async function updatePointsCookie(cookies: Cookies, supabase: SupabaseClient, profilePrefix: ProfilePrefix, userId: string) {
+async function getProfilePoints(cookies: Cookies, supabase: SupabaseClient, profilePrefix: ProfilePrefix, userId: string) {
 	const pointsJson = getPointsCookie(cookies);
 	const points = pointsJson[profilePrefix] ?? await fetchUserPoints(supabase, profilePrefix, userId);
 
@@ -63,7 +62,7 @@ async function updatePointsCookie(cookies: Cookies, supabase: SupabaseClient, pr
 
 
 
-function setPointsCookie(cookies: Cookies, profilePrefix: ProfilePrefix, value: number) {
+function setProfilePointsCookie(cookies: Cookies, profilePrefix: ProfilePrefix, value: number) {
 	const pointsJson = getPointsCookie(cookies);
 	pointsJson[profilePrefix] = value;
 
@@ -74,7 +73,7 @@ function setPointsCookie(cookies: Cookies, profilePrefix: ProfilePrefix, value: 
 
 
 
-async function getProfileCookie(cookies: Cookies, supabase: SupabaseClient, userId: string) {
+async function getProfile(cookies: Cookies, supabase: SupabaseClient, userId: string) {
 	let profileCookie = cookies.get("lumberjack_user_profile") as ProfilePrefix;
 
 	return (profileCookie === undefined || !profilePrefixes.includes(profileCookie))
@@ -92,13 +91,7 @@ function setProfileCookie(cookies: Cookies, profilePrefix: ProfilePrefix) {
 
 
 
-function setLogSubmissionStatusCookie(cookies: Cookies, state: boolean) {
-	cookies.set("lumberjack_has_submitted_log_recently", `${state}`, {path: "/"});
-}
-
-
-
-function getLogSubmissionStatusCookie(cookies: Cookies) {
+function getLogSubmissionStatus(cookies: Cookies) {
 	const value = cookies.get("lumberjack_has_submitted_log_recently");
 
 	if(value === undefined ||
@@ -110,6 +103,12 @@ function getLogSubmissionStatusCookie(cookies: Cookies) {
 
 
 	return value === "true";
+}
+
+
+
+function setLogSubmissionStatusCookie(cookies: Cookies, state: boolean) {
+	cookies.set("lumberjack_has_submitted_log_recently", `${state}`, {path: "/"});
 }
 
 
