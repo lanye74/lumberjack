@@ -4,6 +4,11 @@
 
 	import {jcsSites, possibleVisitPurposes, parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
 	import {navbarHeight} from "$lib/stores.js";
+    import type {ProfilePrefix} from "$lib/types/profiles.js";
+
+
+
+	export let currentProfile: ProfilePrefix;
 
 
 
@@ -51,6 +56,11 @@
 			}
 		});
 	}
+
+
+
+	const siteChoices = jcsSites[currentProfile];
+	const purposeChoices = possibleVisitPurposes[currentProfile];
 </script>
 
 <style>
@@ -186,7 +196,7 @@
 
 		<select name="location-selector" aria-labelledby="location-legend">
 			<option selected hidden value={""}>Select a site...</option>
-			{#each jcsSites as site}
+			{#each siteChoices as site}
 				<option>{site}</option>
 			{/each}
 		</select>
@@ -198,7 +208,7 @@
 
 		<select name="purpose-selector" aria-labelledby="purpose-legend" bind:value={currentlySelectedPurpose}>
 			<option selected hidden value={""}>Select a reason...</option>
-			{#each possibleVisitPurposes as purpose}
+			{#each purposeChoices as purpose}
 				<option>{purpose}</option>
 			{/each}
 		</select>
@@ -214,4 +224,6 @@
 
 
 	<button type="submit" style:--navbar-height={`${$navbarHeight}px`}>Submit</button>
+
+	<input name="user-profile" type="hidden" bind:value={currentProfile}>
 </form>

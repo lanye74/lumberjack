@@ -1,31 +1,71 @@
-export const jcsSites = [
-	"ASH",
-	"BES",
-	"EJHS",
-	"EJMS",
-	"JCS",
-	"JCTC",
-	"JELV",
-	"NES",
-	"RDES",
-	"RED",
-	"TPS",
-	"WAR",
-	"WES",
-	"WJHS",
-	"WJMS"
-];
+import type {ProfilePrefix} from "./types/profiles.js";
 
 
 
-export const possibleVisitPurposes = [
-	"Administration team meeting",
-	"Check-in visit",
-	"Problem-solving support",
-	"Scheduled walkthrough",
-	"Unannounced walkthrough",
-	"Other"
-];
+type ProfileIndexedList = {[key in ProfilePrefix]: string[]};
+
+export const jcsSites: ProfileIndexedList = {
+	ast: [
+		"ASH",
+		"BES",
+		"EJHS",
+		"EJMS",
+		"JCTC",
+		"JELV",
+		"NES",
+		"RDES",
+		"RED",
+		"TPS",
+		"WAR",
+		"WES",
+		"WJHS",
+		"WJMS"
+	],
+
+	maint: [
+		"Annex",
+		"ASH",
+		"BES",
+		"Bradley Building",
+		"Bus Garage",
+		"CO",
+		"EJHS",
+		"EJMS",
+		"JCTC",
+		"JELV",
+		"Maintenance",
+		"NES",
+		"PAC Center",
+		"RDES",
+		"RED",
+		"TPS",
+		"Transportation Department",
+		"WAR",
+		"WES",
+		"WJHS",
+		"WJMS",
+	]
+};
+
+
+
+export const possibleVisitPurposes: ProfileIndexedList = {
+	ast: [
+		"Administration team meeting",
+		"Check-in visit",
+		"Problem-solving support",
+		"Scheduled walkthrough",
+		"Unannounced walkthrough",
+		"Other"
+	],
+	maint: [
+		"Training",
+		"Grounds inspection",
+		"Building inspection",
+		"Vendor followup",
+		"Other"
+	]
+};
 
 
 
@@ -39,11 +79,15 @@ export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocatio
 	const didTypePurpose = userPurposeMultiple === "Other";
 	const userPurpose = didTypePurpose ? userPurposeText : userPurposeMultiple;
 
+	const userProfile = (formData.get("user-profile")?.toString().trim() ?? "") as ProfilePrefix;
+
 
 	const isValid = userLocation !== "" &&
 	                userPurpose !== "" &&
-	                jcsSites.includes(userLocation) &&
-	                possibleVisitPurposes.includes(userPurposeMultiple);
+					// @ts-ignore worry about it later
+					userProfile !== "" &&
+	                jcsSites[userProfile].includes(userLocation) &&
+	                possibleVisitPurposes[userProfile].includes(userPurposeMultiple);
 
 	// TODO: return specific errors
 	const errorMessage = isValid === false ? "You didn't complete the form!" : null;
@@ -56,6 +100,8 @@ export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocatio
 		userLocation: isValid ? userLocation : null,
 		userPurpose: isValid ? userPurpose : null,
 		didTypePurpose: isValid ? didTypePurpose : null,
+
+		userProfile: isValid ? userProfile : null
 	} as ParsedSubmitLocationForm;
 }
 
@@ -68,6 +114,8 @@ type ParsedSubmitLocationForm = {
 	userLocation: string;
 	userPurpose: string;
 	didTypePurpose: boolean;
+
+	userProfile: ProfilePrefix;
 } | {
 	isValid: false;
 	errorMessage: string;
@@ -75,4 +123,6 @@ type ParsedSubmitLocationForm = {
 	userLocation: null;
 	userPurpose: null;
 	didTypePurpose: null;
+
+	userProfile: null;
 };

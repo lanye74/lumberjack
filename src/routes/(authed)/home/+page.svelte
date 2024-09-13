@@ -10,6 +10,7 @@
 	export let data, form;
 	// no nice way to use destructuring to get around this
 	const user = data.user!;
+	const {currentProfile} = data;
 
 
 	// this really doesn't need to be reactive but it'll make me feel fancy
@@ -44,7 +45,7 @@
 </BorderBox>
 
 <section>
-	<SubmitLocationForm />
+	<SubmitLocationForm {currentProfile} />
 </section>
 
 

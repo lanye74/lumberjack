@@ -4,6 +4,17 @@ import {submitLocationLogPrefix} from "$lib/consoleColorPrefixes.js";
 
 
 
+export async function load({cookies, locals: {supabase, user}}) {
+	const currentProfile = await createCookieManager(cookies, supabase).getProfile(user!.id);
+
+
+	return {
+		currentProfile
+	}
+}
+
+
+
 // TODO: this is the worst thing ever and needs to be refactored
 export const actions = {
 	submitLocation: async ({cookies, locals, request}) => {
@@ -21,13 +32,12 @@ export const actions = {
 		const {supabase} = locals;
 		const user = locals.user!;
 
-		const currentProfile = await createCookieManager(cookies, supabase).getProfile(user.id);
 
-		const {userLocation, userPurpose, didTypePurpose} = parsedForm;
+		const {userLocation, userPurpose, didTypePurpose, userProfile} = parsedForm;
 		const currentTime = new Date().toISOString();
 
 
-		const {error: submitLocationError} = await supabase.from(`${currentProfile}_location_logs`)
+		const {error: submitLocationError} = await supabase.from(`${userProfile}_location_logs`)
 			.insert({
 				timestamp: currentTime,
 				google_user_id: user.id,
@@ -50,7 +60,7 @@ export const actions = {
 
 		// TODO: use technique outlined here https://github.com/orgs/supabase/discussions/909#discussioncomment-546117
 		// in order to make only one call, instead of reading, then writing
-		const {data: readPointsData, error: readPointsError} = await supabase.from(`${currentProfile}_leaderboard`)
+		const {data: readPointsData, error: readPointsError} = await supabase.from(`${userProfile}_leaderboard`)
 			.select("points")
 			.eq("google_user_id", user.id)
 			.single();
@@ -70,7 +80,7 @@ export const actions = {
 		const points = (readPointsData?.points ?? 0) as number;
 
 		// TODO: is upsert okay here? i only want to update points
-		const {error: updatePointsError} = await supabase.from(`${currentProfile}_leaderboard`)
+		const {error: updatePointsError} = await supabase.from(`${userProfile}_leaderboard`)
 			.upsert({google_user_id: user.id, points: points + 1000})
 			.eq("google_user_id", user.id);
 
@@ -90,7 +100,7 @@ export const actions = {
 		// let the server know to not serve a cached leadboard read
 		createCookieManager(cookies).setLogSubmissionStatus(true);
 
-		createCookieManager(cookies).setProfilePoints(currentProfile, points + 1000);
+		createCookieManager(cookies).setProfilePoints(userProfile, points + 1000);
 
 
 
