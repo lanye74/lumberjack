@@ -62,7 +62,7 @@
 
 
 {#if leaderboard !== null}
-	<BorderBox direction="column" gap="2rem">
+	<BorderBox direction="column" gap="1.5rem">
 		{#if topThree.length > 0}
 			<div class="leaderboard-header">
 				<h2>Points Leaderboard</h2>

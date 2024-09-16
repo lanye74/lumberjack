@@ -42,7 +42,7 @@
 
 
 
-<BorderBox direction="column" gap="2rem">
+<BorderBox direction="column" gap="1rem">
 	<h2>{greeting}</h2>
 
 	<p>What have you been up to? It's currently <span class="time">{$currentFormattedTime}.</span></p>

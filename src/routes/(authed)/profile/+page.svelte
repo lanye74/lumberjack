@@ -39,12 +39,12 @@
 					body: formData
 				});
 
+				// TODO: actually handle this
 				if(!response.ok) return;
 
 
 				currentProfile.increment();
 
-				// TODO: this sucks
 				const json = await response.json();
 
 				const points = JSON.parse(json.data)[1] as number;
@@ -77,30 +77,43 @@
 		color: var(--avatar-color);
 	}
 
-	.image-wrapper:has(img) {
+	/* .image-wrapper:has(img) {
 		filter: drop-shadow(0.5rem 0.5rem 1rem #0004);
+	} */
+
+
+
+	.user-avatar-name {
+		width: 100%;
+
+		display: grid;
+		/* prevent avatar from being squished */
+		grid-template-columns: auto 1fr;
+		align-items: center;
+
+		gap: 2rem;
+
+	}
+
+	.user-avatar-name h2 {
+		margin: 0;
+		font: bold 2.25rem var(--font-serif);
 	}
 
 
 
 	.user-info {
 		display: flex;
-		flex-direction: column;
+		flex-wrap: wrap;
 		align-items: flex-start;
-
-		gap: 0.5rem;
-	}
-
-	.user-info h2, .user-info p {
-		margin: 0;
-		text-align: left;
-	}
-
-	.user-info h2 {
-		font: bold 2.25rem var(--font-serif);
+		width: 100%;
+		gap: 0.3rem;
 	}
 
 	.user-info p {
+		margin: 0;
+		display: inline-block;
+
 		font: italic 1.5rem var(--font-serif);
 		color: var(--subtext-color);
 	}
@@ -114,17 +127,20 @@
 
 
 <section class="profile-preview">
-	<BorderBox direction="row" alignItems="center" gap="2rem">
-		<div class="image-wrapper">
-			<ImageWithIconFallback
-				src={avatarUrl} alt="User profile picture"
-				iconId="fa-solid:user-circle" />
+	<BorderBox direction="column" alignItems="center" gap="1.25rem">
+		<div class="user-avatar-name">
+			<div class="image-wrapper">
+				<ImageWithIconFallback
+					src={avatarUrl} alt="User profile picture"
+					iconId="fa-solid:user-circle" />
+			</div>
+
+			<h2>{user.user_metadata.full_name}</h2>
 		</div>
 
 		<div class="user-info">
-			<h2>{user.user_metadata.full_name}</h2>
-			<p>Profile: <span class="bold">{$currentProfile.pretty}</span></p>
-			<p>{pointsText} points</p>
+			<p><span class="bold">{$currentProfile.pretty}</span> profile,</p>
+			<p><span class="bold">{pointsText}</span> points</p>
 		</div>
 	</BorderBox>
 
