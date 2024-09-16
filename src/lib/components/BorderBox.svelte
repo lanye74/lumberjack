@@ -13,7 +13,7 @@
 		padding: 2rem;
 
 		border-radius: 0.25rem;
-		border: 0.25rem solid #aaa;
+		border: 0.25rem solid var(--gray-2);
 
 		box-shadow: 0 0.5rem 1rem #0003;
 		box-sizing: border-box;

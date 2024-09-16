@@ -123,7 +123,7 @@
 
 		border-bottom-left-radius: 0.5rem;
 		border-bottom-right-radius: 0.5rem;
-		border: 0.25rem solid #ccc;
+		border: 0.25rem solid var(--border-color);
 		border-top: none;
 
 		padding: 0.375rem 0.75rem;

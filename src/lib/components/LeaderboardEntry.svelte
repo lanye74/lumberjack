@@ -26,14 +26,14 @@
 		padding: 1.25rem 2rem;
 		box-sizing: border-box;
 
-		border-bottom: 0.25rem solid #ccc;
+		border-bottom: 0.25rem solid var(--border-color);
 
 		grid-column: 1 / span 3;
 	}
 
 	/* interestingly, this persists across components, so this still takes effect inside an each block */
 	.user:first-child {
-		border-top: 0.25rem solid #ccc;
+		border-top: 0.25rem solid var(--border-color);
 	}
 
 	.user:last-child {
@@ -60,8 +60,7 @@
 		width: 5rem;
 
 		font-size: 5rem;
-		/* TODO: PLEAAAAASE standardize these colors */
-		color: #aaa;
+		color: var(--avatar-color);
 
 		border-radius: 50%;
 	}
@@ -86,7 +85,7 @@
 
 	.text .points {
 		font: italic 1.25rem var(--font-serif);
-		color: #666;
+		color: var(--subtext-color);
 	}
 </style>
 

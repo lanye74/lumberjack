@@ -47,6 +47,15 @@
 
 		--jcs-blue: #003a70;
 		--jcs-cyan: #69b3e7;
+
+		--gray-1: #ccc;
+		--gray-2: #aaa;
+		--gray-3: #888;
+		--gray-4: #666;
+
+		--border-color: var(--gray-1);
+		--avatar-color: var(--gray-2);
+		--subtext-color: var(--gray-4);
 	}
 
 	:global(body) {

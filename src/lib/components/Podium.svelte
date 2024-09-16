@@ -30,7 +30,7 @@
 	}
 
 	.podium:not([data-places="0"]) {
-		border-bottom: 0.25rem solid #888;
+		border-bottom: 0.25rem solid var(--gray-3);
 	}
 
 	.podium[data-places="1"] {
@@ -73,7 +73,7 @@
 		justify-content: center;
 
 		border-radius: 50%;
-		color: #aaa;
+		color: var(--avatar-color);
 
 		width: 80%;
 		font-size: var(--icon-size);

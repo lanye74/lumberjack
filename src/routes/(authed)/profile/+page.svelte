@@ -74,7 +74,7 @@
 
 		border-radius: 50%;
 
-		color: #aaa;
+		color: var(--avatar-color);
 	}
 
 	.image-wrapper:has(img) {
@@ -102,7 +102,7 @@
 
 	.user-info p {
 		font: italic 1.5rem var(--font-serif);
-		color: #666;
+		color: var(--subtext-color);
 	}
 
 	.bold {

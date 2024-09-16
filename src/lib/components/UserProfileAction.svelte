@@ -22,7 +22,7 @@
 		width: 100%;
 		text-align: left;
 
-		border-bottom: 0.25rem solid #ccc;
+		border-bottom: 0.25rem solid var(--border-color);
 
 		display: flex;
 		flex-direction: row;
@@ -34,7 +34,7 @@
 	}
 
 	button:first-child {
-		border-top: 0.25rem solid #ccc;
+		border-top: 0.25rem solid var(--border-color);
 	}
 
 

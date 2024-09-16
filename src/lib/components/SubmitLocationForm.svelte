@@ -87,7 +87,7 @@
 	}
 
 	select {
-		border: 0.25rem solid #ccc;
+		border: 0.25rem solid var(--border-color);
 		border-radius: 0.25rem;
 
 		background-color: #fff;
@@ -135,7 +135,7 @@
 		top: calc(var(--gap) / 2);
 		left: 0.5rem;
 
-		background-color: #ccc;
+		background-color: var(--border-color);
 	}
 
 

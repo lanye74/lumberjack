@@ -55,7 +55,7 @@
 
 	.leaderboard-header p {
 		font: italic 1.5rem var(--font-serif);
-		color: #666;
+		color: var(--subtext-color);
 	}
 </style>
 
