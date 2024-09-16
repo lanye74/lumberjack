@@ -35,7 +35,6 @@ export default function createCookieManager(cookies: Cookies, supabase?: Supabas
 
 
 
-// TODO: this still sucks
 function getPointsCookie(cookies: Cookies): PointsCookieJson {
 	const pointsCookie = cookies.get("lumberjack_user_points");
 	const pointsJson = JSON.parse(pointsCookie ?? "0");

@@ -6,7 +6,6 @@ import {profilePrefixes, type ProfilePrefix} from "$lib/profiles.js";
 
 
 export async function load({cookies, locals: {supabase, user}}) {
-	// TODO: Promise.all?
 	const profilePrefix = await createCookieManager(cookies, supabase).getProfile(user!.id);
 	const profilePoints = await createCookieManager(cookies, supabase).getProfilePoints(profilePrefix, user!.id);
 

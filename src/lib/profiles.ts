@@ -7,7 +7,6 @@ export type ProfilePretty = "AST" | "Maintenance";
 
 
 
-// TODO: this type isn't important anymore
 const profilePrefixToPrettyMap: {[key in ProfilePrefix]: ProfilePretty} = {
 	"ast": "AST",
 	"maint": "Maintenance"

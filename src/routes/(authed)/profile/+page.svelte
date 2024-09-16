@@ -39,17 +39,16 @@
 					body: formData
 				});
 
+				if(!response.ok) return;
 
 
-				if(response.ok) {
-					currentProfile.increment();
+				currentProfile.increment();
 
-					// TODO: this sucks
-					const json = await response.json();
+				// TODO: this sucks
+				const json = await response.json();
 
-					const points = JSON.parse(json.data)[1] as number;
-					pointsText = formatPoints(points ?? 0);
-				}
+				const points = JSON.parse(json.data)[1] as number;
+				pointsText = formatPoints(points ?? 0);
 			}
 		},
 

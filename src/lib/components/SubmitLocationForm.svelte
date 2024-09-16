@@ -4,7 +4,7 @@
 
 	import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
 	import {navbarHeight} from "$lib/stores.js";
-    import type {ProfilePrefix} from "$lib/profiles.js";
+	import type {ProfilePrefix} from "$lib/profiles.js";
 
 
 

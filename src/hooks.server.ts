@@ -83,7 +83,6 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 
 
 
-// TODO: make this a general "set cookies from database" function
 const setProfileCookieHandle: Handle = async ({event: requestEvent, resolve}) => {
 	const {session, supabase} = requestEvent.locals;
 

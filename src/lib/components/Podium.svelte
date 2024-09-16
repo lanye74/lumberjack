@@ -34,7 +34,8 @@
 	}
 
 	.podium[data-places="1"] {
-		/* TODO: can i use some repeat(1fr, var(--num-places)) trickery? that might be nice but not viable for the template areas */
+		/* i am aware there is some amoutn of repeat(var(--num-places), 1fr) trickery that could be done
+		   ...too bad */
 		grid-template-columns: 1fr;
 		grid-template-areas: "first";
 	}

@@ -4,7 +4,7 @@
 	import Toast from "$lib/components/Toast.svelte";
 	import {currentDate, currentFormattedTime} from "$lib/stores.js";
 	import generateGreeting from "$lib/generateGreeting.js";
-    import {jcsSites, possibleVisitPurposes} from "$lib/parseSubmitLocationForm.js";
+	import {jcsSites, possibleVisitPurposes} from "$lib/parseSubmitLocationForm.js";
 
 
 

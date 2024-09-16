@@ -88,7 +88,7 @@ async function readDatabase(supabase: SupabaseClient, leaderboardPrefix: string)
 	}
 
 
-	// TODO: typescript doesn't believe me for some reason
+	// supabase types are convinced public_user_data is an array, so cast to unknown first
 	const topPoints = <PointsLeaderboardEntryRow[]><unknown>getTopUsersByPointsResponse.data;
 
 

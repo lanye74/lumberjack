@@ -79,7 +79,6 @@ export const actions = {
 
 		const points = (readPointsData?.points ?? 0) as number;
 
-		// TODO: is upsert okay here? i only want to update points
 		const {error: updatePointsError} = await supabase.from(`${userProfile}_leaderboard`)
 			.upsert({google_user_id: user.id, points: points + 1000})
 			.eq("google_user_id", user.id);
