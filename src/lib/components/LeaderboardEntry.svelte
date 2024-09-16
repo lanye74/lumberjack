@@ -1,6 +1,6 @@
 <script lang="ts">
-	import ImageWithIconFallback from "./ImageWithIconFallback.svelte";
 	import type {PointsLeaderboardEntry} from "$lib/types/database.js";
+	import UserAvatar from "./UserAvatar.svelte";
 
 
 
@@ -43,32 +43,11 @@
 
 
 	.place {
-		grid-column: 1;
-
 		font: bold 2.5rem var(--font-serif);
 		text-align: right;
 	}
 
-	.image-wrapper {
-		grid-column: 2;
-
-		/* prevent pop-in with a box element */
-		display: flex;
-		justify-content: center;
-
-		height: 5rem;
-		width: 5rem;
-
-		font-size: 5rem;
-		color: var(--avatar-color);
-
-		border-radius: 50%;
-	}
-
 	.text {
-		grid-column: 3;
-
-
 		display: flex;
 		flex-direction: column;
 	}
@@ -96,11 +75,7 @@
 
 	<!-- TODO: figure out how to use skeleton loaders for this stuff
 			   currently waiting for the server halts page loading = bad UX -->
-	<div class="image-wrapper">
-		<ImageWithIconFallback
-			src={user.avatarUrl} alt="User profile picture"
-			iconId="fa-solid:user-circle" />
-	</div>
+	<UserAvatar src={user.avatarUrl} absoluteSize="5rem" />
 
 	<div class="text">
 		<p class="name">{user.fullName}</p>

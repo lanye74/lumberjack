@@ -2,11 +2,11 @@
 	import {invalidateAll} from "$app/navigation";
 
 	import BorderBox from "$lib/components/BorderBox.svelte";
-	import ImageWithIconFallback from "$lib/components/ImageWithIconFallback.svelte";
 	import UserProfileAction from "$lib/components/UserProfileAction.svelte";
 	import {currentProfile, nextProfile} from "$lib/profiles.js";
 	import {formatPoints} from "$lib/formatters.js";
 	import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
+	import UserAvatar from "$lib/components/UserAvatar.svelte";
 
 
 
@@ -64,25 +64,6 @@
 </script>
 
 <style>
-	.image-wrapper {
-		display: flex;
-		justify-content: center;
-
-		width: 6rem;
-		height: 6rem;
-		font-size: 6rem;
-
-		border-radius: 50%;
-
-		color: var(--avatar-color);
-	}
-
-	/* .image-wrapper:has(img) {
-		filter: drop-shadow(0.5rem 0.5rem 1rem #0004);
-	} */
-
-
-
 	.user-avatar-name {
 		width: 100%;
 
@@ -129,11 +110,7 @@
 <section class="profile-preview">
 	<BorderBox direction="column" alignItems="center" gap="1.25rem">
 		<div class="user-avatar-name">
-			<div class="image-wrapper">
-				<ImageWithIconFallback
-					src={avatarUrl} alt="User profile picture"
-					iconId="fa-solid:user-circle" />
-			</div>
+			<UserAvatar src={avatarUrl} absoluteSize="6rem" />
 
 			<h2>{user.user_metadata.full_name}</h2>
 		</div>

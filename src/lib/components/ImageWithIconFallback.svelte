@@ -7,7 +7,7 @@
 	export let src: string;
 	export let alt: string;
 
-	export let iconId: string;
+	export let icon: string;
 
 
 	let isLoading = true;
@@ -54,7 +54,7 @@
 
 
 {#if isLoading || hadError}
-	<iconify-icon class={$$props.class} icon={iconId} />
+	<iconify-icon {icon} />
 {:else}
 	<img src={loadedSrc} {alt}>
 {/if}

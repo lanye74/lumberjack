@@ -1,18 +1,13 @@
 <script lang="ts">
-	import ImageWithIconFallback from "./ImageWithIconFallback.svelte";
-	import {formatPixels, formatPoints} from "$lib/formatters.js";
+	import {formatPoints} from "$lib/formatters.js";
 	import type {PointsLeaderboardEntry} from "$lib/types/database.js";
+	import UserAvatar from "./UserAvatar.svelte";
 
 
 
 	export let users: PointsLeaderboardEntry[];
 
 	const numberPlaces = Math.min(users.length, 3);
-
-
-
-	let columnWidth: number;
-	$: iconSize = `${formatPixels(columnWidth * 0.8)}px`;
 </script>
 
 <style>
@@ -68,23 +63,8 @@
 		width: 100%;
 	}
 
-	.image-wrapper {
-		display: flex;
-		justify-content: center;
-
-		border-radius: 50%;
-		color: var(--avatar-color);
-
-		width: 80%;
-		font-size: var(--icon-size);
-
-		margin-bottom: 0.5rem;
-	}
-
-
-
 	.user-info p {
-		margin: 0 0 0.25rem 0;
+		margin: 0.25rem 0 0.25rem 0;
 		text-align: center;
 	}
 
@@ -171,13 +151,8 @@
 		</div>
 	{:else}
 		{#each users as user, index}
-			<div class="podium-place" data-place={index + 1} bind:clientWidth={columnWidth}>
-				<!-- TODO: investigate using this without a wrapper -->
-				<div class="image-wrapper" style:--icon-size={iconSize}>
-					<ImageWithIconFallback
-						src={user.avatarUrl} alt="User profile picture"
-						iconId="fa-solid:user-circle" />
-				</div>
+			<div class="podium-place" data-place={index + 1}>
+				<UserAvatar	src={user.avatarUrl} percentageSize={80} />
 
 				<div class="user-info">
 					<p class="name">{user.fullName}</p>
