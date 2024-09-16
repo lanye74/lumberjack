@@ -1,9 +1,10 @@
-import type {ProfilePrefix} from "./types/profiles.js";
+import type {ProfilePrefix} from "./profiles.js";
 
 
 
 type ProfileIndexedList = {[key in ProfilePrefix]: string[]};
 
+// TODO: make this not bad
 export const jcsSites: ProfileIndexedList = {
 	ast: [
 		"ASH",

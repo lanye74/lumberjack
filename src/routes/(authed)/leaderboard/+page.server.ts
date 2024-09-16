@@ -28,6 +28,7 @@ const autoRefreshPeriod = 1e3 * 60 * 3; // 3 mins
 
 // TODO: make this non-blocking and use skeleton loaders
 export async function load({cookies, locals: {supabase, user}}) {
+	// TODO: avoid name collisions here
 	const currentProfile = await createCookieManager(cookies, supabase).getProfile(user!.id);
 	const leaderboard = leaderboards[currentProfile];
 

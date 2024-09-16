@@ -1,11 +1,14 @@
-import {derived} from "svelte/store";
-
-import {createArrayIndexCycler} from "./stores.js";
-import type {ProfilePrefixToPrettyMap, ProfilePrefix, ProfilePretty} from "./types/profiles.js";
+import {createProfileCycler} from "./stores.js";
 
 
 
-const profilePrefixToPrettyMap: ProfilePrefixToPrettyMap = {
+export type ProfilePrefix = "ast" | "maint";
+export type ProfilePretty = "AST" | "Maintenance";
+
+
+
+// TODO: this type isn't important anymore
+const profilePrefixToPrettyMap: {[key in ProfilePrefix]: ProfilePretty} = {
 	"ast": "AST",
 	"maint": "Maintenance"
 };
@@ -16,32 +19,14 @@ export const profilePrefixes = Object.keys(profilePrefixToPrettyMap) as ProfileP
 export const defaultProfilePrefix = profilePrefixes[0];
 
 export const profilePretties = Object.values(profilePrefixToPrettyMap) as ProfilePretty[];
-const defaultProfilePretty = profilePretties[0];
 
 
 
-export const currentProfileIndex = createArrayIndexCycler(profilePrefixes.length);
-// can't export reactive, export a derived
-export const currentProfile = derived(currentProfileIndex, (index) => mapProfilePrefixToPrettyName(profilePrefixes[index]));
+export const currentProfile = createProfileCycler(profilePrefixes, profilePretties);
 
+export const nextProfile = createProfileCycler(profilePrefixes, profilePretties);
 
-
-
-// this will start at 0
-const nextProfileIndex = createArrayIndexCycler(profilePrefixes.length);
-// then be incremented by the initial subscription event where it receives its value
-// now it's always one ahead as it should be
-currentProfileIndex.subscribe(nextProfileIndex.increment);
-
-export const nextProfile = derived(nextProfileIndex, (index) => mapProfilePrefixToPrettyName(profilePrefixes[index]));
-
-
-
-export function mapProfilePrefixToPrettyName(profile?: ProfilePrefix) {
-	return profilePrefixToPrettyMap[profile ?? defaultProfilePrefix] ?? defaultProfilePrefix;
-}
-
-// TODO: arghhhhh this is so bad
-export function mapPrettyNameToProfilePrefix(profile?: ProfilePretty) {
-	return profilePrefixes[profilePretties.indexOf(profile ?? defaultProfilePretty)];
-}
+currentProfile.subscribe(state => {
+	nextProfile.set(state);
+	nextProfile.increment();
+});

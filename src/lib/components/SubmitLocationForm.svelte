@@ -2,13 +2,15 @@
 	import {applyAction, enhance} from "$app/forms";
 	import type {SubmitFunction} from "@sveltejs/kit";
 
-	import {jcsSites, possibleVisitPurposes, parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
+	import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
 	import {navbarHeight} from "$lib/stores.js";
-    import type {ProfilePrefix} from "$lib/types/profiles.js";
+    import type {ProfilePrefix} from "$lib/profiles.js";
 
 
 
 	export let currentProfile: ProfilePrefix;
+	export let siteChoices: string[];
+	export let purposeChoices: string[];
 
 
 
@@ -29,7 +31,7 @@
 			// i feed my code to claude 3.5 sonnet and it immediately shows me how to provide a callback in SubmitFunction that runs after the form completes (which is what i was really trying to emulate the whole time)
 			// maybe it's a training cutoff diff. but thank you claude
 			// if i stared at the use:enhance documentation perhaps i would've realized my error but i mistakenly assumed that it entirely wasn't possible. honestly, i enjoy reading documentation—but sveltekit's drives me insane
-			// oh well. i know who to ask questions to instead of chatgpt now lmao
+			// oh well. i know whom to ask questions to instead of chatgpt now lmao
 			return ({result, update}) => {
 				if(result.type === "success") {
 					currentlySelectedPurpose = "";
@@ -56,11 +58,6 @@
 			}
 		});
 	}
-
-
-
-	const siteChoices = jcsSites[currentProfile];
-	const purposeChoices = possibleVisitPurposes[currentProfile];
 </script>
 
 <style>

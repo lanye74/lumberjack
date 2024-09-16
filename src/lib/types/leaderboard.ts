@@ -1,5 +1,5 @@
 import type {PointsLeaderboardEntry} from "./database.js";
-import type {ProfilePrefix} from "./profiles.js";
+import type {ProfilePrefix} from "../profiles.js";
 
 
 

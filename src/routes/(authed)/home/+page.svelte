@@ -4,13 +4,17 @@
 	import Toast from "$lib/components/Toast.svelte";
 	import {currentDate, currentFormattedTime} from "$lib/stores.js";
 	import generateGreeting from "$lib/generateGreeting.js";
+    import {jcsSites, possibleVisitPurposes} from "$lib/parseSubmitLocationForm.js";
 
 
 
 	export let data, form;
 	// no nice way to use destructuring to get around this
 	const user = data.user!;
+
 	const {currentProfile} = data;
+	const formSites = jcsSites[currentProfile];
+	const formPurposes = possibleVisitPurposes[currentProfile];
 
 
 	// this really doesn't need to be reactive but it'll make me feel fancy
@@ -45,7 +49,9 @@
 </BorderBox>
 
 <section>
-	<SubmitLocationForm {currentProfile} />
+	<SubmitLocationForm {currentProfile}
+		purposeChoices={formPurposes}
+		siteChoices={formSites} />
 </section>
 
 

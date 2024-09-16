@@ -4,7 +4,7 @@
 	import BorderBox from "$lib/components/BorderBox.svelte";
 	import ImageWithIconFallback from "$lib/components/ImageWithIconFallback.svelte";
 	import UserProfileAction from "$lib/components/UserProfileAction.svelte";
-	import {currentProfile, currentProfileIndex, nextProfile, profilePrefixes} from "$lib/profiles.js";
+	import {currentProfile, nextProfile} from "$lib/profiles.js";
 	import {formatPoints} from "$lib/formatters.js";
 	import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
 
@@ -13,9 +13,9 @@
 	export let data;
 
 	const user = data.user!;
-	const profile = data.currentProfile!;
+	const profilePrefix = data.profilePrefix!;
 
-	currentProfileIndex.set(profilePrefixes.indexOf(profile));
+	currentProfile.setPrefix(profilePrefix);
 
 
 	let avatarUrl = user.user_metadata.avatar_url as string;
@@ -25,14 +25,14 @@
 	let pointsText = formatPoints(data.profilePoints ?? 0);
 
 
-	// should the
+	// should this be in a separate file?
 	$: userProfileActions = [
 		{
-			text: `Switch to ${$nextProfile}`,
+			text: `Switch to ${$nextProfile.pretty}`,
 			iconId: "fa-solid:exchange-alt",
 			callback: async () => {
 				const formData = new FormData();
-				formData.append("new-profile", $nextProfile);
+				formData.append("new-profile", $nextProfile.prefix);
 
 				const response = await fetch("?/swapProfile", {
 					method: "POST",
@@ -42,8 +42,7 @@
 
 
 				if(response.ok) {
-					// i wonder if there's a better pattern than having to read into the underlying store
-					currentProfileIndex.increment();
+					currentProfile.increment();
 
 					// TODO: this sucks
 					const json = await response.json();
@@ -125,7 +124,7 @@
 
 		<div class="user-info">
 			<h2>{user.user_metadata.full_name}</h2>
-			<p>Profile: <span class="bold">{$currentProfile}</span></p>
+			<p>Profile: <span class="bold">{$currentProfile.pretty}</span></p>
 			<p>{pointsText} points</p>
 		</div>
 	</BorderBox>
