@@ -5,6 +5,7 @@
 	import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
 	import {navbarHeight} from "$lib/stores.js";
 	import type {ProfilePrefix} from "$lib/profiles.js";
+    import EditableTime from "./EditableTime.svelte";
 
 
 
@@ -15,6 +16,7 @@
 
 
 	let currentlySelectedPurpose: string = "";
+	let timeInputMethodSelector: string;
 
 
 
@@ -106,8 +108,8 @@
 
 
 
-	.text-purpose-container {
-		--gap: 2rem;
+	.has-bar {
+		--gap: 1rem;
 		position: relative;
 	}
 
@@ -126,7 +128,7 @@
 		border-bottom: 1px solid #000;
 	}
 
-	.text-purpose-container span::after {
+	.has-bar span::after {
 		content: "";
 		position: absolute;
 
@@ -189,6 +191,24 @@
 <form method="POST" action="?/submitLocation" use:enhance={performClientSideValidation}>
 	<!-- TODO: more a11y here -->
 	<fieldset>
+		<legend id="time-legend">Log time</legend>
+
+		<select name="time-selector" aria-labelledby="time-legend" bind:value={timeInputMethodSelector}>
+			<option>Use current time</option>
+			<option>Input custom time</option>
+		</select>
+
+		{#if timeInputMethodSelector === "Input custom time"}
+			<div class="has-bar">
+				<span></span>
+				<EditableTime margin={"1rem 2rem"} />
+			</div>
+		{/if}
+	</fieldset>
+
+
+
+	<fieldset>
 		<legend id="location-legend">Location</legend>
 
 		<select name="location-selector" aria-labelledby="location-legend">
@@ -198,6 +218,7 @@
 			{/each}
 		</select>
 	</fieldset>
+
 
 
 	<fieldset>
@@ -211,13 +232,13 @@
 		</select>
 
 		{#if currentlySelectedPurpose === "Other"}
-			<div class="text-purpose-container">
-				<!-- bar thing -->
+			<div class="has-bar">
 				<span></span>
 				<input type="text" name="location-purpose" aria-labelledby="purpose-legend" placeholder="Type a reason...">
 			</div>
 		{/if}
 	</fieldset>
+
 
 
 	<button type="submit" style:--navbar-height={`${$navbarHeight}px`}>Submit</button>

@@ -9,12 +9,7 @@ Log where you are, instantly
 - log editor
 - host supabase instance locally?
 	- is this necessary?
-
-
-## stlp
-stuff that's not important for getting the app off of the ground, but ideal for an stlp project
-
-- [ ] admin panel to view/export statistics
+- admin panel to view/export statistics
 
 
 ## other ideas related to gamification
