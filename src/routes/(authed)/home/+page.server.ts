@@ -1,6 +1,7 @@
 import createCookieManager from "$lib/createCookieManager.js";
 import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
 import {submitLocationLogPrefix} from "$lib/consoleColorPrefixes.js";
+import type {ParsedTimePlaces} from "$lib/time.js";
 
 
 
@@ -34,29 +35,20 @@ export const actions = {
 
 
 		const {userLocation, userPurpose, didTypePurpose, userProfile, logTime} = parsedForm;
-		const dateObject = new Date();
 
-		const didUseCustomTime = logTime !== null;
 
-		if(didUseCustomTime) {
-			const {hours, minutes, seconds, period} = logTime;
-
-			dateObject.setHours(hours % 12 + (period === "AM" ? 0 : 12));
-			dateObject.setMinutes(minutes);
-			dateObject.setSeconds(seconds);
-		}
-
+		const logTimestamp = generateTimestampFromParsedTimePlaces(logTime);
 
 
 		const {error: submitLocationError} = await supabase.from(`${userProfile}_location_logs`)
 			.insert({
-				timestamp: dateObject.toISOString(),
+				timestamp: logTimestamp,
 				google_user_id: user.id,
 
 				location: userLocation,
 				purpose: userPurpose,
 				did_type_purpose: didTypePurpose,
-				did_use_custom_time: didUseCustomTime
+				did_use_custom_time: logTime !== null
 			});
 
 
@@ -120,4 +112,22 @@ export const actions = {
 			message: "Success! You've earned 1,000 points!"
 		};
 	}
+}
+
+
+
+function generateTimestampFromParsedTimePlaces(timePlaces: ParsedTimePlaces | null) {
+	const dateObject = new Date();
+
+	if(timePlaces === null) return dateObject.toISOString();
+
+	const {hours, minutes, seconds, period} = timePlaces;
+
+	dateObject.setHours(hours % 12 + (period === "AM" ? 0 : 12));
+	dateObject.setMinutes(minutes);
+	dateObject.setSeconds(seconds);
+	// leave some tiny differentiator
+	// dateObject.setMilliseconds(0);
+
+	return dateObject.toISOString();
 }

@@ -29,6 +29,11 @@
 		const paddedValue = time.places[index].value.padStart(2, "0");
 		time.places[index].value = paddedValue;
 	}
+
+	function wipe(name: TimePlace) {
+		const index = time.places.findIndex(place => place.name === name);
+		time.places[index].value = "";
+	}
 </script>
 
 <style>
@@ -80,6 +85,7 @@
 		<input id={`${place.name}-input`}
 			bind:value={place.value}
 			class:is-invalid={place.isInvalid}
+			on:focus={() => wipe(place.name)}
 			on:blur={() => pad(place.name)}>
 
 		{#if index < time.places.length - 1}

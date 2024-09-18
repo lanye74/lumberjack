@@ -96,6 +96,8 @@
 		border: 0.25rem solid var(--border-color);
 		border-radius: 0.25rem;
 
+		padding: 0.25rem;
+
 		background-color: #fff;
 		color: #000;
 	}

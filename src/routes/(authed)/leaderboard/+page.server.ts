@@ -50,6 +50,7 @@ export async function load({cookies, locals: {supabase, user}}) {
 	}
 
 
+	// TODO: if i read the database, i probably should set the user's points cookie, if they're on the leaderboard
 	const dataFromLeaderboard = await readDatabase(supabase, currentProfile);
 	// i still don't trust pass by reference
 	leaderboards[currentProfile].cachedState = dataFromLeaderboard;
