@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {TimePlace, TimeSelector} from "$lib/types/time.js";
+	import {validateTimeSelector, type TimePlace, type TimeSelector} from "$lib/time.js";
 
 
 
@@ -17,32 +17,7 @@
 
 
 
-	const isNumbersRegex = new RegExp(/^[0-9]{1,2}$/);
-
-
-	$: {
-		time.places.forEach(place => {
-			if(!place.value.match(isNumbersRegex)) {
-				place.isInvalid = true;
-				return;
-			}
-
-			if(place.value.length > 2) {
-				place.isInvalid = true;
-				return;
-			}
-
-			const maximumValue = place.name === "hours" ? 12 : 59;
-			const parsedValue = parseInt(place.value);
-
-			if(parsedValue > maximumValue) {
-				place.isInvalid = true;
-				return;
-			}
-
-			place.isInvalid = false;
-		});
-	}
+	$: time = validateTimeSelector(time);
 
 
 

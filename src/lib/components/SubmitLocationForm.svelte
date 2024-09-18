@@ -6,7 +6,7 @@
 	import {navbarHeight} from "$lib/stores.js";
 	import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
 	import type {ProfilePrefix} from "$lib/profiles.js";
-    import type {TimeSelector} from "$lib/types/time.js";
+    import type {TimeSelector} from "$lib/time.js";
 
 
 

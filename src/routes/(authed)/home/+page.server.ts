@@ -33,18 +33,30 @@ export const actions = {
 		const user = locals.user!;
 
 
-		const {userLocation, userPurpose, didTypePurpose, userProfile} = parsedForm;
-		const currentTime = new Date().toISOString();
+		const {userLocation, userPurpose, didTypePurpose, userProfile, logTime} = parsedForm;
+		const dateObject = new Date();
+
+		const didUseCustomTime = logTime !== null;
+
+		if(didUseCustomTime) {
+			const {hours, minutes, seconds, period} = logTime;
+
+			dateObject.setHours(hours % 12 + (period === "AM" ? 0 : 12));
+			dateObject.setMinutes(minutes);
+			dateObject.setSeconds(seconds);
+		}
+
 
 
 		const {error: submitLocationError} = await supabase.from(`${userProfile}_location_logs`)
 			.insert({
-				timestamp: currentTime,
+				timestamp: dateObject.toISOString(),
 				google_user_id: user.id,
 
 				location: userLocation,
 				purpose: userPurpose,
-				did_type_purpose: didTypePurpose
+				did_type_purpose: didTypePurpose,
+				did_use_custom_time: didUseCustomTime
 			});
 
 
