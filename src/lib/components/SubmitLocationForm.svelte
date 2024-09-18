@@ -40,6 +40,7 @@
 			return ({result, update}) => {
 				if(result.type === "success") {
 					currentlySelectedPurpose = "";
+					timeInputMethodSelector = "Use current time";
 				}
 
 				update({reset: true});
