@@ -37,6 +37,7 @@
 </script>
 
 <style>
+	/* TODO: why did i write these styles like this */
 	.editable-time {
 		display: inline-flex;
 		flex-direction: row;
@@ -73,6 +74,11 @@
 		color: red;
 		border-bottom-color: red !important;
 	}
+
+
+	select {
+		background-color: #fff;
+	}
 </style>
 
 
@@ -82,10 +88,14 @@
 	{#each time.places as place, index}
 		<!-- TODO: accessibility with hidden labels -->
 		<!-- TODO: this sucks -->
+		<label hidden={true} for={`${place.name}-input`}>{place.name} input</label>
 		<input id={`${place.name}-input`}
-			bind:value={place.value}
+			type="number"
+			inputmode="numeric"
 			class:is-invalid={place.isInvalid}
+			bind:value={place.value}
 			on:focus={() => wipe(place.name)}
+			on:click={() => wipe(place.name)}
 			on:blur={() => pad(place.name)}>
 
 		{#if index < time.places.length - 1}
@@ -95,7 +105,9 @@
 	{/each}
 
 	<span class="spacer"></span>
-	<select class="am-pm-input" bind:value={time.period}>
+
+	<label hidden={true} for="am-pm-input">AM/PM Selector</label>
+	<select id="am-pm-input" bind:value={time.period}>
 		<option>AM</option>
 		<option>PM</option>
 	</select>
