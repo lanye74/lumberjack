@@ -2,10 +2,11 @@
 	import {applyAction, enhance} from "$app/forms";
 	import type {SubmitFunction} from "@sveltejs/kit";
 
-	import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
-	import {navbarHeight} from "$lib/stores.js";
-	import type {ProfilePrefix} from "$lib/profiles.js";
     import EditableTime from "./EditableTime.svelte";
+	import {navbarHeight} from "$lib/stores.js";
+	import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
+	import type {ProfilePrefix} from "$lib/profiles.js";
+    import type {TimeSelector} from "$lib/types/time.js";
 
 
 
@@ -16,8 +17,10 @@
 
 
 	let currentlySelectedPurpose: string = "";
-	let timeInputMethodSelector: string;
+	let timeInputMethodSelector: string = "Use current time";
+	let customTime: TimeSelector;
 
+	$: exportedTime = timeInputMethodSelector === "Use current time" ? null : JSON.stringify(customTime);
 
 
 	// my `function` syntax.....
@@ -201,7 +204,7 @@
 		{#if timeInputMethodSelector === "Input custom time"}
 			<div class="has-bar">
 				<span></span>
-				<EditableTime margin={"1rem 2rem"} />
+				<EditableTime margin={"1rem 2rem"} bind:time={customTime} />
 			</div>
 		{/if}
 	</fieldset>
@@ -244,4 +247,6 @@
 	<button type="submit" style:--navbar-height={`${$navbarHeight}px`}>Submit</button>
 
 	<input name="user-profile" type="hidden" bind:value={currentProfile}>
+
+	<input name="log-time" type="hidden" bind:value={exportedTime}>
 </form>

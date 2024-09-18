@@ -1,4 +1,5 @@
 import type {ProfilePrefix} from "./profiles.js";
+import type {TimeSelector} from "./types/time.js";
 
 
 
@@ -82,13 +83,19 @@ export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocatio
 
 	const userProfile = (formData.get("user-profile")?.toString().trim() ?? "") as ProfilePrefix;
 
+	const logTimeInput = formData.get("log-time")?.toString().trim() ?? "";
+	const logTime = JSON.parse(logTimeInput !== "" ? logTimeInput : "null") as TimeSelector | null;
+
+	const timeIsValid = logTime === null ? true : isTimeSelectorValid(logTime);
+
 
 	const isValid = userLocation !== "" &&
 	                userPurpose !== "" &&
 					// @ts-ignore worry about it later
 					userProfile !== "" &&
 	                jcsSites[userProfile].includes(userLocation) &&
-	                possibleVisitPurposes[userProfile].includes(userPurposeMultiple);
+	                possibleVisitPurposes[userProfile].includes(userPurposeMultiple) &&
+					timeIsValid;
 
 	// TODO: return specific errors
 	const errorMessage = isValid === false ? "You didn't complete the form!" : null;
@@ -98,12 +105,40 @@ export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocatio
 		isValid,
 		errorMessage,
 
+		// TODO: remove isValid ? [thing] : null from all of these. it's stupid
 		userLocation: isValid ? userLocation : null,
 		userPurpose: isValid ? userPurpose : null,
 		didTypePurpose: isValid ? didTypePurpose : null,
 
-		userProfile: isValid ? userProfile : null
+		userProfile: isValid ? userProfile : null,
+		timeSelector: isValid ? logTime : null
 	} as ParsedSubmitLocationForm;
+}
+
+
+
+// TODO: this should be owned by types/time.ts (move that into the lib folder)
+function isTimeSelectorValid(timeSelector: TimeSelector) {
+	return timeSelector.places.every(place => {
+		const isNumbersRegex = new RegExp(/^[0-9]{1,2}$/);
+
+		if(!place.value.match(isNumbersRegex)) {
+			return false;
+		}
+
+		if(place.value.length > 2) {
+			return false;
+		}
+
+		const maximumValue = place.name === "hours" ? 12 : 59;
+		const parsedValue = parseInt(place.value);
+
+		if(parsedValue > maximumValue) {
+			return false;
+		}
+
+		return true;
+	}) && (timeSelector.period === "AM" || timeSelector.period === "PM");
 }
 
 
@@ -117,6 +152,7 @@ type ParsedSubmitLocationForm = {
 	didTypePurpose: boolean;
 
 	userProfile: ProfilePrefix;
+	timeSelector: TimeSelector;
 } | {
 	isValid: false;
 	errorMessage: string;
@@ -126,4 +162,5 @@ type ParsedSubmitLocationForm = {
 	didTypePurpose: null;
 
 	userProfile: null;
+	timeSelector: null;
 };

@@ -1,20 +1,28 @@
 <script lang="ts">
+	import type {TimePlace, TimeSelector} from "$lib/types/time.js";
+
+
+
 	export let margin = "0";
 
+	export let time: TimeSelector = {
+		places: [
+			{name: "hours", value: "12", isInvalid: false},
+			{name: "minutes", value: "00", isInvalid: false},
+			{name: "seconds", value: "00", isInvalid: false}
+		],
+
+		period: "PM"
+	};
 
 
-	const timePlaces = [
-		{name: "hours", value: "12", isInvalid: false},
-		{name: "minutes", value: "00", isInvalid: false},
-		{name: "seconds", value: "00", isInvalid: false}
-	];
 
-	const minutesSecondsRegex = new RegExp(/^[0-9]{1,2}$/);
+	const isNumbersRegex = new RegExp(/^[0-9]{1,2}$/);
 
 
 	$: {
-		timePlaces.forEach(place => {
-			if(!place.value.match(minutesSecondsRegex)) {
+		time.places.forEach(place => {
+			if(!place.value.match(isNumbersRegex)) {
 				place.isInvalid = true;
 				return;
 			}
@@ -36,16 +44,15 @@
 		});
 	}
 
-	let selectedPeriod = "PM";
 
 
+	function pad(name: TimePlace) {
+		// this would be so much nicer if i could trust javascript's pass by reference
+		const index = time.places.findIndex(place => place.name === name);
+		if(time.places[index].isInvalid) return;
 
-	function pad(name: string) {
-		const index = timePlaces.findIndex(place => place.name === name);
-		if(timePlaces[index].isInvalid) return;
-
-		const paddedValue = timePlaces[index].value.padStart(2, "0");
-		timePlaces[index].value = paddedValue;
+		const paddedValue = time.places[index].value.padStart(2, "0");
+		time.places[index].value = paddedValue;
 	}
 </script>
 
@@ -92,20 +99,22 @@
 
 <!-- TODO: perhaps this should be a fieldset -->
 <div class="editable-time" style:margin={margin}>
-	{#each timePlaces as place, index}
+	{#each time.places as place, index}
+		<!-- TODO: accessibility with hidden labels -->
+		<!-- TODO: this sucks -->
 		<input id={`${place.name}-input`}
 			bind:value={place.value}
 			class:is-invalid={place.isInvalid}
 			on:blur={() => pad(place.name)}>
 
-		{#if index < timePlaces.length - 1}
+		{#if index < time.places.length - 1}
 			<span class="colon">:</span>
 		{/if}
 
 	{/each}
 
 	<span class="spacer"></span>
-	<select class="am-pm-input" bind:value={selectedPeriod}>
+	<select class="am-pm-input" bind:value={time.period}>
 		<option>AM</option>
 		<option>PM</option>
 	</select>
