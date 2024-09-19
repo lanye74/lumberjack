@@ -64,7 +64,7 @@
 		<option selected hidden value="">--</option>
 
 		{#each possibleHours as hour}
-			<option value={parseInt(hour)}>{hour}</option>
+			<option>{hour}</option>
 		{/each}
 	</select>
 
@@ -75,7 +75,7 @@
 		<option selected hidden value="">--</option>
 
 		{#each possibleMinutes as minute}
-			<option value={parseInt(minute)}>{minute}</option>
+			<option>{minute}</option>
 		{/each}
 	</select>
 
