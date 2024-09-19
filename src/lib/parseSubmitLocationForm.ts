@@ -1,4 +1,4 @@
-import {isTimeSelectorValid, timeSelectorToValues, type ParsedTimePlaces, type TimeSelector} from "./time.js";
+import {isTimeSelectorValid, type TimeSelector} from "./time.js";
 import type {ProfilePrefix} from "./profiles.js";
 
 
@@ -89,7 +89,6 @@ export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocatio
 	const logTime = JSON.parse(logTimeInput !== "" ? logTimeInput : "null") as TimeSelector | null;
 
 	const timeIsValid = logTime === null ? true : isTimeSelectorValid(logTime);
-	const parsedLogTime = logTime === null ? null : timeSelectorToValues(logTime);
 
 
 	const isValid = userLocation !== "" &&
@@ -113,7 +112,7 @@ export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocatio
 		didTypePurpose,
 
 		userProfile,
-		logTime: parsedLogTime
+		logTime
 	};
 }
 
@@ -128,5 +127,5 @@ type ParsedSubmitLocationForm = {
 	didTypePurpose: boolean;
 
 	userProfile: ProfilePrefix;
-	logTime: ParsedTimePlaces | null;
+	logTime: TimeSelector | null;
 };

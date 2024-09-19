@@ -1,7 +1,7 @@
 import createCookieManager from "$lib/createCookieManager.js";
 import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
 import {submitLocationLogPrefix} from "$lib/consoleColorPrefixes.js";
-import type {ParsedTimePlaces} from "$lib/time.js";
+import type {TimeSelector} from "$lib/time.js";
 
 
 
@@ -37,7 +37,11 @@ export const actions = {
 		const {userLocation, userPurpose, didTypePurpose, userProfile, logTime} = parsedForm;
 
 
-		const logTimestamp = generateTimestampFromParsedTimePlaces(logTime);
+		const logTimestamp = generateTimestampFromTimeSelector(logTime);
+
+		console.log(logTime);
+		console.log(logTimestamp);
+		console.log(new Date(logTimestamp).toLocaleTimeString())
 
 
 		const {error: submitLocationError} = await supabase.from(`${userProfile}_location_logs`)
@@ -116,18 +120,18 @@ export const actions = {
 
 
 
-function generateTimestampFromParsedTimePlaces(timePlaces: ParsedTimePlaces | null) {
+function generateTimestampFromTimeSelector(timeSelector: TimeSelector | null) {
 	const dateObject = new Date();
 
-	if(timePlaces === null) return dateObject.toISOString();
+	if(timeSelector === null) return dateObject.toISOString();
 
-	const {hours, minutes, seconds, period} = timePlaces;
+	const {hours: hour, minutes: minute, period} = timeSelector;
 
-	dateObject.setHours(hours % 12 + (period === "AM" ? 0 : 12));
-	dateObject.setMinutes(minutes);
-	dateObject.setSeconds(seconds);
-	// leave some tiny differentiator
-	// dateObject.setMilliseconds(0);
+	dateObject.setHours(hour % 12 + (period === "AM" ? 0 : 12));
+	dateObject.setMinutes(minute);
+
+	dateObject.setSeconds(0);
+	dateObject.setMilliseconds(0);
 
 	return dateObject.toISOString();
 }

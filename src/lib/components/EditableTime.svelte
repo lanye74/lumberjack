@@ -1,113 +1,89 @@
 <script lang="ts">
-	import {validateTimeSelector, type TimePlace, type TimeSelector} from "$lib/time.js";
+	import type {TimePeriod, TimeSelector} from "$lib/time.js";
 
 
 
 	export let margin = "0";
 
 	export let time: TimeSelector = {
-		places: [
-			{name: "hours", value: "12", isInvalid: false},
-			{name: "minutes", value: "00", isInvalid: false},
-			{name: "seconds", value: "00", isInvalid: false}
-		],
+		hours: NaN,
+		minutes: NaN,
+		period: "AM"
+	};
 
-		period: "PM"
+	$: {
+		time.hours = parseInt(selectedHour);
+		time.minutes = parseInt(selectedMinute);
+		time.period = selectedPeriod;
 	};
 
 
+	let selectedHour: string;
+	let selectedMinute: string;
+	let selectedPeriod: TimePeriod;
 
-	$: time = validateTimeSelector(time);
-
-
-
-	function pad(name: TimePlace) {
-		// this would be so much nicer if i could trust javascript's pass by reference
-		const index = time.places.findIndex(place => place.name === name);
-		if(time.places[index].isInvalid) return;
-
-		const paddedValue = time.places[index].value.padStart(2, "0");
-		time.places[index].value = paddedValue;
-	}
-
-	function wipe(name: TimePlace) {
-		const index = time.places.findIndex(place => place.name === name);
-		time.places[index].value = "";
-	}
+	// >:(
+	// https://itnext.io/heres-why-mapping-a-constructed-array-doesn-t-work-in-javascript-f1195138615a
+	let possibleHours = Array(12).fill(0).map((_, index) => (index + 1).toString().padStart(2, "0"));
+	let possibleMinutes = Array(12).fill(0).map((_, index) => (index * 5).toString().padStart(2, "0"));
 </script>
 
 <style>
-	/* TODO: why did i write these styles like this */
 	.editable-time {
 		display: inline-flex;
 		flex-direction: row;
 	}
 
-	.editable-time input, span, select, option {
+	span, select, option {
 		font: 1.8rem var(--time-font);
 	}
 
-	.editable-time input, span, select {
+	span, select {
 		box-sizing: border-box;
-		height: 2.3rem !important;
+		height: 2.4rem !important;
 		align-self: end;
 	}
 
-	.editable-time input, select {
+	select {
 		border: none;
 		border-bottom: 0.2rem solid #000;
-	}
-
-	.editable-time input {
-		/* TODO: pray for field-sizing to become a standard CSS property */
-		width: 1.4em;
-		padding: 0rem 0.2rem;
-
-		text-align: center;
-	}
-
-	.editable-time .spacer {
-		width: 0.6rem;
-	}
-
-	.is-invalid {
-		color: red;
-		border-bottom-color: red !important;
-	}
-
-
-	select {
 		background-color: #fff;
+	}
+
+	.spacer {
+		width: 0.6rem;
 	}
 </style>
 
 
 
-<!-- TODO: perhaps this should be a fieldset -->
+<!-- TODO: perhaps this should be a fieldset(s) -->
 <div class="editable-time" style:margin={margin}>
-	{#each time.places as place, index}
-		<!-- TODO: accessibility with hidden labels -->
-		<!-- TODO: this sucks -->
-		<label hidden={true} for={`${place.name}-input`}>{place.name} input</label>
-		<input id={`${place.name}-input`}
-			type="number"
-			inputmode="numeric"
-			class:is-invalid={place.isInvalid}
-			bind:value={place.value}
-			on:focus={() => wipe(place.name)}
-			on:click={() => wipe(place.name)}
-			on:blur={() => pad(place.name)}>
+	<label hidden={true} for="hours-input">Hours input</label>
+	<select id="hours-input" bind:value={selectedHour}>
+		<option selected hidden value="">--</option>
 
-		{#if index < time.places.length - 1}
-			<span class="colon">:</span>
-		{/if}
+		{#each possibleHours as hour}
+			<option value={parseInt(hour)}>{hour}</option>
+		{/each}
+	</select>
 
-	{/each}
+	<span class="colon">:</span>
+
+	<label hidden={true} for="minutes-input">Minutes input</label>
+	<select id="minutes-input" bind:value={selectedMinute}>
+		<option selected hidden value="">--</option>
+
+		{#each possibleMinutes as minute}
+			<option value={parseInt(minute)}>{minute}</option>
+		{/each}
+	</select>
 
 	<span class="spacer"></span>
 
 	<label hidden={true} for="am-pm-input">AM/PM Selector</label>
-	<select id="am-pm-input" bind:value={time.period}>
+	<select id="am-pm-input" bind:value={selectedPeriod}>
+		<option selected hidden value="">--</option>
 		<option>AM</option>
 		<option>PM</option>
 	</select>
