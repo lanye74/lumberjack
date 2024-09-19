@@ -46,8 +46,10 @@
 
 	select {
 		border: none;
+		border-radius: 0;
 		border-bottom: 0.2rem solid #000;
 		background-color: #fff;
+		color: #000;
 	}
 
 	.spacer {
