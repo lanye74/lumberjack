@@ -2,11 +2,11 @@
 	import {applyAction, enhance} from "$app/forms";
 	import type {SubmitFunction} from "@sveltejs/kit";
 
-    import EditableTime from "./EditableTime.svelte";
+	import EditableTime from "./EditableTime.svelte";
 	import {navbarHeight} from "$lib/stores.js";
 	import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
 	import type {ProfilePrefix} from "$lib/profiles.js";
-    import type {TimeSelector} from "$lib/time.js";
+	import type {TimeSelector} from "$lib/time.js";
 
 
 

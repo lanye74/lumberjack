@@ -26,6 +26,7 @@
 	.image-wrapper {
 		display: flex;
 		justify-content: center;
+		align-items: center;
 
 		border-radius: 50%;
 		color: var(--avatar-color);

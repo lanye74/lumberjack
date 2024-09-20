@@ -4,7 +4,7 @@
 	import BorderBox from "$lib/components/BorderBox.svelte";
 	import {currentProfile, nextProfile} from "$lib/profiles.js";
 	import {formatPoints} from "$lib/formatters.js";
-    import type {MouseEventHandler} from "svelte/elements";
+	import type {MouseEventHandler} from "svelte/elements";
 	import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
 	import UserAvatar from "$lib/components/UserAvatar.svelte";
 	import UserProfileAction from "$lib/components/UserProfileAction.svelte";

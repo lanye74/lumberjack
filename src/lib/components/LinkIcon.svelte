@@ -59,6 +59,5 @@
 
 
 <a href={path} data-sveltekit-preload-data="hover" aria-label={mappedAriaLabel}>
-	<!-- TODO: the icons don't populate in edge?????? -->
-	<svelte:component this={mappedIcon} font-size="4rem"/>
+	<svelte:component this={mappedIcon} font-size="4rem" />
 </a>
