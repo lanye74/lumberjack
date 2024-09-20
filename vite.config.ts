@@ -1,5 +1,6 @@
-import {sveltekit} from "@sveltejs/kit/vite";
 import {defineConfig} from "vite";
+import Icons from "unplugin-icons/vite";
+import {sveltekit} from "@sveltejs/kit/vite";
 import {SvelteKitPWA} from "@vite-pwa/sveltekit";
 
 import {readFileSync} from "fs";
@@ -27,7 +28,8 @@ export default defineConfig(args => {
 	return {
 		plugins: [
 			sveltekit(),
-			SvelteKitPWA({...pwaManifest})
+			SvelteKitPWA({...pwaManifest}),
+			Icons({compiler: "svelte"}),
 		],
 
 		preview

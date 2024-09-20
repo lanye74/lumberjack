@@ -1,5 +1,6 @@
 import createCookieManager from "$lib/createCookieManager.js";
 import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
+import type {ProfilePrefix} from "$lib/profiles.js";
 import {submitLocationLogPrefix} from "$lib/consoleColorPrefixes.js";
 import type {TimeSelector} from "$lib/time.js";
 
@@ -107,7 +108,7 @@ export const actions = {
 		// let the server know to not serve a cached leadboard read
 		createCookieManager(cookies).setLogSubmissionStatus(true);
 
-		createCookieManager(cookies).setProfilePoints(userProfile, points + 1000);
+		createCookieManager(cookies).setProfilePoints(userProfile as ProfilePrefix, points + 1000);
 
 
 

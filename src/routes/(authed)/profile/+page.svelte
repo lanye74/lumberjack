@@ -2,11 +2,12 @@
 	import {invalidateAll} from "$app/navigation";
 
 	import BorderBox from "$lib/components/BorderBox.svelte";
-	import UserProfileAction from "$lib/components/UserProfileAction.svelte";
 	import {currentProfile, nextProfile} from "$lib/profiles.js";
 	import {formatPoints} from "$lib/formatters.js";
+    import type {MouseEventHandler} from "svelte/elements";
 	import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
 	import UserAvatar from "$lib/components/UserAvatar.svelte";
+	import UserProfileAction from "$lib/components/UserProfileAction.svelte";
 
 
 
@@ -25,11 +26,11 @@
 	let pointsText = formatPoints(data.profilePoints ?? 0);
 
 
-	// should this be in a separate file?
+	// TODO: should this be in a separate file?
 	$: userProfileActions = [
 		{
+			icon: "exchange-alt",
 			text: `Switch to ${$nextProfile.pretty}`,
-			iconId: "fa-solid:exchange-alt",
 			callback: async () => {
 				const formData = new FormData();
 				formData.append("new-profile", $nextProfile.prefix);
@@ -53,14 +54,15 @@
 		},
 
 		{
+			icon: "sign-out-alt",
 			text: "Sign out",
-			iconId: "fa-solid:sign-out-alt",
 			callback: async () => {
 				await fetch("/auth/logout", {method: "POST"});
 				invalidateAll();
 			}
 		}
-	];
+		// TODO: this sucks
+	] as {icon: "exchange-alt" | "sign-out-alt"; text: string; callback: MouseEventHandler<HTMLButtonElement>}[];
 </script>
 
 <style>

@@ -63,7 +63,7 @@
 	}
 
 	:global(*) {
-		font: 1rem var(--font-serif);
+		font-family: var(--font-serif);
 	}
 
 

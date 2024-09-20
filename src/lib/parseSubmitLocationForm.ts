@@ -83,7 +83,7 @@ export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocatio
 	const didTypePurpose = userPurposeMultiple === "Other";
 	const userPurpose = didTypePurpose ? userPurposeText : userPurposeMultiple;
 
-	const userProfile = (formData.get("user-profile")?.toString().trim() ?? "") as ProfilePrefix;
+	const userProfile = (formData.get("user-profile")?.toString().trim() ?? "") as ProfilePrefix | "";
 
 	const logTimeInput = formData.get("log-time")?.toString().trim() ?? "";
 	const logTime = JSON.parse(logTimeInput !== "" ? logTimeInput : "null") as TimeSelector | null;
@@ -93,7 +93,6 @@ export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocatio
 
 	const isValid = userLocation !== "" &&
 	                userPurpose !== "" &&
-					// @ts-ignore worry about it later
 					userProfile !== "" &&
 	                jcsSites[userProfile].includes(userLocation) &&
 	                possibleVisitPurposes[userProfile].includes(userPurposeMultiple) &&
@@ -126,6 +125,6 @@ type ParsedSubmitLocationForm = {
 	userPurpose: string;
 	didTypePurpose: boolean;
 
-	userProfile: ProfilePrefix;
+	userProfile: ProfilePrefix | "";
 	logTime: TimeSelector | null;
 };

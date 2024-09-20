@@ -1,13 +1,22 @@
 <script lang="ts">
-	import "iconify-icon";
-
 	import type {MouseEventHandler} from "svelte/elements";
+	import ExchangeAlt from "virtual:icons/fa-solid/exchange-alt";
+	import SignOutAlt from "virtual:icons/fa-solid/sign-out-alt";
 
 
 
-	export let iconId: string; // these can be one line, really, but i don't want to put multiple typed variable declarations on one line
+	export let icon: keyof typeof iconComponentMap; // these can be one line, really, but i don't want to put multiple typed variable declarations on one line
 	export let text: string;
 	export let callback: MouseEventHandler<HTMLButtonElement>;
+
+
+
+	const iconComponentMap = {
+		"exchange-alt": ExchangeAlt,
+		"sign-out-alt": SignOutAlt
+	};
+
+	const mappedIcon = iconComponentMap[icon];
 </script>
 
 <style>
@@ -36,17 +45,12 @@
 	button:first-child {
 		border-top: 0.25rem solid var(--border-color);
 	}
-
-
-	iconify-icon {
-		font-size: 3rem;
-	}
 </style>
 
 
 
 <button on:click={callback}>
-	<iconify-icon icon={iconId} />
+	<svelte:component this={mappedIcon} font-size="3rem" />
 
 	{text}
 </button>

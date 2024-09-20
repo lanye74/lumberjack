@@ -48,5 +48,5 @@
 	style:--font-size={fontSize}
 	bind:clientWidth={wrapperWidth}
 >
-	<ImageWithIconFallback {src} alt="User profile picture" icon="fa-solid:user-circle" />
+	<ImageWithIconFallback {src} alt="User profile picture" icon="user-circle" />
 </div>

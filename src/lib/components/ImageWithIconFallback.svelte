@@ -1,13 +1,22 @@
 <script lang="ts">
-	import "iconify-icon";
 	import {onMount} from "svelte";
+	import ProfileIcon from "virtual:icons/fa-solid/user-circle";
 
 
 
 	export let src: string;
 	export let alt: string;
 
-	export let icon: string;
+	export let icon: keyof typeof iconComponentMap;
+
+
+
+	const iconComponentMap = {
+		"user-circle": ProfileIcon
+	};
+
+	const mappedIcon = iconComponentMap[icon];
+
 
 
 	let isLoading = true;
@@ -44,17 +53,12 @@
 
 		border-radius: inherit;
 	}
-
-	iconify-icon {
-		font-size: inherit;
-		color: inherit;
-	}
 </style>
 
 
 
 {#if isLoading || hadError}
-	<iconify-icon {icon} />
+	<svelte:component this={mappedIcon} font-size="inherit" color="inherit" />
 {:else}
 	<img src={loadedSrc} {alt}>
 {/if}

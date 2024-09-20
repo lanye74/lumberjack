@@ -1,5 +1,8 @@
 <script lang="ts">
-	import "iconify-icon";
+	import HomeIcon from "virtual:icons/fa-solid/home";
+	import PencilIcon from "virtual:icons/fa-solid/pencil-alt";
+	import TrophyIcon from "virtual:icons/fa-solid/trophy";
+	import ProfileIcon from "virtual:icons/fa-solid/user-circle";
 
 	import type {AuthedRoute} from "$lib/types/routes.js";
 
@@ -9,11 +12,11 @@
 
 
 
-	const routeIconMappings: {[key in AuthedRoute]: string} = {
-		"/home": "fa-solid:home",
-		"/editor": "fa-solid:pencil-alt",
-		"/leaderboard": "fa-solid:trophy",
-		"/profile": "fa-solid:user-circle"
+	const routeIconMappings: {[key in AuthedRoute]: typeof HomeIcon} = {
+		"/home": HomeIcon,
+		"/editor": PencilIcon,
+		"/leaderboard": TrophyIcon,
+		"/profile": ProfileIcon
 	};
 
 	const ariaLabelMappings: {[key in AuthedRoute]: string} = {
@@ -25,15 +28,11 @@
 
 
 
-	const mappedIconName = routeIconMappings[path];
-	const mappedAriaLabel = ariaLabelMappings[path]
+	const mappedIcon = routeIconMappings[path];
+	const mappedAriaLabel = ariaLabelMappings[path];
 </script>
 
 <style>
-	iconify-icon {
-		font-size: 4rem;
-	}
-
 	a {
 		color: #000;
 
@@ -61,5 +60,5 @@
 
 <a href={path} data-sveltekit-preload-data="hover" aria-label={mappedAriaLabel}>
 	<!-- TODO: the icons don't populate in edge?????? -->
-	<iconify-icon icon={mappedIconName} />
+	<svelte:component this={mappedIcon} font-size="4rem"/>
 </a>
