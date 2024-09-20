@@ -28,11 +28,11 @@
 
 		display: flex;
 		flex-direction: row;
-		justify-content: space-between;
+		justify-content: space-around;
 
 		/* effective top padding: 2rem */
 		/* bonus bottom padding for easy thumb access */
-		padding: 1rem 3rem 2rem 3rem;
+		padding: 1rem 1rem 2rem;
 
 		box-sizing: border-box;
 

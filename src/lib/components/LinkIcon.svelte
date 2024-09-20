@@ -59,5 +59,5 @@
 
 
 <a href={path} data-sveltekit-preload-data="hover" aria-label={mappedAriaLabel}>
-	<svelte:component this={mappedIcon} font-size="4rem" />
+	<svelte:component this={mappedIcon} font-size="3.5rem" />
 </a>
