@@ -38,12 +38,7 @@
 
 		background-color: white;
 
-		view-transition-name: navbar;
-		transition: none;
-	}
-
-	:root::view-transition-group(navbar) {
-		view-transition-name: none;
+		/* view-transition-name: navbar; */
 	}
 </style>
 

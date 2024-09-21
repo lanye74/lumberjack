@@ -1,10 +1,6 @@
 <script lang="ts">
-	import {onNavigate} from "$app/navigation";
-	import {page} from "$app/stores";
-
 	import Header from "$lib/components/Header.svelte";
 	import Navbar from "$lib/components/Navbar.svelte";
-	import {enableCorrectTransitionForNavigation} from "$lib/routes.js";
 	import {navbarHeight} from "$lib/stores.js";
 
 
@@ -12,12 +8,12 @@
 	// TODO: (VERY VERY IMPORTANT)
 	// THIS WHOLE NAVIGATION THING MEANS PEOPLE WILL WANT SWIPE CONTROLS
 	// POSSIBLY SHELF THIS TRANSITION AND ADD IT BACK AS A FEATURE
-	onNavigate(navigation => {
+	/* onNavigate(navigation => {
 		if(!document.startViewTransition ||
 		   navigation.to?.route.id === $page.route.id) return;
 
 		return enableCorrectTransitionForNavigation(navigation, $page.route.id);
-	});
+	}); */
 </script>
 
 <style>
@@ -29,7 +25,7 @@
 
 
 
-	@keyframes slide-from-left {
+	/* @keyframes slide-from-left {
 		from {
 			transform: translateX(-100vw);
 		}
@@ -75,10 +71,9 @@
 		::view-transition-group(*),
 		::view-transition-old(*),
 		::view-transition-new(*) {
-			/* TODO: crossfade here */
 			animation: none !important;
 		}
-	}
+	} */
 </style>
 
 

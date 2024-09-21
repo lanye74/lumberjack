@@ -1,4 +1,5 @@
 import type {OnNavigate} from "@sveltejs/kit";
+
 import type {RoutePageTitleMap, RedirectableRouthWithGroup} from "./types/routes.js";
 
 
@@ -68,7 +69,6 @@ export function enableCorrectTransitionForNavigation(navigation: OnNavigate, cur
 		}
 
 
-		// @ts-ignore
 		document.startViewTransition(async () => {
 			resolve();
 

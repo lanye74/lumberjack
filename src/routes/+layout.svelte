@@ -67,6 +67,12 @@
 	}
 
 
+	/* ...mobile app */
+	:global(::-webkit-scrollbar) {
+		display: none;
+	}
+
+
 
 	@font-face {
 		font-family: "Lora";

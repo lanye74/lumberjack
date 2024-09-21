@@ -28,7 +28,7 @@
 	}
 
 	h2 {
-		font: bold 3rem var(--font-serif);
+		font: bold 2.8rem var(--font-serif);
 	}
 
 	p {

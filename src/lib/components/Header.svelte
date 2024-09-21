@@ -14,7 +14,7 @@
 
 		box-shadow: 0 0.25rem 1rem 0.25rem #0004;
 
-		view-transition-name: header;
+		/* view-transition-name: header; */
 	}
 
 
