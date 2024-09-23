@@ -7,7 +7,7 @@
 
 	export let users: PointsLeaderboardEntry[];
 
-	const numberPlaces = Math.min(users.length, 3);
+	$: numberPlaces = Math.min(users.length, 3);
 </script>
 
 <style>

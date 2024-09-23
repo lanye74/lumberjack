@@ -2,6 +2,7 @@
 	import BorderBox from "$lib/components/BorderBox.svelte";
 	import LeaderboardEntry from "$lib/components/LeaderboardEntry.svelte";
 	import Podium from "$lib/components/Podium.svelte";
+    import type {PointsLeaderboardEntry} from "$lib/types/database.js";
 
 
 
@@ -9,8 +10,14 @@
 	const {leaderboard} = data;
 
 
-	const topThree = leaderboard?.slice(0, 3) ?? [];
-	const lastSeven = leaderboard?.slice(3, 10) ?? [];
+	let topThree: PointsLeaderboardEntry[] = [];
+	let lastSeven: PointsLeaderboardEntry[] = [];
+
+
+	leaderboard.then(leaderboardEntries => {
+		topThree = leaderboardEntries?.slice(0, 3) ?? [];
+		lastSeven = leaderboardEntries?.slice(3, 10) ?? [];
+	});
 </script>
 
 <style>
@@ -61,28 +68,31 @@
 
 
 
-{#if leaderboard !== null}
-	<BorderBox direction="column" gap="1.5rem">
-		{#if topThree.length > 0}
-			<div class="leaderboard-header">
-				<h2>Points Leaderboard</h2>
-				<p>Refreshes when logs are submitted</p>
-			</div>
-		{/if}
+{#await leaderboard}
+	<p>Loading!</p>
+{:then leaderboardData}
+	{#if leaderboardData === null}
+		<p>Something went terribly terribly wrong while loading the data...</p>
+	{:else}
+		<BorderBox direction="column" gap="1.5rem">
+			{#if topThree.length > 0}
+				<div class="leaderboard-header">
+					<h2>Points Leaderboard</h2>
+					<p>Refreshes when logs are submitted</p>
+				</div>
+			{/if}
 
-		<Podium users={topThree} />
-	</BorderBox>
+			<Podium users={topThree} />
+		</BorderBox>
 
-	<section class="leaderboard">
-		{#each lastSeven as user, index}
-			<LeaderboardEntry {user} index={index + 3} />
-		{/each}
+		<section class="leaderboard">
+			{#each lastSeven as user, index}
+				<LeaderboardEntry {user} index={index + 3} />
+			{/each}
 
-		{#if lastSeven.length < 7 && topThree.length > 0}
-			<p class="last-seven-placeholder">More entries will show here as the leaderboard populates!</p>
-		{/if}
-	</section>
-{:else}
-	<!-- TODO: make these defaults look half okay -->
-	<p>Something went terribly terribly wrong while loading the data...</p>
-{/if}
+			{#if lastSeven.length < 7 && topThree.length > 0}
+				<p class="last-seven-placeholder">More entries will show here as the leaderboard populates!</p>
+			{/if}
+		</section>
+	{/if}
+{/await}

@@ -72,12 +72,12 @@ function setProfilePointsCookie(cookies: Cookies, profilePrefix: ProfilePrefix, 
 
 async function getProfile(cookies: Cookies, supabase: SupabaseClient, userId: string) {
 	const profileCookie = cookies.get("lumberjack_user_profile") as ProfilePrefix;
-	const profile = (profileCookie === undefined || !profilePrefixes.includes(profileCookie))
-		? await fetchUserProfile(supabase, userId)
-		: profileCookie;
+	const isInvalidCookie = (profileCookie === undefined || !profilePrefixes.includes(profileCookie));
+
+	const profile = isInvalidCookie	? await fetchUserProfile(supabase, userId) : profileCookie;
 
 	// fun fact: i forgot to include this line, which caused a billion more database reads and increased load times by >100ms!
-	setProfileCookie(cookies, profile);
+	if(isInvalidCookie) setProfileCookie(cookies, profile);
 
 	return profile;
 }

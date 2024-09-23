@@ -1,9 +1,11 @@
-import type {SupabaseClient} from "@supabase/supabase-js";
+import type {SupabaseClient, User} from "@supabase/supabase-js";
 
 import createCookieManager from "$lib/createCookieManager.js";
 import type {LeaderboardCache} from "$lib/types/leaderboard.js";
 import {leaderboardLogPrefix} from "$lib/consoleColorPrefixes.js";
 import type {PointsLeaderboardEntry, PointsLeaderboardEntryRow} from "$lib/types/database.js";
+import type {Cookies} from "@sveltejs/kit";
+import type {ProfilePrefix} from "$lib/profiles.js";
 
 
 
@@ -28,15 +30,25 @@ const autoRefreshPeriod = 1e3 * 60 * 3; // 3 mins
 
 // TODO: make this non-blocking and use skeleton loaders
 export async function load({cookies, locals: {supabase, user}}) {
-	// TODO: avoid name collisions here
-	const currentProfile = await createCookieManager(cookies, supabase).getProfile(user!.id);
-	const leaderboard = leaderboards[currentProfile];
-
-
 	const hasSubmittedPointsRecently = createCookieManager(cookies).getLogSubmissionStatus();
+	createCookieManager(cookies).setLogSubmissionStatus(false);
 
+	// this should never not be set because of the hook, so this shouldn't be blocking
+	const currentProfile = await createCookieManager(cookies, supabase).getProfile(user!.id);
+
+
+	return {
+		leaderboard: loadLeaderboardData(supabase,currentProfile, hasSubmittedPointsRecently)
+	};
+}
+
+
+
+async function loadLeaderboardData(supabase: SupabaseClient, currentProfile: ProfilePrefix, hasSubmittedPointsRecently: boolean): Promise<PointsLeaderboardEntry[] | null> {
+	await new Promise(res => setTimeout(res, 2000));
+
+	const leaderboard = leaderboards[currentProfile];
 	const currentTime = Date.now();
-
 
 	// use cached response!!!
 	if((hasSubmittedPointsRecently === false) &&
@@ -44,9 +56,7 @@ export async function load({cookies, locals: {supabase, user}}) {
 		// true if we are not at the forced refresh period yet
 		currentTime < (leaderboard.lastRefreshTime + autoRefreshPeriod)
 	) {
-		return {
-			leaderboard: leaderboard.cachedState
-		};
+		return leaderboard.cachedState;
 	}
 
 
@@ -56,12 +66,8 @@ export async function load({cookies, locals: {supabase, user}}) {
 	leaderboards[currentProfile].cachedState = dataFromLeaderboard;
 	leaderboards[currentProfile].lastRefreshTime = Date.now();
 
-	createCookieManager(cookies).setLogSubmissionStatus(false);
 
-
-	return {
-		leaderboard: dataFromLeaderboard
-	};
+	return dataFromLeaderboard;
 }
 
 
