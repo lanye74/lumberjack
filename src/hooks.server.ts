@@ -44,8 +44,7 @@ const supabaseHandle: Handle = async({event, resolve}) => {
 
 
 const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
-	const sessionData = await requestEvent.locals.safeGetSession();
-	const {session, user} = sessionData;
+	const {session, user} = await requestEvent.locals.safeGetSession();
 	const {locals, url} = requestEvent;
 
 	locals.session = session;
@@ -84,16 +83,15 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 
 
 const setProfileCookieHandle: Handle = async ({event: requestEvent, resolve}) => {
+	// console.time("SetProfileCookieHandle");
 	const {session, supabase} = requestEvent.locals;
 
 	if(!session) {
 		return resolve(requestEvent);
 	}
 
-
-	// this will set it if it does not exist
+	// this will set it if it does not exist (for real this time)
 	await createCookieManager(requestEvent.cookies, supabase).getProfile(requestEvent.locals.user!.id);
-
 
 	return resolve(requestEvent);
 }

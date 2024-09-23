@@ -38,7 +38,7 @@
 
 		background-color: white;
 
-		/* view-transition-name: navbar; */
+		view-transition-name: navbar;
 	}
 </style>
 

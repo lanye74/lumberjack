@@ -6,7 +6,8 @@ Log where you are, instantly
 
 ### 2.5.0
 make app feel snappier
-- disable view transitions
+- ~~disable view transitions (**?**)~~
+	- used cleaner ones instead
 - stream promises
 	- loading indicators or perhaps skeleton loaders
 - do more server calls on client-side maybe
@@ -20,6 +21,7 @@ try to get app a bit cleaner
 - pop up for reload on new app version
 	- maybe cookie to store if the reload was clicked?
 	- and then popup for "click here to see what's changed"?
+	- in the future if i need closable modals, make sure to use shallow routing - push history so the native back button will close it
 - perhaps: confetti on log submission?
 
 ### 2.7.0
@@ -29,12 +31,6 @@ make app even easier (and more invasive)
 - record location on log submission
 - reuse pop up from new app version
 
-### 2.8.0
-ui rework
-- i don't know what this entails and it may be scrapped
-- possibly chip away at idea of reworking view transitions?
-	- this may actually be large enough for a major version. whatever i decide for it may need to come after log editor honestly
-
 ### 3.0.0
 - log editor
 
@@ -42,8 +38,17 @@ ui rework
 - admins and admin data exports
 - possibly graphs and stuff?
 
+### 5.0.0
+ui rework
+- i don't know what this entails and it may be scrapped
+- possibly chip away at idea of reworking view transitions?
+	- i think my idea of rendering all pages at once and then sliding between them is really really bad but it could be funny
+- this may actually be large enough for a major version
+- perhaps use a UI library
+
 ### at some point
 - switch to svelte 5
+- add a page-by-page log input ui
 
 
 

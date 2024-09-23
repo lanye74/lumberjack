@@ -60,6 +60,7 @@ async function getProfilePoints(cookies: Cookies, supabase: SupabaseClient, prof
 
 
 
+// TODO: change this to avoid duplicated code from above
 function setProfilePointsCookie(cookies: Cookies, profilePrefix: ProfilePrefix, value: number) {
 	const pointsJson = getPointsCookie(cookies);
 	pointsJson[profilePrefix] = value;
@@ -69,14 +70,16 @@ function setProfilePointsCookie(cookies: Cookies, profilePrefix: ProfilePrefix, 
 
 
 
-
-
 async function getProfile(cookies: Cookies, supabase: SupabaseClient, userId: string) {
-	let profileCookie = cookies.get("lumberjack_user_profile") as ProfilePrefix;
-
-	return (profileCookie === undefined || !profilePrefixes.includes(profileCookie))
+	const profileCookie = cookies.get("lumberjack_user_profile") as ProfilePrefix;
+	const profile = (profileCookie === undefined || !profilePrefixes.includes(profileCookie))
 		? await fetchUserProfile(supabase, userId)
 		: profileCookie;
+
+	// fun fact: i forgot to include this line, which caused a billion more database reads and increased load times by >100ms!
+	setProfileCookie(cookies, profile);
+
+	return profile;
 }
 
 
