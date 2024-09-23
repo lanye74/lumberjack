@@ -4,14 +4,6 @@ Log where you are, instantly
 
 ## roadmap (approximately)
 
-### 2.5.0
-make app feel snappier
-- ~~disable view transitions (**?**)~~
-	- used cleaner ones instead
-- ~~stream promises~~
-	- ~~loading indicators or perhaps skeleton loaders~~
-- do more server calls on client-side maybe
-
 ### 2.6.0
 try to get app a bit cleaner
 - rework toasts
@@ -49,6 +41,7 @@ ui rework
 ### at some point
 - switch to svelte 5
 - add a page-by-page log input ui
+- do more server calls on client-side maybe
 
 
 
