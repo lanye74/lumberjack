@@ -8,8 +8,8 @@ Log where you are, instantly
 make app feel snappier
 - ~~disable view transitions (**?**)~~
 	- used cleaner ones instead
-- stream promises
-	- loading indicators or perhaps skeleton loaders
+- ~~stream promises~~
+	- ~~loading indicators or perhaps skeleton loaders~~
 - do more server calls on client-side maybe
 
 ### 2.6.0

@@ -1,17 +1,15 @@
 <script lang="ts">
 	import {onNavigate} from "$app/navigation";
-    import {page} from "$app/stores";
+	import {page} from "$app/stores";
 
-    import {enableCorrectTransitionForNavigation} from "$lib/routes.js";
+	import {enableCorrectTransitionForNavigation} from "$lib/routes.js";
 	import Header from "$lib/components/Header.svelte";
 	import Navbar from "$lib/components/Navbar.svelte";
 	import {navbarHeight} from "$lib/stores.js";
 
 
 
-	// TODO: (VERY VERY IMPORTANT)
-	// THIS WHOLE NAVIGATION THING MEANS PEOPLE WILL WANT SWIPE CONTROLS
-	// POSSIBLY SHELF THIS TRANSITION AND ADD IT BACK AS A FEATURE
+	// TODO: swipe controls?
 	onNavigate(navigation => {
 		if(!document.startViewTransition ||
 		   navigation.to?.route.id === $page.route.id) return;

@@ -4,7 +4,6 @@ import createCookieManager from "$lib/createCookieManager.js";
 import type {LeaderboardCache} from "$lib/types/leaderboard.js";
 import {leaderboardLogPrefix} from "$lib/consoleColorPrefixes.js";
 import type {PointsLeaderboardEntry, PointsLeaderboardEntryRow} from "$lib/types/database.js";
-import type {Cookies} from "@sveltejs/kit";
 import type {ProfilePrefix} from "$lib/profiles.js";
 
 
@@ -28,7 +27,7 @@ const autoRefreshPeriod = 1e3 * 60 * 3; // 3 mins
 
 
 
-// TODO: make this non-blocking and use skeleton loaders
+// TODO: use skeleton loaders
 export async function load({cookies, locals: {supabase, user}}) {
 	const hasSubmittedPointsRecently = createCookieManager(cookies).getLogSubmissionStatus();
 	createCookieManager(cookies).setLogSubmissionStatus(false);
@@ -38,15 +37,13 @@ export async function load({cookies, locals: {supabase, user}}) {
 
 
 	return {
-		leaderboard: loadLeaderboardData(supabase,currentProfile, hasSubmittedPointsRecently)
+		leaderboard: loadLeaderboardData(supabase, currentProfile, hasSubmittedPointsRecently)
 	};
 }
 
 
 
 async function loadLeaderboardData(supabase: SupabaseClient, currentProfile: ProfilePrefix, hasSubmittedPointsRecently: boolean): Promise<PointsLeaderboardEntry[] | null> {
-	await new Promise(res => setTimeout(res, 2000));
-
 	const leaderboard = leaderboards[currentProfile];
 	const currentTime = Date.now();
 

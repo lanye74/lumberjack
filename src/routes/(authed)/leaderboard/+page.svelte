@@ -2,7 +2,7 @@
 	import BorderBox from "$lib/components/BorderBox.svelte";
 	import LeaderboardEntry from "$lib/components/LeaderboardEntry.svelte";
 	import Podium from "$lib/components/Podium.svelte";
-    import type {PointsLeaderboardEntry} from "$lib/types/database.js";
+	import type {PointsLeaderboardEntry} from "$lib/types/database.js";
 
 
 
@@ -49,19 +49,17 @@
 		align-items: center;
 		gap: 0.5rem;
 
-		text-align: center;
 	}
 
-	.leaderboard-header h2, .leaderboard-header p {
+	h2 {
 		margin: 0;
-	}
-
-	.leaderboard-header h2 {
+		text-align: center;
 		font: bold 2.5rem var(--font-serif);
 	}
 
 	.leaderboard-header p {
 		font: italic 1.5rem var(--font-serif);
+		text-align: center;
 		color: var(--subtext-color);
 	}
 </style>
@@ -69,7 +67,9 @@
 
 
 {#await leaderboard}
-	<p>Loading!</p>
+	<BorderBox direction="column">
+		<h2>Loading...</h2>
+	</BorderBox>
 {:then leaderboardData}
 	{#if leaderboardData === null}
 		<p>Something went terribly terribly wrong while loading the data...</p>
