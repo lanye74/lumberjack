@@ -74,7 +74,7 @@ async function getProfile(cookies: Cookies, supabase: SupabaseClient, userId: st
 	const profileCookie = cookies.get("lumberjack_user_profile") as ProfilePrefix;
 	const isInvalidCookie = (profileCookie === undefined || !profilePrefixes.includes(profileCookie));
 
-	const profile = isInvalidCookie	? await fetchUserProfile(supabase, userId) : profileCookie;
+	const profile = isInvalidCookie ? await fetchUserProfile(supabase, userId) : profileCookie;
 
 	// fun fact: i forgot to include this line, which caused a billion more database reads and increased load times by >100ms!
 	if(isInvalidCookie) setProfileCookie(cookies, profile);
@@ -124,6 +124,7 @@ async function fetchUserPoints(supabase: SupabaseClient, profilePrefix: string, 
 
 
 	if(error && error.code !== "PGRST116") {
+		console.error("Error in fetchUserPoints", error);
 		return null;
 	}
 
@@ -139,5 +140,6 @@ async function fetchUserProfile(supabase: SupabaseClient, userId: string): Promi
 		.eq("google_user_id", userId)
 		.single();
 
+	// does this need to be validated?????????????
 	return data?.profile as ProfilePrefix ?? defaultProfilePrefix;
 }

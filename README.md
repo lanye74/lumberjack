@@ -44,6 +44,9 @@ ui rework
 - add a page-by-page log input ui
 - do more server calls on client-side maybe
 
+### at some point really soon
+- please make error handling way better
+
 
 
 ## misc goals
