@@ -27,6 +27,8 @@ export async function GET({url, locals: {supabase}}) {
 	   !user.email?.endsWith("@stu.jessamine.kyschools.us")) {
 		// TODO: use return new Response(message, {status: 403})
 
+		console.error("Invalid domain: user tried to sign in with email", !user.email);
+
 		// TODO: error check this too
 		await supabase.auth.signOut();
 
@@ -53,6 +55,7 @@ export async function GET({url, locals: {supabase}}) {
 	if(updatePublicDataResponse.error) {
 		// whatever bro
 		// TODO: nicer error handling
+		console.error("Failed to update user data", updatePublicDataResponse.error);
 		return error(500, "Error while updating your data!");
 	}
 

@@ -27,6 +27,7 @@ export const actions = {
 		// TODO: make this check run client side lmao
 		if(profilePrefix === undefined || !profilePrefixes.includes(profilePrefix)) {
 			// TODO: make this not return an error and instead be sensible
+			console.error(`Error swapping profiles: trying to swap to "${profilePrefix}"`);
 			return error(400, "No profile provided!");
 		}
 
@@ -38,6 +39,7 @@ export const actions = {
 
 		if(changeProfileResponse.error) {
 			// TODO: do better
+			console.error("Supabase error while swapping profiles", changeProfileResponse.error);
 			return error(500, "Unable to update your profile!");
 		}
 

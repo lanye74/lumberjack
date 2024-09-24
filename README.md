@@ -22,6 +22,7 @@ make app even easier (and more invasive)
 	- (for auto detecting location client-side and server-side)
 - record location on log submission
 - reuse pop up from new app version
+- maybe this is 3.0.0. how major are major versions?
 
 ### 3.0.0
 - log editor

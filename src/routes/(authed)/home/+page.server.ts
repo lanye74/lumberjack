@@ -40,10 +40,6 @@ export const actions = {
 
 		const logTimestamp = generateTimestampFromTimeSelector(logTime);
 
-		console.log(logTime);
-		console.log(logTimestamp);
-		console.log(new Date(logTimestamp).toLocaleTimeString())
-
 
 		const {error: submitLocationError} = await supabase.from(`${userProfile}_location_logs`)
 			.insert({
