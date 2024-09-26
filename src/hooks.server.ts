@@ -112,4 +112,4 @@ function generateSupabaseClientCookieMethods(cookies: Cookies): CookieMethodsSer
 
 
 
-export const handle: Handle = sequence(supabaseHandle, authGuardHandle, setProfileCookieHandle);
+export const handle = sequence(supabaseHandle, authGuardHandle, setProfileCookieHandle);

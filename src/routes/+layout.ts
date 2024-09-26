@@ -3,15 +3,15 @@ import {createBrowserClient, createServerClient, isBrowser} from "@supabase/ssr"
 
 
 
-export async function load(loadEvent) {
-	loadEvent.depends("supabase:auth");
+export async function load({depends, data, fetch}) {
+	depends("supabase:auth");
 
 
-	const supabase = isBrowser() === true ?
-		createBrowserClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {global: {fetch}}) :
-		createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+	const supabase = isBrowser() === true
+		? createBrowserClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {global: {fetch}})
+		: createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 			global: {fetch},
-			cookies: {getAll: () => loadEvent.data?.cookies ?? null}
+			cookies: {getAll: () => data?.cookies ?? null}
 		});
 
 

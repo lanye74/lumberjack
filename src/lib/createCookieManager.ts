@@ -29,7 +29,9 @@ export default function createCookieManager(cookies: Cookies, supabase?: Supabas
 		setProfile: (profilePrefix: ProfilePrefix) => setProfileCookie(cookies, profilePrefix),
 
 		getLogSubmissionStatus: () => getLogSubmissionStatus(cookies),
-		setLogSubmissionStatus: (state: boolean) => setLogSubmissionStatusCookie(cookies, state)
+		setLogSubmissionStatus: (state: boolean) => setLogSubmissionStatusCookie(cookies, state),
+
+		deleteCookies: () => deleteCookies(cookies)
 	};
 }
 
@@ -110,6 +112,16 @@ function getLogSubmissionStatus(cookies: Cookies) {
 
 function setLogSubmissionStatusCookie(cookies: Cookies, state: boolean) {
 	cookies.set("lumberjack_has_submitted_log_recently", `${state}`, {path: "/"});
+}
+
+
+
+
+
+function deleteCookies(cookies: Cookies) {
+	cookies.delete("lumberjack_has_submitted_log_recently", {path: "/"});
+	cookies.delete("lumberjack_user_points", {path: "/"});
+	cookies.delete("lumberjack_user_profile", {path: "/"});
 }
 
 

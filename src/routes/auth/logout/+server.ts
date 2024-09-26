@@ -1,11 +1,15 @@
 import {authStateLogPrefix} from "$lib/consoleColorPrefixes.js";
+import createCookieManager from "$lib/createCookieManager.js";
 
 import {error, redirect} from "@sveltejs/kit";
 
 
 
-export async function POST({locals: {supabase}}) {
+export async function POST({cookies, locals: {supabase}}) {
 	const {error: err} = await supabase.auth.signOut();
+
+	createCookieManager(cookies).deleteCookies();
+
 
 
 	if(err) {

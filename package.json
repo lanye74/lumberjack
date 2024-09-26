@@ -1,6 +1,6 @@
 {
 	"name": "lumberjack",
-	"version": "2.5.0",
+	"version": "2.5.1",
 	"description": "Log where you are, instantly",
 	"type": "module",
 	"scripts": {

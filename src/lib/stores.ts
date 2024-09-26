@@ -1,3 +1,4 @@
+// TODO: refactor this
 import {derived, readable, writable} from "svelte/store";
 
 import {formatTime} from "./formatters.js";
