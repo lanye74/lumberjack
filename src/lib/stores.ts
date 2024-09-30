@@ -86,3 +86,19 @@ export function createProfileCycler(profilePrefixes: ProfilePrefix[], profilePre
 		}
 	};
 }
+
+
+
+export const toaster = writable<Toast>({
+	duration: 0,
+	content: "you shouldn't see this hahaha",
+	initial: true
+});
+
+
+
+type Toast = {
+	duration: number;
+	content: string;
+	initial?: boolean;
+};

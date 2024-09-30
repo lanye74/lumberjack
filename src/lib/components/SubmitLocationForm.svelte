@@ -49,7 +49,7 @@
 
 
 		cancel();
-		console.error("Invalid form submitted!");
+		// console.error("Invalid form submitted!");
 
 
 		// simulate that that form did fail, so that we can display the error

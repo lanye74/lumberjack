@@ -1,8 +1,7 @@
 <script lang="ts">
 	import BorderBox from "$lib/components/BorderBox.svelte";
 	import SubmitLocationForm from "$lib/components/SubmitLocationForm.svelte";
-	import Toast from "$lib/components/Toast.svelte";
-	import {currentDate, currentFormattedTime} from "$lib/stores.js";
+	import {currentDate, currentFormattedTime, toaster} from "$lib/stores.js";
 	import generateGreeting from "$lib/generateGreeting.js";
 	import {jcsSites, possibleVisitPurposes} from "$lib/parseSubmitLocationForm.js";
 
@@ -20,6 +19,10 @@
 	// this really doesn't need to be reactive but it'll make me feel fancy
 	// there's no way that this is an expensive enough operation i really have to trash it
 	$: greeting = generateGreeting(user, $currentDate);
+
+	$: if(form && form.message) {
+		toaster.set({duration: 4000, content: form.message!});
+	}
 </script>
 
 <style>
@@ -53,10 +56,3 @@
 		purposeChoices={formPurposes}
 		siteChoices={formSites} />
 </section>
-
-
-
-<!-- TODO: make toast a programmatic call and put all of them in their own wrapper -->
-{#if form}
-	<Toast duration={4000}>{form.message}</Toast>
-{/if}

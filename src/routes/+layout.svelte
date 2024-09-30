@@ -5,6 +5,7 @@
 
 	import {authStateLogPrefix} from "$lib/consoleColorPrefixes.js";
 	import {mapRouteToPageTitle} from "$lib/routes.js";
+	import ToastManager from "$lib/components/ToastManager.svelte";
 
 
 
@@ -17,7 +18,7 @@
 
 
 	onMount(() => {
-		const {data: {subscription}} = supabase.auth.onAuthStateChange((_authEvent, newSession) => {
+		const {data: {subscription: {unsubscribe}}} = supabase.auth.onAuthStateChange((_authEvent, newSession) => {
 			// we just got a session and the server needs to pull it to provide in all future requests
 			// (i think)
 
@@ -30,7 +31,7 @@
 		});
 
 
-		return () => subscription.unsubscribe();
+		return unsubscribe;
 	});
 </script>
 
@@ -93,6 +94,8 @@
 	}
 </style>
 
+
+
 <svelte:head>
 	<title>{title}</title>
 </svelte:head>
@@ -100,3 +103,7 @@
 
 
 <slot />
+
+
+
+<ToastManager />
