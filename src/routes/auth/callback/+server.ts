@@ -1,10 +1,11 @@
+import createCookieManager from "$lib/createCookieManager.js";
 import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
 
 import {error, redirect} from "@sveltejs/kit";
 
 
 
-export async function GET({url, locals: {supabase}}) {
+export async function GET({cookies, locals: {supabase}, url}) {
 	const code = url.searchParams.get("code");
 	const next = url.searchParams.get("next") ?? "/";
 
@@ -59,6 +60,9 @@ export async function GET({url, locals: {supabase}}) {
 		return error(500, "Error while updating your data!");
 	}
 
+
+
+	createCookieManager(cookies).deleteCookies();
 
 
 	return redirect(303, `/${next.slice(1)}`);

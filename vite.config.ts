@@ -3,8 +3,8 @@ import Icons from "unplugin-icons/vite";
 import {sveltekit} from "@sveltejs/kit/vite";
 import {SvelteKitPWA} from "@vite-pwa/sveltekit";
 
-import {readFileSync} from "fs";
-import path from "path";
+import {readFileSync} from "node:fs";
+import path from "node:path";
 
 
 
