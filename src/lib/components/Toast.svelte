@@ -1,52 +1,12 @@
 <script lang="ts">
-    import {onMount} from "svelte";
+    import {fly} from "svelte/transition";
 
 	// TODO: is this okay
 	import {navbarHeight} from "../stores.js";
 
 
-
 	export let duration: number;
 	export let content: string;
-
-	let isFlyingIn = false;
-	let isFlyingOut = false;
-	let isVisible = false;
-
-	let timers: NodeJS.Timeout[] = [];
-
-
-	const flyInTime = 500;
-	const flyOutTime = 750;
-
-
-
-	onMount(() => {
-		flyIn();
-	})
-
-
-	function flyIn() {
-		// won't re-render unless i wrap this in a tiny timeout
-		timers.push(setTimeout(() => {
-			isFlyingIn = true;
-			isVisible = true;
-		}, 1));
-
-		timers.push(setTimeout(() => dismiss(), duration + flyInTime));
-	}
-
-
-
-	function dismiss() {
-		isFlyingIn = false;
-		isFlyingOut = true;
-
-		timers.push(setTimeout(() => {
-			isFlyingOut = false,
-			isVisible = false;
-		}, flyOutTime + 1));
-	}
 </script>
 
 <style>
@@ -55,9 +15,6 @@
 		bottom: calc(var(--navbar-height) + 4vh);
 		right: 0;
 
-		/* padding-left: 1rem; */
-
-		overflow: hidden;
 		cursor: pointer;
 
 		display: flex;
@@ -66,20 +23,11 @@
 		background-color: white;
 		border-radius: 0.5rem;
 
-		transform: translateX(calc(100% + 1rem));
+		/* transform: translateX(calc(100% + 1rem)); */
 
 		max-width: 70vw;
-	}
 
-
-
-	 .toast.is-flying-in {
-		transform: translateX(-1rem);
-		transition: transform 0.5s cubic-bezier(0.3, 0.9, 0.8, 1);
-	}
-
-	 .toast.is-flying-out {
-		transition: transform 0.75s cubic-bezier(0.3, 0.7, 0.5, 0.9);
+		padding-right: 1rem;
 	}
 
 
@@ -87,7 +35,6 @@
 	h3, p {
 		margin: 0;
 	}
-
 
 	h3 {
 		font: bold 1.75rem var(--font-serif);
@@ -119,14 +66,17 @@
 
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- oh my god using these transitions was so much easier why didn't i do this from the start -->
+
 <div class="toast"
 	style:--navbar-height={`${$navbarHeight}px`}
 	aria-live="assertive"
-	aria-hidden={!isVisible}
 	role="alert"
-	class:is-flying-in={isFlyingIn}
-	class:is-flying-out={isFlyingOut}
-	on:click={dismiss}
+
+	in:fly={{x: "100%", duration: 500, opacity: 1}}
+	out:fly={{x: "100%", duration: 750, opacity: 1}}
+
+	on:click={() => {}}
 >
 	<!-- TODO: possibly put an icon & progress bar here -->
 	<h3>Lumberjack</h3>
