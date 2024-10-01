@@ -89,16 +89,60 @@ export function createProfileCycler(profilePrefixes: ProfilePrefix[], profilePre
 
 
 
-export const toaster = writable<Toast>({
-	duration: 0,
-	content: "you shouldn't see this hahaha",
-	initial: true
-});
+function createToaster() {
+	const {subscribe, update} = writable<ToastWrapper[]>([]);
+	let index = 0;
+
+	return {
+		subscribe,
+
+		// what the fuck
+		toast: ({content, duration}: Toast) => {
+			update(old => {
+				let thisIndex = index++;
+
+				return [...old, {
+					content,
+					duration,
+
+					toastNumber: thisIndex,
+
+					promise: setTimeout(() => {
+						// oh my god why did I do this
+						update(oldNew => {
+							const arrIndex = oldNew.findIndex(toast => toast.toastNumber === thisIndex);
+
+							const firstHalf = oldNew.slice(0, arrIndex);
+							const secondHalf = oldNew.slice(arrIndex + 1);
+
+							return [...firstHalf, ...secondHalf]
+						})
+					}, duration)
+				}]
+			})
+		},
+
+		cancelAll: () => {
+			update(old => {
+				old.forEach(toast => clearInterval(toast.promise));
+				return old;
+			});
+		}
+	};
+}
+
+
+
+export const toaster = createToaster();
 
 
 
 type Toast = {
 	duration: number;
 	content: string;
-	initial?: boolean;
+}
+
+type ToastWrapper = Toast & {
+	toastNumber: number;
+	promise: NodeJS.Timeout;
 };
