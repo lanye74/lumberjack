@@ -3,9 +3,9 @@
 	import {page} from "$app/stores";
 
 	import {enableCorrectTransitionForNavigation} from "$lib/routes.js";
+	import {formattedNavbarHeight, navbarHeight} from "$lib/stores.js";
 	import Header from "$lib/components/Header.svelte";
 	import Navbar from "$lib/components/Navbar.svelte";
-	import {navbarHeight} from "$lib/stores.js";
 
 
 
@@ -104,6 +104,6 @@
 
 
 
-<div class="bottom-padding" style:--height={`${$navbarHeight}px`}></div>
+<div class="bottom-padding" style:--height={$formattedNavbarHeight}></div>
 
 <Navbar bind:height={$navbarHeight} />

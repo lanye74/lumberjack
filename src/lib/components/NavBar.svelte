@@ -22,7 +22,6 @@
 		width: 100%;
 
 		border-top: 0.25rem solid var(--border-color);
-		/* box-shadow: 0px; */
 
 		font-size: 1.5rem;
 

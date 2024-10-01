@@ -3,7 +3,7 @@
 	import type {SubmitFunction} from "@sveltejs/kit";
 
 	import EditableTime from "./EditableTime.svelte";
-	import {navbarHeight} from "$lib/stores.js";
+	import {formattedNavbarHeight} from "$lib/stores.js";
 	import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
 	import type {ProfilePrefix} from "$lib/profiles.js";
 	import type {TimeSelector} from "$lib/time.js";
@@ -131,7 +131,7 @@
 		padding: 0.25rem;
 
 		border: none;
-		border-bottom: 1px solid #000;
+		border-bottom: 0.25rem solid var(--gray-1);
 	}
 
 	.has-bar span::after {
@@ -247,7 +247,7 @@
 
 
 
-	<button type="submit" style:--navbar-height={`${$navbarHeight}px`}>Submit</button>
+	<button type="submit" style:--navbar-height={$formattedNavbarHeight}>Submit</button>
 
 	<input name="user-profile" type="hidden" bind:value={currentProfile}>
 

@@ -3,7 +3,6 @@
 	import {onMount} from "svelte";
 	import {page} from "$app/stores";
 
-	import {authStateLogPrefix} from "$lib/consoleColorPrefixes.js";
 	import {mapRouteToPageTitle} from "$lib/routes.js";
 	import Toasts from "$lib/components/Toasts.svelte";
 
@@ -21,9 +20,6 @@
 		const {data: {subscription: {unsubscribe}}} = supabase.auth.onAuthStateChange((_authEvent, newSession) => {
 			// we just got a session and the server needs to pull it to provide in all future requests
 			// (i think)
-
-			console.log(...authStateLogPrefix, newSession === null ? "Logged out" : "Logged in");
-
 
 			if(newSession?.expires_at !== session?.expires_at) {
 				invalidate("supabase:auth");

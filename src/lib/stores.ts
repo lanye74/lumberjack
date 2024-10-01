@@ -1,10 +1,12 @@
-import {writable} from "svelte/store";
+import {derived, writable} from "svelte/store";
 
 import type {ProfilePrefix, ProfilePretty} from "./profiles.js";
 
 
 
 export const navbarHeight = writable(0);
+
+export const formattedNavbarHeight = derived(navbarHeight, (height) => `${height}px`);
 
 
 
