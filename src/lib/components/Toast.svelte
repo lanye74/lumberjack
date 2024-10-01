@@ -1,12 +1,13 @@
 <script lang="ts">
     import {fly} from "svelte/transition";
 
-	// TODO: is this okay
 	import {navbarHeight} from "../stores.js";
+    import type {MouseEventHandler} from "svelte/elements";
 
 
-	export let duration: number;
+
 	export let content: string;
+	export let dismiss: MouseEventHandler<HTMLDivElement>;
 </script>
 
 <style>
@@ -22,8 +23,6 @@
 
 		background-color: white;
 		border-radius: 0.5rem;
-
-		/* transform: translateX(calc(100% + 1rem)); */
 
 		max-width: 70vw;
 
@@ -66,8 +65,8 @@
 
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<!-- oh my god using these transitions was so much easier why didn't i do this from the start -->
 
+<!-- oh my god using these transitions was so much easier why didn't i do this from the start -->
 <div class="toast"
 	style:--navbar-height={`${$navbarHeight}px`}
 	aria-live="assertive"
@@ -76,7 +75,7 @@
 	in:fly={{x: "100%", duration: 500, opacity: 1}}
 	out:fly={{x: "100%", duration: 750, opacity: 1}}
 
-	on:click={() => {}}
+	on:click={dismiss}
 >
 	<!-- TODO: possibly put an icon & progress bar here -->
 	<h3>Lumberjack</h3>

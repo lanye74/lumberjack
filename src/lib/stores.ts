@@ -105,19 +105,10 @@ function createToaster() {
 					content,
 					duration,
 
+					// TODO: return a dismiss method?
 					toastNumber: thisIndex,
 
-					promise: setTimeout(() => {
-						// oh my god why did I do this
-						update(oldNew => {
-							const arrIndex = oldNew.findIndex(toast => toast.toastNumber === thisIndex);
-
-							const firstHalf = oldNew.slice(0, arrIndex);
-							const secondHalf = oldNew.slice(arrIndex + 1);
-
-							return [...firstHalf, ...secondHalf]
-						})
-					}, duration)
+					promise: setTimeout(() => update(oldNew => dismissToast(oldNew, thisIndex)), duration)
 				}]
 			})
 		},
@@ -127,8 +118,30 @@ function createToaster() {
 				old.forEach(toast => clearInterval(toast.promise));
 				return old;
 			});
+		},
+
+		dismiss: (toastNumber: number) => {
+			console.log("dismissing")
+
+			update(old => {
+				const targetToast = old.filter(toast => toast.toastNumber === toastNumber)[0]
+				clearInterval(targetToast.promise);
+
+				return dismissToast(old, targetToast.toastNumber);
+			})
 		}
 	};
+
+
+
+	function dismissToast(oldNew: ToastWrapper[], thisIndex: number) {
+		const arrIndex = oldNew.findIndex(toast => toast.toastNumber === thisIndex);
+
+		const firstHalf = oldNew.slice(0, arrIndex);
+		const secondHalf = oldNew.slice(arrIndex + 1);
+
+		return [...firstHalf, ...secondHalf]
+	}
 }
 
 
