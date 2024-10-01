@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {flip} from "svelte/animate";
+	import {flip} from "svelte/animate";
 	import {fly} from "svelte/transition";
 
 	import {navbarHeight, toaster} from "../stores.js";
@@ -13,6 +13,7 @@
 
 		display: flex;
 		flex-direction: column-reverse;
+		align-items: flex-end;
 		gap: 1rem;
 
 		z-index: 30;

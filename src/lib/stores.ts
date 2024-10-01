@@ -1,35 +1,6 @@
-// TODO: refactor this
-import {derived, readable, writable} from "svelte/store";
+import {writable} from "svelte/store";
 
-import {formatTime} from "./formatters.js";
 import type {ProfilePrefix, ProfilePretty} from "./profiles.js";
-
-
-
-export const currentDate = readable(new Date(), (set) => {
-	const interval = setInterval(() => {
-		set(new Date());
-	}, 1000);
-
-
-	return () => clearInterval(interval);
-});
-
-
-
-export const currentFormattedTime = derived(currentDate, date => {
-	const modulusHours = date.getHours() % 12;
-
-	const padLeft = (value: number) => value.toString().padStart(2, "0");
-
-	return {
-		hours: padLeft(modulusHours === 0 ? 12 : modulusHours),
-		minutes: padLeft(date.getMinutes()),
-		seconds: padLeft(date.getSeconds()),
-		period: date.getHours() < 12 ? "AM" : "PM",
-		string: formatTime(date)
-	}
-});
 
 
 
@@ -90,7 +61,7 @@ export function createProfileCycler(profilePrefixes: ProfilePrefix[], profilePre
 
 
 function createToaster() {
-	const {subscribe, set, update} = writable<ToastWrapper[]>([]);
+	const {subscribe, set, update} = writable<Toast[]>([]);
 	// maps Toast.id to the corresponding timeout
 	const timeouts = new Map<number, NodeJS.Timeout>();
 	let nextId = 0;
@@ -113,12 +84,15 @@ function createToaster() {
 	return {
 		subscribe,
 
-		toast: (toast: Toast) => {
+		// fun little type trick
+		toast: (toast: Omit<Toast, "id">) => {
 			const id = nextId++;
 			const timeout = setTimeout(() => removeToast(id), toast.duration);
 			timeouts.set(id, timeout);
 
 			update(toasts => [...toasts, {...toast, id}]);
+
+			return id;
 		},
 
 		dismiss: (id: number) => removeToast(id),
@@ -140,8 +114,5 @@ export const toaster = createToaster();
 type Toast = {
 	duration: number;
 	content: string;
-}
-
-type ToastWrapper = Toast & {
 	id: number;
-};
+}

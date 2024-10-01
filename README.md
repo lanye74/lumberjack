@@ -4,9 +4,8 @@ Log where you are, instantly
 
 ## roadmap (approximately)
 
-### 2.6.0
+### 2.7.0
 try to get app a bit cleaner
-- rework toasts
 - rescale UI?
 - info panel in settings
 	- app version, author (me), changelog
@@ -16,7 +15,7 @@ try to get app a bit cleaner
 	- in the future if i need closable modals, make sure to use shallow routing - push history so the native back button will close it
 - perhaps: confetti on log submission?
 
-### 2.7.0
+### 2.8.0
 make app even easier (and more invasive)
 - create geofences in google maps and export them
 	- (for auto detecting location client-side and server-side)
