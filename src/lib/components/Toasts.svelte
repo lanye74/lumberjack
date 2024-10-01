@@ -71,7 +71,7 @@
 
 
 <div id="toast-container" style:--navbar-height={`${$navbarHeight}px`}>
-	{#each $toaster as toast (toast.toastNumber)}
+	{#each $toaster as toast (toast.id)}
 		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 
@@ -80,11 +80,11 @@
 			aria-live="assertive"
 			role="alert"
 
-			in:fly={{x: "100%", duration: 500, opacity: 1}}
-			out:fly={{x: "100%", duration: 500, opacity: 0}}
+			in:fly={{x: "100%", duration: 250, opacity: 1}}
+			out:fly={{x: "100%", duration: 250, opacity: 0}}
 			animate:flip={{duration: 250}}
 
-			on:click={() => toaster.dismiss(toast.toastNumber)}
+			on:click={() => toaster.dismiss(toast.id)}
 		>
 			<div class="toast-wrapper">
 				<!-- TODO: possibly put an icon & progress bar here -->

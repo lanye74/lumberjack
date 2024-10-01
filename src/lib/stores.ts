@@ -90,58 +90,45 @@ export function createProfileCycler(profilePrefixes: ProfilePrefix[], profilePre
 
 
 function createToaster() {
-	const {subscribe, update} = writable<ToastWrapper[]>([]);
-	let index = 0;
+	const {subscribe, set, update} = writable<ToastWrapper[]>([]);
+	// maps Toast.id to the corresponding timeout
+	const timeouts = new Map<number, NodeJS.Timeout>();
+	let nextId = 0;
+
+
+	function removeToast(id: number) {
+		const timeout = timeouts.get(id);
+
+		if(timeout) {
+			clearInterval(timeout);
+			timeouts.delete(id);
+		}
+
+		// neat trick i learned from an LLM to remove an id'd element from an array
+		update(toasts => toasts.filter(toast => toast.id !== id));
+	}
+
+
 
 	return {
 		subscribe,
 
-		// what the fuck
-		toast: ({content, duration}: Toast) => {
-			update(old => {
-				let thisIndex = index++;
+		toast: (toast: Toast) => {
+			const id = nextId++;
+			const timeout = setTimeout(() => removeToast(id), toast.duration);
+			timeouts.set(id, timeout);
 
-				return [...old, {
-					content,
-					duration,
-
-					// TODO: return a dismiss method?
-					toastNumber: thisIndex,
-
-					promise: setTimeout(() => update(oldNew => dismissToast(oldNew, thisIndex)), duration)
-				}]
-			})
+			update(toasts => [...toasts, {...toast, id}]);
 		},
 
-		cancelAll: () => {
-			update(old => {
-				old.forEach(toast => clearInterval(toast.promise));
-				return old;
-			});
-		},
+		dismiss: (id: number) => removeToast(id),
 
-		dismiss: (toastNumber: number) => {
-			console.log("dismissing")
-
-			update(old => {
-				const targetToast = old.filter(toast => toast.toastNumber === toastNumber)[0]
-				clearInterval(targetToast.promise);
-
-				return dismissToast(old, targetToast.toastNumber);
-			})
+		clear: () => {
+			timeouts.forEach(timeout => clearInterval(timeout));
+			timeouts.clear();
+			set([]);
 		}
 	};
-
-
-
-	function dismissToast(oldNew: ToastWrapper[], thisIndex: number) {
-		const arrIndex = oldNew.findIndex(toast => toast.toastNumber === thisIndex);
-
-		const firstHalf = oldNew.slice(0, arrIndex);
-		const secondHalf = oldNew.slice(arrIndex + 1);
-
-		return [...firstHalf, ...secondHalf]
-	}
 }
 
 
@@ -156,6 +143,5 @@ type Toast = {
 }
 
 type ToastWrapper = Toast & {
-	toastNumber: number;
-	promise: NodeJS.Timeout;
+	id: number;
 };
