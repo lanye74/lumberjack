@@ -5,7 +5,7 @@
 
 	import {authStateLogPrefix} from "$lib/consoleColorPrefixes.js";
 	import {mapRouteToPageTitle} from "$lib/routes.js";
-	import ToastManager from "$lib/components/ToastManager.svelte";
+	import Toasts from "$lib/components/Toasts.svelte";
 
 
 
@@ -106,4 +106,4 @@
 
 
 
-<ToastManager />
+<Toasts />
