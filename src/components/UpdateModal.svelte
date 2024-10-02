@@ -48,29 +48,29 @@
 		animation: flyIn 1s forwards;
 	}
 
+	/* TODO: add a , when i can ba to actually make my own backdrop and animate it */
+	dialog::backdrop {
+		background-color: transparent;
+	}
+
 
 
 	@keyframes flyIn {
 		0% {
-			opacity: 1;
-			transform: translate(-50%, calc(-50% + 10vh));
+			transform: translate(-50%, calc(-50% + 8vh));
 		}
 
 		100% {
-			opacity: 1;
 			transform: translate(-50%, -50%);
 		}
 	}
 
 
-	dialog::backdrop {
-		background-color: #000;
-		opacity: 0.5;
-	}
-
 	.content-wrapper {
 		border: 0.25rem solid var(--border-color);
 		border-radius: inherit;
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
 		border-bottom: 0;
 
 		padding: 2rem;

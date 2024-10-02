@@ -102,7 +102,7 @@
 
 
 
-{#if $updated || true}
+{#if $updated}
 	<UpdateModal />
 {/if}
 
