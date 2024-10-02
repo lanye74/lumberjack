@@ -2,7 +2,7 @@
 	import {flip} from "svelte/animate";
 	import {fly} from "svelte/transition";
 
-	import {formattedNavbarHeight, toaster} from "../stores.js";
+	import {formattedNavbarHeight, toaster} from "$lib/stores.js";
 </script>
 
 <style>
@@ -73,6 +73,7 @@
 
 <div id="toast-container" style:--navbar-height={$formattedNavbarHeight}>
 	{#each $toaster as toast (toast.id)}
+		<!-- TODO: use a button for a11y -->
 		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 

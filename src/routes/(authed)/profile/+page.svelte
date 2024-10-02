@@ -2,12 +2,13 @@
 	import {invalidateAll} from "$app/navigation";
 	import type {MouseEventHandler} from "svelte/elements";
 
-	import BorderBox from "$lib/components/BorderBox.svelte";
+	import BorderBox from "$components/BorderBox.svelte";
+	import UserAvatar from "$components/UserAvatar.svelte";
+	import UserProfileAction from "$components/UserProfileAction.svelte";
+
 	import {currentProfile, nextProfile} from "$lib/profiles.js";
 	import {formatPoints} from "$lib/formatters.js";
 	import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
-	import UserAvatar from "$lib/components/UserAvatar.svelte";
-	import UserProfileAction from "$lib/components/UserProfileAction.svelte";
 
 
 

@@ -1,7 +1,8 @@
 <script lang="ts">
+	import UserAvatar from "./UserAvatar.svelte";
+
 	import {formatPoints} from "$lib/formatters.js";
 	import type {PointsLeaderboardEntry} from "$lib/types/database.js";
-	import UserAvatar from "./UserAvatar.svelte";
 
 
 

@@ -4,6 +4,14 @@ Log where you are, instantly
 
 ## roadmap (approximately)
 
+TODO: steal best practices from [cobalt](https://github.com/imputnet/cobalt/tree/main/web) (i love u cobalt)
+- [put more logic in layouts, not components](https://github.com/imputnet/cobalt/blob/main/web/src/routes/%2Blayout.svelte#L78)
+- [error pages](https://github.com/imputnet/cobalt/blob/main/web/src/routes/%2Berror.svelte)
+- read the [svelte config dos](https://kit.svelte.dev/docs/configuration)
+	- and just all of the docs in general frankly
+- possibly mimic their icon library?
+
+
 ### 2.7.0
 try to get app a bit cleaner
 - rescale UI?
@@ -14,6 +22,7 @@ try to get app a bit cleaner
 	- and then popup for "click here to see what's changed"?
 	- in the future if i need closable modals, make sure to use shallow routing - push history so the native back button will close it
 - perhaps: confetti on log submission?
+- note: with how much backend work i'm slowly accruing, this may become a 3.0.0
 
 ### 2.8.0
 make app even easier (and more invasive)
@@ -42,9 +51,11 @@ ui rework
 - switch to svelte 5
 - add a page-by-page log input ui
 - do more server calls on client-side maybe
+- make it more PWA-y
 
 ### at some point really soon
 - please make error handling way better
+- like it's not even funny how bad it is
 
 
 

@@ -1,7 +1,8 @@
 <script lang="ts">
-	import BorderBox from "$lib/components/BorderBox.svelte";
-	import LeaderboardEntry from "$lib/components/LeaderboardEntry.svelte";
-	import Podium from "$lib/components/Podium.svelte";
+	import BorderBox from "$components/BorderBox.svelte";
+	import LeaderboardEntry from "$components/LeaderboardEntry.svelte";
+	import Podium from "$components/Podium.svelte";
+
 	import type {PointsLeaderboardEntry} from "$lib/types/database.js";
 
 

@@ -2,12 +2,15 @@
 	import {onNavigate} from "$app/navigation";
 	import {page} from "$app/stores";
 
+	import Header from "$components/Header.svelte";
+	import Navbar from "$components/Navbar.svelte";
+
 	import {enableCorrectTransitionForNavigation} from "$lib/routes.js";
 	import {formattedNavbarHeight, navbarHeight} from "$lib/stores.js";
-	import Header from "$lib/components/Header.svelte";
-	import Navbar from "$lib/components/Navbar.svelte";
 
 
+
+	// TODO: should this be in a route group at all? should i get rid of the route group?
 
 	// TODO: swipe controls?
 	onNavigate(navigation => {

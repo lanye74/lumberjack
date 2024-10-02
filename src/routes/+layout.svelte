@@ -3,8 +3,9 @@
 	import {onMount} from "svelte";
 	import {page} from "$app/stores";
 
+	import Toasts from "$components/Toasts.svelte";
+
 	import {mapRouteToPageTitle} from "$lib/routes.js";
-	import Toasts from "$lib/components/Toasts.svelte";
 
 
 
