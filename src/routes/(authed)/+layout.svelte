@@ -1,16 +1,15 @@
 <script lang="ts">
 	import {onNavigate} from "$app/navigation";
-	import {page} from "$app/stores";
+	import {page, updated} from "$app/stores";
 
 	import Header from "$components/Header.svelte";
 	import Navbar from "$components/Navbar.svelte";
+	import UpdateModal from "$components/UpdateModal.svelte";
 
 	import {enableCorrectTransitionForNavigation} from "$lib/routes.js";
 	import {formattedNavbarHeight, navbarHeight} from "$lib/stores.js";
 
 
-
-	// TODO: should this be in a route group at all? should i get rid of the route group?
 
 	// TODO: swipe controls?
 	onNavigate(navigation => {
@@ -101,7 +100,16 @@
 
 <Header />
 
+
+
+{#if $updated || true}
+	<UpdateModal />
+{/if}
+
+
+
 <main>
+
 	<slot />
 </main>
 

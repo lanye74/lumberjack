@@ -14,6 +14,10 @@ const config = {
 
 		alias: {
 			"$components": "src/components/"
+		},
+
+		version: {
+			pollInterval: 5000
 		}
 	}
 };

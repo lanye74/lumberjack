@@ -147,7 +147,7 @@
 <div class="podium" data-places={numberPlaces}>
 	{#if users.length === 0}
 		<div class="fallback-text-container">
-			<h3>You're one of the first!</h3>
+			<h3>You’re one of the first!</h3>
 			<p>Submit a log to begin the leaderboard.</p>
 		</div>
 	{:else}

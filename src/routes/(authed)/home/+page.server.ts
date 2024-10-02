@@ -77,7 +77,7 @@ export const actions = {
 
 			return {
 				error: true,
-				message: "Your location was logged, but we couldn't update your points!"
+				message: "Your location was logged, but we couldn’t update your points!"
 			};
 		}
 
@@ -94,7 +94,7 @@ export const actions = {
 
 			return {
 				error: true,
-				message: "Your location was logged, but we couldn't update your points!"
+				message: "Your location was logged, but we couldn’t update your points!"
 			};
 		}
 
@@ -110,7 +110,7 @@ export const actions = {
 
 		return {
 			error: false,
-			message: "Success! You've earned 1,000 points!"
+			message: "Success! You’ve earned 1,000 points!"
 		};
 	}
 }
