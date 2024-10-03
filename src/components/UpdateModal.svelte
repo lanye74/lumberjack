@@ -1,6 +1,6 @@
 <script lang="ts">
     import {onMount} from "svelte";
-	import RedoAlt from "virtual:icons/fa-solid/redo-alt";
+	import RedoIcon from "virtual:icons/fa-solid/redo-alt";
 
 
 
@@ -131,7 +131,7 @@
 	</div>
 
 	<button on:click={() => window.location.reload()}>
-		<RedoAlt style="align-self: center" />
+		<RedoIcon style="align-self: center" />
 		<p>Reload</p>
 	</button>
 </dialog>

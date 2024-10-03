@@ -65,7 +65,10 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 		// "/editor": redirectIfNotAuthenticated,
 		"/editor": "/home",
 		"/leaderboard": mustBeAuthenticated,
-		"/profile": mustBeAuthenticated
+		"/profile": mustBeAuthenticated,
+		// TODO: shouldn't need to be, but I don't have a landing page
+		// "/about": mustBeAuthenticated
+		// "/about": "/home"
 	};
 
 

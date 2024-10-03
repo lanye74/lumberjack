@@ -9,6 +9,7 @@ const routePageTitleMappings: RoutePageTitleMap = {
 	"/(authed)/editor": "Log editor",
 	"/(authed)/leaderboard": "Leaderboard",
 	"/(authed)/profile": "User profile",
+	// "/(authed)/about": "About Lumberjack",
 
 	"/auth": "Sign in",
 	"/auth/error": "Error!",

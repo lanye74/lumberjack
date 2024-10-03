@@ -6,6 +6,8 @@
 
 
 	// const routes: AuthedRoute[] = ["/home", "/editor", "/leaderboard", "/profile"];
+	// TODO: why are these scattered across like four different files?
+	// const routes: AuthedRoute[] = ["/home", "/leaderboard", "/profile", "/about"];
 	const routes: AuthedRoute[] = ["/home", "/leaderboard", "/profile"];
 
 

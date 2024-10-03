@@ -3,6 +3,7 @@
 	import PencilIcon from "virtual:icons/fa-solid/pencil-alt";
 	import TrophyIcon from "virtual:icons/fa-solid/trophy";
 	import ProfileIcon from "virtual:icons/fa-solid/user-circle";
+	// import InfoIcon from "virtual:icons/fa-solid/info-circle";
 
 	import type {AuthedRoute} from "$lib/types/routes.js";
 
@@ -16,14 +17,16 @@
 		"/home": HomeIcon,
 		"/editor": PencilIcon,
 		"/leaderboard": TrophyIcon,
-		"/profile": ProfileIcon
+		"/profile": ProfileIcon,
+		// "/about": InfoIcon
 	};
 
 	const ariaLabelMappings: {[key in AuthedRoute]: string} = {
 		"/home": "Navigate to home page",
 		"/editor": "Navigate to log editor",
 		"/leaderboard": "Navigate to the points leaderboad",
-		"/profile": "Navigate to your profile page"
+		"/profile": "Navigate to your profile page",
+		// "/about": "Navigate to the about page"
 	};
 
 
@@ -37,7 +40,7 @@
 		color: #000;
 
 		/* increase touch area for icon */
-		padding: 1rem;
+		padding: 1rem 0.5rem;
 
 		display: inline-flex;
 		align-items: center;
