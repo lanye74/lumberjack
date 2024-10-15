@@ -6,7 +6,7 @@
 </script>
 
 <style>
-	#toast-container {
+	#toasts-container {
 		position: fixed;
 		bottom: calc(var(--navbar-height) + 4vh);
 		right: 0;
@@ -19,7 +19,7 @@
 		z-index: 30;
 	}
 
-	.toast {
+	.toast-wrapper {
 		display: flex;
 		flex-direction: column;
 
@@ -32,18 +32,18 @@
 		cursor: pointer;
 	}
 
-	.toast-wrapper {
+
+
+	.toast-content {
 		background-color: white;
 		border-radius: inherit;
 	}
 
-
-
-	.toast h3, .toast p {
+	.toast-content h3, .toast-content p {
 		margin: 0;
 	}
 
-	.toast h3 {
+	.toast-content h3 {
 		font: bold 1.75rem var(--font-serif);
 		background-color: var(--jcs-blue);
 		color: white;
@@ -56,7 +56,7 @@
 		padding: 0.25rem 0.75rem;
 	}
 
-	.toast p {
+	.toast-content p {
 		font-size: 1.25rem;
 		box-sizing: border-box;
 
@@ -71,24 +71,26 @@
 
 
 
-<div id="toast-container" style:--navbar-height={$formattedNavbarHeight}>
+<div id="toasts-container" style:--navbar-height={$formattedNavbarHeight}>
 	{#each $toaster as toast (toast.id)}
-		<!-- TODO: use a button for a11y -->
-		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
-
 		<!-- oh my god using these transitions was so much easier why didn't i do this from the start -->
-		<div class="toast"
-			aria-live="assertive"
-			role="alert"
+		<div class="toast-wrapper"
+		     role="alert"
+		     aria-live="assertive"
 
-			in:fly={{x: "100%", duration: 250, opacity: 1}}
-			out:fly={{x: "100%", duration: 250, opacity: 0}}
-			animate:flip={{duration: 250}}
-
-			on:click={() => toaster.dismiss(toast.id)}
+		     in:fly={{x: "100%", duration: 250, opacity: 1}}
+		     out:fly={{x: "100%", duration: 250, opacity: 0}}
+		     animate:flip={{duration: 250}}
 		>
-			<div class="toast-wrapper">
+			<!-- TODO: should this be in the tab order? -->
+			<div class="toast-content"
+			     role="button"
+			     tabindex="-1"
+			     aria-label="Toast—click or press space/enter to dismiss"
+
+			     on:click={() => toaster.dismiss(toast.id)}
+			     on:keydown={(event) => {if(["Space", "Enter"].includes(event?.code)) toaster.dismiss(toast.id)}}
+			>
 				<!-- TODO: possibly put an icon & progress bar here -->
 				<h3>Lumberjack</h3>
 				<p>{toast.content}</p>

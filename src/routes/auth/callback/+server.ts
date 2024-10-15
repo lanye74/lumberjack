@@ -17,6 +17,8 @@ export async function GET({cookies, locals: {supabase}, url}) {
 	const {data, error: codeExchangeResponseError} = await supabase.auth.exchangeCodeForSession(code);
 
 	if(codeExchangeResponseError) {
+		console.error("Code exchange response error while logging in!", codeExchangeResponseError);
+
 		return redirect(303, "/auth/error");
 	}
 
@@ -28,7 +30,7 @@ export async function GET({cookies, locals: {supabase}, url}) {
 	   !user.email?.endsWith("@stu.jessamine.kyschools.us")) {
 		// TODO: use return new Response(message, {status: 403})
 
-		console.error("Invalid domain: user tried to sign in with email", !user.email);
+		console.error("Invalid domain: user tried to sign in with email", user.email);
 
 		// TODO: error check this too
 		await supabase.auth.signOut();
