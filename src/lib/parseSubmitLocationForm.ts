@@ -57,10 +57,10 @@ export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocatio
 
 	const isValid = userLocation !== "" &&
 	                userPurpose !== "" &&
-					userProfile !== "" &&
+	                userProfile !== "" &&
 	                jcsSites[userProfile].includes(userLocation) &&
 	                possibleVisitPurposes[userProfile].includes(userPurposeMultiple) &&
-					timeIsValid;
+	                timeIsValid;
 
 	// TODO: return specific errors
 	const errorMessage = isValid === false ? "You didn't complete the form!" : null;

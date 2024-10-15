@@ -75,7 +75,7 @@
 	<span class="place">{index + 1}.</span>
 
 	<!-- TODO: figure out how to use skeleton loaders for this stuff
-			   currently waiting for the server halts page loading = bad UX -->
+	           currently waiting for the server halts page loading = bad UX -->
 	<UserAvatar src={user.avatarUrl} absoluteSize="5rem" />
 
 	<div class="text">

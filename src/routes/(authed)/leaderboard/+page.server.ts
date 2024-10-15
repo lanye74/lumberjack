@@ -1,4 +1,4 @@
-import type {SupabaseClient, User} from "@supabase/supabase-js";
+import type {SupabaseClient} from "@supabase/supabase-js";
 
 import createCookieManager from "$lib/createCookieManager.js";
 import type {LeaderboardCache} from "$lib/types/leaderboard.js";
@@ -49,7 +49,7 @@ async function loadLeaderboardData(supabase: SupabaseClient, currentProfile: Pro
 
 	// use cached response!!!
 	if((hasSubmittedPointsRecently === false) &&
-	    leaderboard.cachedState !== null &&
+	   leaderboard.cachedState !== null &&
 		// true if we are not at the forced refresh period yet
 		currentTime < (leaderboard.lastRefreshTime + autoRefreshPeriod)
 	) {
