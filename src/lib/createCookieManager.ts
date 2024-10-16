@@ -132,7 +132,8 @@ async function fetchUserPoints(supabase: SupabaseClient, profilePrefix: string, 
 	const {data, error} = await supabase.from(`${profilePrefix}_leaderboard`)
 		.select("points")
 		.eq("google_user_id", userId)
-		.single();
+		.returns<{points: number}[]>()
+		.single()
 
 
 	if(error && error.code !== "PGRST116") {
@@ -141,17 +142,18 @@ async function fetchUserPoints(supabase: SupabaseClient, profilePrefix: string, 
 	}
 
 
-	return data?.points as number ?? 0;
+	return data?.points ?? 0;
 }
 
 
 
-async function fetchUserProfile(supabase: SupabaseClient, userId: string): Promise<ProfilePrefix> {
+async function fetchUserProfile(supabase: SupabaseClient, userId: string) {
 	const {data} = await supabase.from("public_user_data")
 		.select("profile")
 		.eq("google_user_id", userId)
+		.returns<{profile: ProfilePrefix}[]>()
 		.single();
 
 	// does this need to be validated?????????????
-	return data?.profile as ProfilePrefix ?? defaultProfilePrefix;
+	return data?.profile ?? defaultProfilePrefix;
 }

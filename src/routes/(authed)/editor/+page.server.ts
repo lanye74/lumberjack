@@ -22,7 +22,8 @@ export async function load({locals: {supabase}}) {
 	const getUserLogs = await supabase.from("ast_location_logs")
 		.select()
 		.gte("timestamp", oneWeekAgo.toISOString())
-		.order("timestamp", {ascending: true});
+		.order("timestamp", {ascending: true})
+		.returns<LocationLogRow[]>();
 
 
 	if(getUserLogs.error) {
@@ -32,10 +33,9 @@ export async function load({locals: {supabase}}) {
 	}
 
 
-	const recentUserLogs = getUserLogs.data as LocationLogRow[];
+	const recentUserLogs = getUserLogs.data;
 
-
-	output.recentLogs = recentUserLogs.map<LocationLog>(log => ({
+	output.recentLogs = recentUserLogs.map(log => ({
 		timestamp: log.timestamp,
 		googleUserId: log.google_user_id,
 		location: log.location,

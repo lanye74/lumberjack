@@ -6,14 +6,14 @@ import createCookieManager from "$lib/createCookieManager.js";
 
 
 export async function POST({cookies, locals: {supabase}}) {
-	const {error: err} = await supabase.auth.signOut();
+	const {error: signOutError} = await supabase.auth.signOut();
 
 	createCookieManager(cookies).deleteCookies();
 
 
 
-	if(err) {
-		console.error(...authStateLogPrefix, "Error logging out", err);
+	if(signOutError) {
+		console.error(...authStateLogPrefix, "Error logging out", signOutError);
 		return error(500, "Unable to logout");
 	}
 

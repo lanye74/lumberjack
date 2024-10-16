@@ -69,7 +69,7 @@ async function loadLeaderboardData(supabase: SupabaseClient, currentProfile: Pro
 
 
 
-async function readDatabase(supabase: SupabaseClient, leaderboardPrefix: string): Promise<PointsLeaderboardEntry[] | null> {
+async function readDatabase(supabase: SupabaseClient, leaderboardPrefix: string) {
 	// baby's first join operation :)
 	// TODO: probably make this sql operation a constant
 	// TODO: i don't need to fetch googleUserId, really
@@ -83,7 +83,8 @@ async function readDatabase(supabase: SupabaseClient, leaderboardPrefix: string)
 			)
 		`)
 		.order("points", {ascending: false})
-		.limit(10);
+		.limit(10)
+		.returns<PointsLeaderboardEntryRow[]>();
 
 	if(getTopUsersByPointsResponse.error) {
 		// whatever bro
@@ -92,8 +93,7 @@ async function readDatabase(supabase: SupabaseClient, leaderboardPrefix: string)
 	}
 
 
-	// supabase types are convinced public_user_data is an array, so cast to unknown first
-	const topPoints = <PointsLeaderboardEntryRow[]><unknown>getTopUsersByPointsResponse.data;
+	const topPoints = getTopUsersByPointsResponse.data;
 
 
 	// TODO: i hate converting naming conventions
