@@ -6,7 +6,7 @@ import {authStateLogPrefix} from "$lib/consoleColorPrefixes.js";
 
 export const actions = {
 	signIn: async ({url, locals: {supabase}}) => {
-		const redirectLocation = new URL("/auth/callback", url);
+		const redirectLocation = new URL("/auth/callback", url.origin);
 
 
 		const {data, error} = await supabase.auth.signInWithOAuth({

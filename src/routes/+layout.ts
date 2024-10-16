@@ -11,7 +11,7 @@ export async function load({depends, data, fetch}) {
 		? createBrowserClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {global: {fetch}})
 		: createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 			global: {fetch},
-			cookies: {getAll: () => data?.cookies ?? null}
+			cookies: {getAll: () => data.cookies}
 		});
 
 

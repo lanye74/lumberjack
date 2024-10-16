@@ -66,7 +66,7 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 		"/editor": "/home",
 		"/leaderboard": mustBeAuthenticated,
 		"/profile": mustBeAuthenticated,
-		// TODO: shouldn't need to be, but I don't have a landing page
+		// TODO: shouldn't need to be authenticated, but I don't have a landing page
 		// "/about": mustBeAuthenticated
 		// "/about": "/home"
 	};
@@ -86,7 +86,6 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 
 
 const setProfileCookieHandle: Handle = async ({event: requestEvent, resolve}) => {
-	// console.time("SetProfileCookieHandle");
 	const {session, supabase} = requestEvent.locals;
 
 	if(!session) {
@@ -106,9 +105,7 @@ function generateSupabaseClientCookieMethods(cookies: Cookies): CookieMethodsSer
 		getAll: () => cookies.getAll(),
 
 		setAll: (newCookies) => {
-			for(const cookie of newCookies) {
-				cookies.set(cookie.name, cookie.value, {...cookie.options, path: "/"});
-			}
+			newCookies.forEach(cookie => cookies.set(cookie.name, cookie.value, {...cookie.options, path: "/"}))
 		}
 	}
 }

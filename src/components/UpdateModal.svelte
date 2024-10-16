@@ -45,7 +45,7 @@
 		display: flex;
 		flex-direction: column;
 
-		animation: flyIn 1s forwards;
+		animation: flyIn 0.5s forwards;
 	}
 
 	/* TODO: add a , when i can ba to actually make my own backdrop and animate it */
@@ -57,10 +57,12 @@
 
 	@keyframes flyIn {
 		0% {
-			transform: translate(-50%, calc(-50% + 8vh));
+			opacity: 0;
+			transform: translate(-50%, calc(-50% + 4vh));
 		}
 
 		100% {
+			opacity: 1;
 			transform: translate(-50%, -50%);
 		}
 	}

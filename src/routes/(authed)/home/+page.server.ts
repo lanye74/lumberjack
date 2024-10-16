@@ -63,34 +63,19 @@ export const actions = {
 		}
 
 
-		// TODO: use technique outlined here https://github.com/orgs/supabase/discussions/909#discussioncomment-546117
-		// in order to make only one call, instead of reading, then writing
-		const {data: readPointsData, error: readPointsError} = await supabase.from(`${userProfile}_leaderboard`)
-			.select("points")
-			.eq("google_user_id", user.id)
-			.single();
+
+		const {data: newPoints, error: incrementPointsError} = await supabase.rpc("increment_user_points", {
+			google_user_id: user.id,
+			profile: userProfile,
+			amount: 1000
+		})
+		// hack until i feel inclined to actually generate types
+		// TODO: generate types
+		.returns<number>();
 
 
-		// PGRST116: no rows found. happens for first time entries on the leaderboard
-		if(readPointsError && readPointsError.code !== "PGRST116") {
-			console.error(...submitLocationLogPrefix, "Error reading points", readPointsError);
-
-			return {
-				error: true,
-				message: "Your location was logged, but we couldn’t update your points!"
-			};
-		}
-
-
-		const points = (readPointsData?.points ?? 0) as number;
-
-		const {error: updatePointsError} = await supabase.from(`${userProfile}_leaderboard`)
-			.upsert({google_user_id: user.id, points: points + 1000})
-			.eq("google_user_id", user.id);
-
-
-		if(updatePointsError) {
-			console.error(...submitLocationLogPrefix, "Error updating points", updatePointsError);
+		if(incrementPointsError) {
+			console.error(...submitLocationLogPrefix, "Error incrementing points", incrementPointsError);
 
 			return {
 				error: true,
@@ -104,7 +89,7 @@ export const actions = {
 		// let the server know to not serve a cached leadboard read
 		createCookieManager(cookies).setLogSubmissionStatus(true);
 
-		createCookieManager(cookies).setProfilePoints(userProfile as ProfilePrefix, points + 1000);
+		createCookieManager(cookies).setProfilePoints(userProfile as ProfilePrefix, newPoints);
 
 
 

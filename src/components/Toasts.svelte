@@ -17,6 +17,9 @@
 		gap: 1rem;
 
 		z-index: 30;
+
+		/* TODO: how to properly exempt this from page transitions? */
+		view-transition-name: toast-container;
 	}
 
 	.toast-wrapper {
