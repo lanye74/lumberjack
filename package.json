@@ -8,7 +8,8 @@
 		"build": "vite build",
 		"preview": "vite preview --host 0.0.0.0 --port 443",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"gen-supabase-types": "npx supabase gen types --lang=typescript --project-id \"gikuvqhvhuuooyegmotc\" --schema public > src/lib/types/supabase.types.ts"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-node": "^5.2.7",

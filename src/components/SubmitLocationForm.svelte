@@ -19,6 +19,7 @@
 
 
 	let currentlySelectedPurpose: string = "";
+	// TODO: this should not be a random string floating around; it should have a constant
 	let timeInputMethodSelector: string = "Use current time";
 	let customTime: TimeSelector;
 

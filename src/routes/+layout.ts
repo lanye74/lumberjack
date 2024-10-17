@@ -1,6 +1,8 @@
 import {PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL} from "$env/static/public";
 import {createBrowserClient, createServerClient, isBrowser} from "@supabase/ssr";
 
+import type {Database} from "$lib/types/supabase.types.js";
+
 
 
 export async function load({depends, data, fetch}) {
@@ -8,8 +10,8 @@ export async function load({depends, data, fetch}) {
 
 
 	const supabase = isBrowser() === true
-		? createBrowserClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {global: {fetch}})
-		: createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+		? createBrowserClient<Database>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {global: {fetch}})
+		: createServerClient<Database>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 			global: {fetch},
 			cookies: {getAll: () => data.cookies}
 		});

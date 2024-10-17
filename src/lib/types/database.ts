@@ -1,3 +1,6 @@
+import type {SupabaseClient} from "@supabase/supabase-js";
+
+import type {Database, Tables} from "./supabase.types.js";
 import type {ProfilePrefix} from "../profiles.js";
 
 
@@ -7,6 +10,9 @@ export type LoadLogsOutput = {
 };
 
 // the Row suffixed types indicate what comes directly out of the database
+// note: this is missing fields
+// note two: use supabase types => type LLR = Tables<"ast_location_log">
+// could possibly remove the type LLR altogether
 export type LocationLogRow = {
 	timestamp: string;
 	google_user_id: string;
@@ -57,3 +63,8 @@ export type LoadProfileAndPointsOutput = {
 	profilePoints: number | null;
 	currentProfile: ProfilePrefix;
 };
+
+
+
+// TODO: populate this across the database
+export type SupabaseWithTypes = SupabaseClient<Database>;

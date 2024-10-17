@@ -128,7 +128,7 @@ function deleteCookies(cookies: Cookies) {
 
 
 
-async function fetchUserPoints(supabase: SupabaseClient, profilePrefix: string, userId: string) {
+async function fetchUserPoints(supabase: SupabaseClient, profilePrefix: ProfilePrefix, userId: string) {
 	const {data, error} = await supabase.from(`${profilePrefix}_leaderboard`)
 		.select("points")
 		.eq("google_user_id", userId)
