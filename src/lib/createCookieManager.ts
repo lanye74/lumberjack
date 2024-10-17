@@ -1,7 +1,7 @@
 import type {Cookies} from "@sveltejs/kit";
-import type {SupabaseClient} from "@supabase/supabase-js";
 
 import {defaultProfilePrefix, profilePrefixes, type ProfilePrefix} from "./profiles.js";
+import type {TypedSupabaseClient} from "./types/database.js";
 
 
 
@@ -20,7 +20,7 @@ function generateDefaultPointsCookie() {
 
 
 
-export default function createCookieManager(cookies: Cookies, supabase?: SupabaseClient) {
+export default function createCookieManager(cookies: Cookies, supabase?: TypedSupabaseClient) {
 	return {
 		getProfilePoints: (profilePrefix: ProfilePrefix, userId: string) => getProfilePoints(cookies, supabase!, profilePrefix, userId),
 		setProfilePoints: (profilePrefix: ProfilePrefix, points: number) => setProfilePointsCookie(cookies, profilePrefix, points),
@@ -50,7 +50,7 @@ function getPointsCookie(cookies: Cookies): PointsCookieJson {
 
 
 // returns current profile's points
-async function getProfilePoints(cookies: Cookies, supabase: SupabaseClient, profilePrefix: ProfilePrefix, userId: string) {
+async function getProfilePoints(cookies: Cookies, supabase: TypedSupabaseClient, profilePrefix: ProfilePrefix, userId: string) {
 	const pointsJson = getPointsCookie(cookies);
 	const points = pointsJson[profilePrefix] ?? await fetchUserPoints(supabase, profilePrefix, userId);
 
@@ -72,7 +72,7 @@ function setProfilePointsCookie(cookies: Cookies, profilePrefix: ProfilePrefix, 
 
 
 
-async function getProfile(cookies: Cookies, supabase: SupabaseClient, userId: string) {
+async function getProfile(cookies: Cookies, supabase: TypedSupabaseClient, userId: string) {
 	const profileCookie = cookies.get("lumberjack_user_profile") as ProfilePrefix;
 	const isInvalidCookie = (profileCookie === undefined || !profilePrefixes.includes(profileCookie));
 
@@ -128,11 +128,10 @@ function deleteCookies(cookies: Cookies) {
 
 
 
-async function fetchUserPoints(supabase: SupabaseClient, profilePrefix: ProfilePrefix, userId: string) {
+async function fetchUserPoints(supabase: TypedSupabaseClient, profilePrefix: ProfilePrefix, userId: string) {
 	const {data, error} = await supabase.from(`${profilePrefix}_leaderboard`)
 		.select("points")
 		.eq("google_user_id", userId)
-		.returns<{points: number}[]>()
 		.single()
 
 
@@ -147,13 +146,11 @@ async function fetchUserPoints(supabase: SupabaseClient, profilePrefix: ProfileP
 
 
 
-async function fetchUserProfile(supabase: SupabaseClient, userId: string) {
+async function fetchUserProfile(supabase: TypedSupabaseClient, userId: string) {
 	const {data} = await supabase.from("public_user_data")
 		.select("profile")
 		.eq("google_user_id", userId)
-		.returns<{profile: ProfilePrefix}[]>()
 		.single();
 
-	// does this need to be validated?????????????
 	return data?.profile ?? defaultProfilePrefix;
 }

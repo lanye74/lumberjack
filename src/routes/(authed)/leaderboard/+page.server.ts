@@ -1,10 +1,9 @@
-import type {SupabaseClient} from "@supabase/supabase-js";
-
 import createCookieManager from "$lib/createCookieManager.js";
 import type {LeaderboardCache} from "$lib/types/leaderboard.js";
 import {leaderboardLogPrefix} from "$lib/consoleColorPrefixes.js";
-import type {PointsLeaderboardEntry, PointsLeaderboardEntryRow} from "$lib/types/database.js";
+import type {PointsLeaderboardEntry, TypedSupabaseClient} from "$lib/types/database.js";
 import type {ProfilePrefix} from "$lib/profiles.js";
+import {shallowSnakeCasedToCamelCasedObject} from "$lib/casing.js";
 
 
 
@@ -43,7 +42,7 @@ export async function load({cookies, locals: {supabase, user}}) {
 
 
 
-async function loadLeaderboardData(supabase: SupabaseClient, currentProfile: ProfilePrefix, hasSubmittedPointsRecently: boolean): Promise<PointsLeaderboardEntry[] | null> {
+async function loadLeaderboardData(supabase: TypedSupabaseClient, currentProfile: ProfilePrefix, hasSubmittedPointsRecently: boolean): Promise<PointsLeaderboardEntry[] | null> {
 	const leaderboard = leaderboards[currentProfile];
 	const currentTime = Date.now();
 
@@ -69,10 +68,9 @@ async function loadLeaderboardData(supabase: SupabaseClient, currentProfile: Pro
 
 
 
-async function readDatabase(supabase: SupabaseClient, leaderboardPrefix: string) {
+async function readDatabase(supabase: TypedSupabaseClient, leaderboardPrefix: ProfilePrefix) {
 	// baby's first join operation :)
 	// TODO: probably make this sql operation a constant
-	// TODO: i don't need to fetch googleUserId, really
 	const getTopUsersByPointsResponse = await supabase.from(`${leaderboardPrefix}_leaderboard`)
 		.select(`
 			points,
@@ -83,8 +81,8 @@ async function readDatabase(supabase: SupabaseClient, leaderboardPrefix: string)
 			)
 		`)
 		.order("points", {ascending: false})
-		.limit(10)
-		.returns<PointsLeaderboardEntryRow[]>();
+		.limit(10);
+
 
 	if(getTopUsersByPointsResponse.error) {
 		// whatever bro
@@ -93,14 +91,9 @@ async function readDatabase(supabase: SupabaseClient, leaderboardPrefix: string)
 	}
 
 
-	const topPoints = getTopUsersByPointsResponse.data;
-
-
-	// TODO: i hate converting naming conventions
-	return topPoints.map<PointsLeaderboardEntry>(user => ({
-		googleUserId: user.public_user_data.google_user_id,
-		fullName: user.public_user_data.full_name,
-		avatarUrl: user.public_user_data.avatar_url ?? "", // if things goes terribly wrong in login this could be null
+	return getTopUsersByPointsResponse.data.map(user => ({
+		...(shallowSnakeCasedToCamelCasedObject(user.public_user_data)),
 		points: user.points
-	}));
+	// TODO: unfortunate necessary typing
+	})) as PointsLeaderboardEntry[];
 }

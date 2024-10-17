@@ -13,4 +13,3 @@ export type CachedLeaderboard = {
 export type LeaderboardCache = {
 	[key in ProfilePrefix]: CachedLeaderboard;
 };
-

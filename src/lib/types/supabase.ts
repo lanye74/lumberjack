@@ -120,19 +120,19 @@ export type Database = {
           avatar_url: string | null
           full_name: string
           google_user_id: string
-          profile: string
+          profile: Database["public"]["Enums"]["Profiles"]
         }
         Insert: {
           avatar_url?: string | null
           full_name?: string
           google_user_id?: string
-          profile?: string
+          profile?: Database["public"]["Enums"]["Profiles"]
         }
         Update: {
           avatar_url?: string | null
           full_name?: string
           google_user_id?: string
-          profile?: string
+          profile?: Database["public"]["Enums"]["Profiles"]
         }
         Relationships: []
       }
@@ -151,7 +151,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      Profiles: "ast" | "maint"
     }
     CompositeTypes: {
       [_ in never]: never

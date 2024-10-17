@@ -1,7 +1,12 @@
-import type {SupabaseClient} from "@supabase/supabase-js";
+import {SupabaseClient} from "@supabase/supabase-js";
 
 import type {Database, Tables} from "./supabase.js";
 import type {ProfilePrefix} from "../profiles.js";
+import type {NestedSnakeToCamelCase} from "$lib/casing.js";
+
+
+
+export type TypedSupabaseClient = SupabaseClient<Database>;
 
 
 
@@ -13,22 +18,9 @@ export type LoadLogsOutput = {
 // note: this is missing fields
 // note two: use supabase types => type LLR = Tables<"ast_location_log">
 // could possibly remove the type LLR altogether
-export type LocationLogRow = {
-	timestamp: string;
-	google_user_id: string;
-	location: string;
-	purpose: string;
-	did_type_purpose: boolean;
-};
-
+export type LocationLogRow = Tables<"ast_location_logs">;
 // the non-Row suffixed types are what i've parsed for use throughout the app
-export type LocationLog = {
-	timestamp: string;
-	googleUserId: string;
-	location: string;
-	purpose: string;
-	didTypePurpose: boolean;
-};
+export type LocationLog = NestedSnakeToCamelCase<LocationLogRow>;
 
 
 
@@ -45,11 +37,15 @@ export type PointsLeaderboardEntry = {points: number} & UserPublicInfo;
 
 
 
-type UserPublicInfoRow = {
-	google_user_id: string;
-	full_name: string;
-	avatar_url: string;
-};
+// type UserPublicInfoRow = {
+	// google_user_id: string;
+	// full_name: string;
+	// avatar_url: string;
+// };
+
+export type UserPublicInfoRow = Tables<"public_user_data">;
+
+
 
 type UserPublicInfo = {
 	googleUserId: string;

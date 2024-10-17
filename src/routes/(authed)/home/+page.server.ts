@@ -37,6 +37,12 @@ export const actions = {
 
 		const {userLocation, userPurpose, didTypePurpose, userProfile, logTime} = parsedForm;
 
+		// type hack, unfortunately
+		if(userProfile === "") {
+			// TODO: re-separate out the types of pSLF
+			return;
+		}
+
 
 		const logTimestamp = generateTimestampFromTimeSelector(logTime);
 
@@ -68,10 +74,7 @@ export const actions = {
 			google_user_id: user.id,
 			profile: userProfile,
 			amount: 1000
-		})
-		// hack until i feel inclined to actually generate types
-		// TODO: generate types
-		.returns<number>();
+		});
 
 
 		if(incrementPointsError) {

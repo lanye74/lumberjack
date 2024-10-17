@@ -12,17 +12,22 @@ type CamelToSnakeCase<S extends string> =
 
 
 
-type NestedSnakeToCamelCase<T> = T extends object ? {
+export type NestedSnakeToCamelCase<T> = T extends object ? {
 	[K in keyof T as SnakeToCamelCase<K & string>]: NestedSnakeToCamelCase<T[K]>
 } : T;
 
-type NestedCamelToSnakeCase<T> = T extends object ? {
+export type NestedCamelToSnakeCase<T> = T extends object ? {
 	[K in keyof T as CamelToSnakeCase<K & string>]: NestedCamelToSnakeCase<T[K]>
 } : T;
 
 
 
-export function snakeCasedToCamelCasedObjectShallow<T extends object>(object: T): NestedSnakeToCamelCase<T> {
+// export function shallowSnakeCasedToCamelCasedObject<T extends object>(object: T): NestedSnakeToCamelCase<T>;
+// export function shallowSnakeCasedToCamelCasedObject(object: null): null;
+export function shallowSnakeCasedToCamelCasedObject<T extends object | null>(object: T): NestedSnakeToCamelCase<T> | null {
+	if(object === null) return null;
+
+
 	// TODO: can this be typed?
 	const output: any = {};
 
@@ -35,8 +40,11 @@ export function snakeCasedToCamelCasedObjectShallow<T extends object>(object: T)
 }
 
 
+// export function shallowCamelCasedToSnakeCasedObject<T extends object>(object: T): NestedSnakeToCamelCase<T>;
+// export function shallowCamelCasedToSnakeCasedObject(object: null): null;
+export function shallowCamelCasedToSnakeCasedObject<T extends object | null>(object: T): NestedCamelToSnakeCase<T> | null {
+	if(object === null) return null;
 
-export function camelCasedToSnakeCasedObjectShallow<T extends object>(object: T): NestedCamelToSnakeCase<T> {
 	const output: any = {};
 
 	Object.entries(object).forEach(([key, value]) => {

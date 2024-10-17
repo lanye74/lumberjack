@@ -1,5 +1,6 @@
 import {logEditorLogPrefix} from "$lib/consoleColorPrefixes.js";
-import type {LoadLogsOutput, LocationLog, LocationLogRow} from "$lib/types/database.js";
+import type {LoadLogsOutput, LocationLog} from "$lib/types/database.js";
+import {shallowSnakeCasedToCamelCasedObject} from "$lib/casing.js";
 
 
 
@@ -22,8 +23,7 @@ export async function load({locals: {supabase}}) {
 	const getUserLogs = await supabase.from("ast_location_logs")
 		.select()
 		.gte("timestamp", oneWeekAgo.toISOString())
-		.order("timestamp", {ascending: true})
-		.returns<LocationLogRow[]>();
+		.order("timestamp", {ascending: true});
 
 
 	if(getUserLogs.error) {
@@ -35,13 +35,8 @@ export async function load({locals: {supabase}}) {
 
 	const recentUserLogs = getUserLogs.data;
 
-	output.recentLogs = recentUserLogs.map(log => ({
-		timestamp: log.timestamp,
-		googleUserId: log.google_user_id,
-		location: log.location,
-		purpose: log.purpose,
-		didTypePurpose: log.did_type_purpose
-	}));
+	// TODO: fix types
+	output.recentLogs = recentUserLogs.map(log => shallowSnakeCasedToCamelCasedObject(log)) as (LocationLog[] | null);
 
 
 
