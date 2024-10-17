@@ -52,6 +52,7 @@ ui rework
 - add a page-by-page log input ui
 - do more server calls on client-side maybe
 - make it more PWA-y
+- switch to bun/deno
 
 ### at some point really soon
 - please make error handling way better

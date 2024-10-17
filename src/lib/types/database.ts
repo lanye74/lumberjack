@@ -1,6 +1,6 @@
 import type {SupabaseClient} from "@supabase/supabase-js";
 
-import type {Database, Tables} from "./supabase.types.js";
+import type {Database, Tables} from "./supabase.js";
 import type {ProfilePrefix} from "../profiles.js";
 
 
