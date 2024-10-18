@@ -57,7 +57,7 @@ export function shallowCamelCasedToSnakeCasedObject<T extends object | null>(obj
 
 
 
-//                                                                             v extracts letter from the capture group
+// extracts _[letter] from the capture group, which is how we're able to replace it with uppercase
 const snakeStringToCamel = (string: string) => string.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
 
 const camelStringToSnake = (string: string) => string.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);

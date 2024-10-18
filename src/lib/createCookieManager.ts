@@ -5,7 +5,7 @@ import type {TypedSupabaseClient} from "./types/database.js";
 
 
 
-type PointsCookieJson = {[key in ProfilePrefix]: number | null};
+type PointsCookieJson = Record<ProfilePrefix, number | null>;
 
 const defaultPointsCookie: PointsCookieJson = {
 	ast: null,

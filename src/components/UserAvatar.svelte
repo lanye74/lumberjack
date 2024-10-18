@@ -5,7 +5,7 @@
 
 
 
-	export let src: string;
+	export let src: string | null;
 
 	export let absoluteSize: string | undefined = undefined;
 	export let percentageSize: number | undefined = undefined;

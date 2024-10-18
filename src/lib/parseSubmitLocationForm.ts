@@ -3,7 +3,7 @@ import type {ProfilePrefix} from "./profiles.js";
 
 
 
-type ProfileIndexedList = {[key in ProfilePrefix]: string[]};
+type ProfileIndexedList = Record<ProfilePrefix, string[]>;
 
 // TODO: make this not bad
 export const jcsSites: ProfileIndexedList = {
@@ -62,33 +62,55 @@ export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocatio
 	                possibleVisitPurposes[userProfile].includes(userPurposeMultiple) &&
 	                timeIsValid;
 
-	// TODO: return specific errors
-	const errorMessage = isValid === false ? "You didn't complete the form!" : null;
 
+	if(isValid === true) {
+		return {
+			isValid,
+			errorMessage: null,
 
-	return {
-		isValid,
-		errorMessage,
+			userLocation,
+			userPurpose,
+			didTypePurpose,
 
-		userLocation,
-		userPurpose,
-		didTypePurpose,
+			userProfile,
+			logTime
+		}
+	} else {
+		return {
+			isValid,
+			// TODO: return specific errors
+			errorMessage: "You didn't complete the form!",
 
-		userProfile,
-		logTime
-	};
+			userLocation: null,
+			userPurpose: null,
+			didTypePurpose: null,
+
+			userProfile: null,
+			logTime: null
+		}
+	}
 }
 
 
 
 type ParsedSubmitLocationForm = {
-	isValid: boolean;
-	errorMessage: string | null;
+	isValid: true;
+	errorMessage: null;
 
 	userLocation: string;
 	userPurpose: string;
 	didTypePurpose: boolean;
 
-	userProfile: ProfilePrefix | "";
+	userProfile: ProfilePrefix;
+	logTime: TimeSelector | null;
+} | {
+	isValid: false;
+	errorMessage: string;
+
+	userLocation: null;
+	userPurpose: null;
+	didTypePurpose: null;
+
+	userProfile: null;
 	logTime: TimeSelector | null;
 };

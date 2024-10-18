@@ -7,13 +7,14 @@ export type ProfilePretty = "AST" | "Maintenance";
 
 
 
-const profilePrefixToPrettyMap: {[key in ProfilePrefix]: ProfilePretty} = {
+const profilePrefixToPrettyMap: Record<ProfilePrefix, ProfilePretty> = {
 	"ast": "AST",
 	"maint": "Maintenance"
 };
 
 
 
+// why doesn't Object.keys/.values on a record not infer the types
 export const profilePrefixes = Object.keys(profilePrefixToPrettyMap) as ProfilePrefix[];
 export const defaultProfilePrefix = profilePrefixes[0];
 

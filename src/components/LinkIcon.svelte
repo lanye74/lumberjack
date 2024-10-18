@@ -13,7 +13,7 @@
 
 
 
-	const routeIconMappings: {[key in AuthedRoute]: typeof HomeIcon} = {
+	const routeIconMappings: Record<AuthedRoute, typeof HomeIcon> = {
 		"/home": HomeIcon,
 		"/editor": PencilIcon,
 		"/leaderboard": TrophyIcon,
@@ -21,7 +21,7 @@
 		// "/about": InfoIcon
 	};
 
-	const ariaLabelMappings: {[key in AuthedRoute]: string} = {
+	const ariaLabelMappings: Record<AuthedRoute, string> = {
 		"/home": "Navigate to home page",
 		"/editor": "Navigate to log editor",
 		"/leaderboard": "Navigate to the points leaderboad",

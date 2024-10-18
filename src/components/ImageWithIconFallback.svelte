@@ -4,7 +4,7 @@
 
 
 
-	export let src: string;
+	export let src: string | null;
 	export let alt: string;
 
 	export let icon: keyof typeof iconComponentMap;
@@ -28,8 +28,16 @@
 
 	onMount(() => {
 		const image = new Image();
-		image.src = src;
 
+		if(src === null) {
+			isLoading = false;
+			hadError = true;
+			return;
+		}
+
+
+
+		image.src = src;
 
 		image.onload = () => {
 			isLoading = false;

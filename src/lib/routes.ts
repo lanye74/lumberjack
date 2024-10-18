@@ -1,6 +1,6 @@
 import type {OnNavigate} from "@sveltejs/kit";
 
-import type {RoutePageTitleMap, RedirectableRouthWithGroup} from "./types/routes.js";
+import type {RoutePageTitleMap, RedirectableRouteWithGroup} from "./types/routes.js";
 
 
 
@@ -80,6 +80,6 @@ export function enableCorrectTransitionForNavigation(navigation: OnNavigate, cur
 
 
 
-function isRouteInMappings(route: string): route is RedirectableRouthWithGroup {
+function isRouteInMappings(route: string): route is RedirectableRouteWithGroup {
 	return allRoutes.includes(route);
 }

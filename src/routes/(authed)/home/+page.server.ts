@@ -37,13 +37,6 @@ export const actions = {
 
 		const {userLocation, userPurpose, didTypePurpose, userProfile, logTime} = parsedForm;
 
-		// type hack, unfortunately
-		if(userProfile === "") {
-			// TODO: re-separate out the types of pSLF
-			return;
-		}
-
-
 		const logTimestamp = generateTimestampFromTimeSelector(logTime);
 
 
