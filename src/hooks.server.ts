@@ -4,6 +4,9 @@ import {type Cookies, type Handle, redirect} from "@sveltejs/kit";
 import {type CookieMethodsServer, createServerClient} from "@supabase/ssr";
 import {sequence} from "@sveltejs/kit/hooks";
 
+import fs from "node:fs";
+import path from "node:path";
+
 import createCookieManager from "$lib/createCookieManager.js";
 import type {RedirectableRoute, RedirectMap} from "$lib/types/routes.js";
 
@@ -39,6 +42,25 @@ const supabaseHandle: Handle = async({event, resolve}) => {
 	return resolve(event, {
 		filterSerializedResponseHeaders: (name) => allowedHeaders.includes(name)
 	});
+}
+
+
+
+const acmeChallengeHandle: Handle = async({event: requestEvent, resolve}) => {
+	const requestUrl = requestEvent.url.pathname;
+
+	if(requestUrl.startsWith("/.well-known/acme-challenge/")) {
+		const filePath = path.join("C:\\LAYNE\\acme-challenge\\", requestUrl);
+		console.log("[acmeChallengeHandle] Resolving ACME challenge", requestUrl.split("/").pop());
+
+		if(fs.existsSync(filePath)) {
+			const fileContent = fs.readFileSync(filePath, "utf-8");
+			return new Response(fileContent, {status: 200});
+		}
+	}
+
+
+	return resolve(requestEvent);
 }
 
 
@@ -112,4 +134,4 @@ function generateSupabaseClientCookieMethods(cookies: Cookies): CookieMethodsSer
 
 
 
-export const handle = sequence(supabaseHandle, authGuardHandle, setProfileCookieHandle);
+export const handle = sequence(supabaseHandle, acmeChallengeHandle, authGuardHandle, setProfileCookieHandle);
