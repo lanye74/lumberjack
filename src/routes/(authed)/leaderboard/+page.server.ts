@@ -1,9 +1,10 @@
 import createCookieManager from "$lib/createCookieManager.js";
-import type {LeaderboardCache} from "$lib/types/leaderboard.js";
 import {leaderboardLogPrefix} from "$lib/consoleColorPrefixes.js";
-import type {PointsLeaderboardEntry, TypedSupabaseClient} from "$lib/types/database.js";
 import type {ProfilePrefix} from "$lib/profiles.js";
 import {shallowSnakeCasedToCamelCasedObject} from "$lib/casing.js";
+
+import type {LeaderboardCache} from "$types/leaderboard.js";
+import type {PointsLeaderboardEntry, TypedSupabaseClient} from "$types/database.js";
 
 
 

@@ -1,6 +1,7 @@
 <script lang="ts">
-    import {type IconComponentId, iconComponentMap} from "$lib/icons.js";
 	import {onMount} from "svelte";
+
+    import {type IconComponentId, iconComponentMap} from "$lib/icons.js";
 
 
 
@@ -8,8 +9,6 @@
 	export let alt: string;
 
 	export let iconId: IconComponentId;
-
-
 
 	const mappedIcon = iconComponentMap[iconId];
 
@@ -19,7 +18,6 @@
 	let hadError = false;
 
 	let loadedSrc = "";
-
 
 
 	onMount(() => {

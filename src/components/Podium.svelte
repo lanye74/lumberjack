@@ -2,7 +2,8 @@
 	import UserAvatar from "$components/UserAvatar.svelte";
 
 	import {formatPoints} from "$lib/formatters.js";
-	import type {PointsLeaderboardEntry} from "$lib/types/database.js";
+
+	import type {PointsLeaderboardEntry} from "$types/database.js";
 
 
 

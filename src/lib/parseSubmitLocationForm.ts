@@ -28,7 +28,7 @@ export const possibleVisitPurposes: ProfileIndexedList = {
 		"Training",
 		"Grounds inspection",
 		"Building inspection",
-		"Vendor followup",
+		"Vendor follow-up",
 		"Other"
 	]
 };

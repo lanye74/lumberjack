@@ -3,7 +3,7 @@
 	import LeaderboardEntry from "$components/LeaderboardEntry.svelte";
 	import Podium from "$components/Podium.svelte";
 
-	import type {PointsLeaderboardEntry} from "$lib/types/database.js";
+	import type {PointsLeaderboardEntry} from "$types/database.js";
 
 
 
