@@ -1,6 +1,6 @@
 import {derived, readable} from "svelte/store";
 
-import {formatTime} from "./formatters.js";
+import {formatTime} from "$lib/formatters.js";
 
 
 

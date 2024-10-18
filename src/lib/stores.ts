@@ -1,6 +1,6 @@
 import {derived, writable} from "svelte/store";
 
-import type {ProfilePrefix, ProfilePretty} from "./profiles.js";
+import type {ProfilePrefix, ProfilePretty} from "$lib/profiles.js";
 
 
 

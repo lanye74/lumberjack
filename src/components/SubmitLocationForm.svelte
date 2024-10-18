@@ -2,8 +2,7 @@
 	import {applyAction, enhance} from "$app/forms";
 	import type {SubmitFunction} from "@sveltejs/kit";
 
-	// TODO: should i prefix these with $components for consistency?
-	import EditableTime from "./EditableTime.svelte";
+	import EditableTime from "$components/EditableTime.svelte";
 
 	import {formattedNavbarHeight} from "$lib/stores.js";
 	import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";

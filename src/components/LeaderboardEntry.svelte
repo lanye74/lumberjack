@@ -1,5 +1,5 @@
 <script lang="ts">
-	import UserAvatar from "./UserAvatar.svelte";
+	import UserAvatar from "$components/UserAvatar.svelte";
 
 	import type {PointsLeaderboardEntry} from "$lib/types/database.js";
 
