@@ -49,7 +49,6 @@
 		flex-direction: column;
 		align-items: center;
 		gap: 0.5rem;
-
 	}
 
 	h2 {
@@ -59,8 +58,9 @@
 	}
 
 	.leaderboard-header p {
-		font: italic 1.5rem var(--font-serif);
+		margin: 0;
 		text-align: center;
+		font: italic 1.5rem var(--font-serif);
 		color: var(--subtext-color);
 	}
 </style>

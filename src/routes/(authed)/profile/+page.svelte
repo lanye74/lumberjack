@@ -30,7 +30,7 @@
 	// TODO: should this be in a separate file?
 	$: userProfileActions = [
 		{
-			icon: "exchange-alt",
+			iconId: "exchange-alt",
 			text: `Switch to ${$nextProfile.pretty}`,
 			callback: async () => {
 				const formData = new FormData();
@@ -55,7 +55,7 @@
 		},
 
 		{
-			icon: "sign-out-alt",
+			iconId: "sign-out-alt",
 			text: "Sign out",
 			callback: async () => {
 				await fetch("/auth/logout", {method: "POST"});
@@ -63,7 +63,7 @@
 			}
 		}
 		// TODO: this sucks
-	] as {icon: "exchange-alt" | "sign-out-alt"; text: string; callback: MouseEventHandler<HTMLButtonElement>}[];
+	] as {iconId: "exchange-alt" | "sign-out-alt"; text: string; callback: MouseEventHandler<HTMLButtonElement>}[];
 </script>
 
 <style>

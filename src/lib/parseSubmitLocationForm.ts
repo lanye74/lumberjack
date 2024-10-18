@@ -63,6 +63,7 @@ export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocatio
 	                timeIsValid;
 
 
+	// separated to make typescript happy
 	if(isValid === true) {
 		return {
 			isValid,
@@ -79,7 +80,7 @@ export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocatio
 		return {
 			isValid,
 			// TODO: return specific errors
-			errorMessage: "You didn't complete the form!",
+			errorMessage: "You didn’t complete the form!",
 
 			userLocation: null,
 			userPurpose: null,

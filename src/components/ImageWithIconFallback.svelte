@@ -1,21 +1,17 @@
 <script lang="ts">
+    import {type IconComponentId, iconComponentMap} from "$lib/icons.js";
 	import {onMount} from "svelte";
-	import ProfileIcon from "virtual:icons/fa-solid/user-circle";
 
 
 
 	export let src: string | null;
 	export let alt: string;
 
-	export let icon: keyof typeof iconComponentMap;
+	export let iconId: IconComponentId;
 
 
 
-	const iconComponentMap = {
-		"user-circle": ProfileIcon
-	};
-
-	const mappedIcon = iconComponentMap[icon];
+	const mappedIcon = iconComponentMap[iconId];
 
 
 

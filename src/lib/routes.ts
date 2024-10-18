@@ -1,6 +1,17 @@
 import type {OnNavigate} from "@sveltejs/kit";
 
-import type {RoutePageTitleMap, RedirectableRouteWithGroup} from "./types/routes.js";
+
+
+export type AuthedRoute = "/home" | "/editor" | "/leaderboard" | "/profile"; //| "/about";
+
+type NonAuthedRoutes = "/" | "/auth" | "/auth/error";
+
+export type RedirectableRoute = AuthedRoute | NonAuthedRoutes;
+export type RedirectableRouteWithGroup = `/(authed)${AuthedRoute}` | NonAuthedRoutes;
+
+
+export type RedirectMap = Record<RedirectableRoute, string | null>;
+export type RoutePageTitleMap = Record<RedirectableRouteWithGroup, string>;
 
 
 
@@ -15,6 +26,18 @@ const routePageTitleMappings: RoutePageTitleMap = {
 	"/auth/error": "Error!",
 
 	"/": "Landing"
+};
+
+
+
+export const navbarRoutes: AuthedRoute[] = ["/home", "/leaderboard", "/profile"];
+
+export const routeAriaLabelMappings: Record<AuthedRoute, string> = {
+	"/home": "Navigate to home page",
+	"/editor": "Navigate to log editor",
+	"/leaderboard": "Navigate to the points leaderboad",
+	"/profile": "Navigate to your profile page",
+	// "/about": "Navigate to the about page"
 };
 
 

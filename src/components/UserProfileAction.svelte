@@ -1,22 +1,16 @@
 <script lang="ts">
+    import {iconComponentMap, type IconComponentId} from "$lib/icons.js";
 	import type {MouseEventHandler} from "svelte/elements";
-	import ExchangeAlt from "virtual:icons/fa-solid/exchange-alt";
-	import SignOutAlt from "virtual:icons/fa-solid/sign-out-alt";
 
 
 
-	export let icon: keyof typeof iconComponentMap; // these can be one line, really, but i don't want to put multiple typed variable declarations on one line
+	export let iconId: IconComponentId; // these can be one line, really, but i don't want to put multiple typed variable declarations on one line
 	export let text: string;
 	export let callback: MouseEventHandler<HTMLButtonElement>;
 
 
 
-	const iconComponentMap = {
-		"exchange-alt": ExchangeAlt,
-		"sign-out-alt": SignOutAlt
-	};
-
-	const mappedIcon = iconComponentMap[icon];
+	const mappedIcon = iconComponentMap[iconId];
 </script>
 
 <style>

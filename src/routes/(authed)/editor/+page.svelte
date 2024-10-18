@@ -8,11 +8,11 @@
 <!-- {#if recentLogs === null}
 	<p>there was an issue while trying to fetch your logs!</p>
 {:else if recentLogs.length === 0}
-	<p>you don't have any logs! switch to the home tab to start logging</p>
+	<p>you don’t have any logs! switch to the home tab to start logging</p>
 {:else}
-	<p>there's logs here!</p>
+	<p>there’s logs here!</p>
 {/if} -->
 
 
 
-<p>how did you even get here? i'm still working on it...,</p>
+<p>how did you even get here? i’m still working on it...,</p>

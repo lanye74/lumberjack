@@ -1,11 +1,6 @@
 <script lang="ts">
-	import HomeIcon from "virtual:icons/fa-solid/home";
-	import PencilIcon from "virtual:icons/fa-solid/pencil-alt";
-	import TrophyIcon from "virtual:icons/fa-solid/trophy";
-	import ProfileIcon from "virtual:icons/fa-solid/user-circle";
-	// import InfoIcon from "virtual:icons/fa-solid/info-circle";
-
-	import type {AuthedRoute} from "$lib/types/routes.js";
+	import {type AuthedRoute, routeAriaLabelMappings} from "$lib/routes.js";
+	import {routeIconMappings} from "$lib/icons.js";
 
 
 
@@ -13,26 +8,8 @@
 
 
 
-	const routeIconMappings: Record<AuthedRoute, typeof HomeIcon> = {
-		"/home": HomeIcon,
-		"/editor": PencilIcon,
-		"/leaderboard": TrophyIcon,
-		"/profile": ProfileIcon,
-		// "/about": InfoIcon
-	};
-
-	const ariaLabelMappings: Record<AuthedRoute, string> = {
-		"/home": "Navigate to home page",
-		"/editor": "Navigate to log editor",
-		"/leaderboard": "Navigate to the points leaderboad",
-		"/profile": "Navigate to your profile page",
-		// "/about": "Navigate to the about page"
-	};
-
-
-
 	const mappedIcon = routeIconMappings[path];
-	const mappedAriaLabel = ariaLabelMappings[path];
+	const mappedAriaLabel = routeAriaLabelMappings[path];
 </script>
 
 <style>

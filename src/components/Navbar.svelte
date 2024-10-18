@@ -1,14 +1,6 @@
 <script lang="ts">
 	import LinkIcon from "./LinkIcon.svelte";
-
-	import type {AuthedRoute} from "$lib/types/routes.js";
-
-
-
-	// const routes: AuthedRoute[] = ["/home", "/editor", "/leaderboard", "/profile"];
-	// TODO: why are these scattered across like four different files?
-	// const routes: AuthedRoute[] = ["/home", "/leaderboard", "/profile", "/about"];
-	const routes: AuthedRoute[] = ["/home", "/leaderboard", "/profile"];
+	import {navbarRoutes} from "$lib/routes.js";
 
 
 
@@ -46,7 +38,7 @@
 
 
 <nav bind:clientHeight={height}>
-	{#each routes as path}
+	{#each navbarRoutes as path}
 		<LinkIcon {path} />
 	{/each}
 </nav>
