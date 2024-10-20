@@ -2,10 +2,10 @@
 	import BorderBox from "$components/BorderBox.svelte";
 	import SubmitLocationForm from "$components/SubmitLocationForm.svelte";
 
-	import {currentDate, currentFormattedTime} from "$lib/time.js";
-	import generateGreeting from "$lib/generateGreeting.js";
-	import {jcsSites, possibleVisitPurposes} from "$lib/parseSubmitLocationForm.js";
-	import {toaster} from "$lib/stores.js";
+	import {currentDate, currentFormattedTime} from "$utils/time.js";
+	import generateGreeting from "$utils/generateGreeting.js";
+	import {jcsSites, possibleVisitPurposes} from "$utils/parseSubmitLocationForm.js";
+	import {toaster} from "$utils/stores.js";
 
 
 

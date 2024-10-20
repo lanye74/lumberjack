@@ -1,7 +1,7 @@
 import {error} from "@sveltejs/kit";
 
-import createCookieManager from "$lib/createCookieManager.js";
-import {profilePrefixes, type ProfilePrefix} from "$lib/profiles.js";
+import createCookieManager from "$utils/createCookieManager.js";
+import {profilePrefixes, type ProfilePrefix} from "$utils/profiles.js";
 
 
 

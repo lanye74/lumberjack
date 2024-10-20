@@ -2,7 +2,7 @@
 	import {flip} from "svelte/animate";
 	import {fly} from "svelte/transition";
 
-	import {formattedNavbarHeight, toaster} from "$lib/stores.js";
+	import {formattedNavbarHeight, toaster} from "$utils/stores.js";
 </script>
 
 <style>

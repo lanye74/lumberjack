@@ -1,5 +1,5 @@
-import {isTimeSelectorValid, type TimeSelector} from "$lib/time.js";
-import type {ProfilePrefix} from "$lib/profiles.js";
+import {isTimeSelectorValid, type TimeSelector} from "$utils/time.js";
+import type {ProfilePrefix} from "$utils/profiles.js";
 
 
 

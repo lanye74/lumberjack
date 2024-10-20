@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {TimePeriod, TimeSelector} from "$lib/time.js";
+	import type {TimePeriod, TimeSelector} from "$utils/time.js";
 
 
 

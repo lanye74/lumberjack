@@ -7,8 +7,8 @@ import {sequence} from "@sveltejs/kit/hooks";
 import fs from "node:fs";
 import path from "node:path";
 
-import createCookieManager from "$lib/createCookieManager.js";
-import type {RedirectableRoute, RedirectMap} from "$lib/routes.js";
+import createCookieManager from "$utils/createCookieManager.js";
+import type {RedirectableRoute, RedirectMap} from "$utils/routes.js";
 
 
 

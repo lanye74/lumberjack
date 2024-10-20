@@ -1,6 +1,6 @@
 import {derived, readable} from "svelte/store";
 
-import {formatTime} from "$lib/formatters.js";
+import {formatTime} from "$utils/formatters.js";
 
 
 
@@ -14,7 +14,7 @@ export type TimeSelector = {
 
 
 
-export const currentDate = readable(new Date(), (set) => {
+export const currentDate = readable(new Date(), set => {
 	const interval = setInterval(() => {
 		set(new Date());
 	}, 1000);

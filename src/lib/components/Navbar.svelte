@@ -1,7 +1,7 @@
 <script lang="ts">
 	import LinkIcon from "$components/LinkIcon.svelte";
 
-	import {navbarRoutes} from "$lib/routes.js";
+	import {navbarRoutes} from "$utils/routes.js";
 
 
 

@@ -5,7 +5,7 @@
 
 	import Toasts from "$components/Toasts.svelte";
 
-	import {mapRouteToPageTitle} from "$lib/routes.js";
+	import {mapRouteToPageTitle} from "$utils/routes.js";
 
 
 

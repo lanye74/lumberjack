@@ -1,4 +1,4 @@
-import {createProfileCycler} from "$lib/stores.js";
+import {createProfileCycler} from "$utils/stores.js";
 
 import type {Enums} from "$types/supabase.js";
 

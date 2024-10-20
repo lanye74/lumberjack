@@ -1,7 +1,7 @@
 import {error, redirect} from "@sveltejs/kit";
 
-import createCookieManager from "$lib/createCookieManager.js";
-import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
+import createCookieManager from "$utils/createCookieManager.js";
+import resizeGoogleAvatarUrl from "$utils/resizeGoogleAvatarUrl.js";
 
 
 

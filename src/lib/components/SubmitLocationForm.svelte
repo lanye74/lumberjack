@@ -4,10 +4,10 @@
 
 	import EditableTime from "$components/EditableTime.svelte";
 
-	import {formattedNavbarHeight} from "$lib/stores.js";
-	import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
-	import type {ProfilePrefix} from "$lib/profiles.js";
-	import type {TimeSelector} from "$lib/time.js";
+	import {formattedNavbarHeight} from "$utils/stores.js";
+	import {parseSubmitLocationForm} from "$utils/parseSubmitLocationForm.js";
+	import type {ProfilePrefix} from "$utils/profiles.js";
+	import type {TimeSelector} from "$utils/time.js";
 
 
 

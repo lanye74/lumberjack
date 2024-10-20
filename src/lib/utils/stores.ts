@@ -1,12 +1,13 @@
 import {derived, writable} from "svelte/store";
 
-import type {ProfilePrefix, ProfilePretty} from "$lib/profiles.js";
+import {formatPixels} from "$utils/formatters.js";
+import type {ProfilePrefix, ProfilePretty} from "$utils/profiles.js";
 
 
 
 export const navbarHeight = writable(0);
 
-export const formattedNavbarHeight = derived(navbarHeight, (height) => `${height}px`);
+export const formattedNavbarHeight = derived(navbarHeight, (height) => formatPixels(height));
 
 
 

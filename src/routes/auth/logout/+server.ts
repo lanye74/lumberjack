@@ -1,7 +1,7 @@
 import {error, redirect} from "@sveltejs/kit";
 
-import {authStateLogPrefix} from "$lib/consoleColorPrefixes.js";
-import createCookieManager from "$lib/createCookieManager.js";
+import {authStateLogPrefix} from "$utils/consoleColorPrefixes.js";
+import createCookieManager from "$utils/createCookieManager.js";
 
 
 

@@ -1,6 +1,6 @@
 import {SupabaseClient} from "@supabase/supabase-js";
 
-import type {NestedSnakeToCamelCase} from "$lib/casing.js";
+import type {NestedSnakeToCamelCase} from "$utils/casing.js";
 
 import type {Database, Tables} from "$types/supabase.js";
 

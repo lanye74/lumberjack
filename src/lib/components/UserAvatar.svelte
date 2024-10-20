@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ImageWithIconFallback from "$components/ImageWithIconFallback.svelte";
 
-	import {formatPixels} from "$lib/formatters.js";
+	import {formatPixels} from "$utils/formatters.js";
 
 
 

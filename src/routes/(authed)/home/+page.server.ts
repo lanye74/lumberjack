@@ -1,8 +1,8 @@
-import createCookieManager from "$lib/createCookieManager.js";
-import {parseSubmitLocationForm} from "$lib/parseSubmitLocationForm.js";
-import type {ProfilePrefix} from "$lib/profiles.js";
-import {submitLocationLogPrefix} from "$lib/consoleColorPrefixes.js";
-import type {TimeSelector} from "$lib/time.js";
+import createCookieManager from "$utils/createCookieManager.js";
+import {parseSubmitLocationForm} from "$utils/parseSubmitLocationForm.js";
+import type {ProfilePrefix} from "$utils/profiles.js";
+import {submitLocationLogPrefix} from "$utils/consoleColorPrefixes.js";
+import type {TimeSelector} from "$utils/time.js";
 
 
 

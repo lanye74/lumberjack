@@ -6,9 +6,9 @@
 	import UserAvatar from "$components/UserAvatar.svelte";
 	import UserProfileAction from "$components/UserProfileAction.svelte";
 
-	import {currentProfile, nextProfile} from "$lib/profiles.js";
-	import {formatPoints} from "$lib/formatters.js";
-	import resizeGoogleAvatarUrl from "$lib/resizeGoogleAvatarUrl.js";
+	import {currentProfile, nextProfile} from "$utils/profiles.js";
+	import {formatPoints} from "$utils/formatters.js";
+	import resizeGoogleAvatarUrl from "$utils/resizeGoogleAvatarUrl.js";
 
 
 

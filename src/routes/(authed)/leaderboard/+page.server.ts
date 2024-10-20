@@ -1,7 +1,7 @@
-import createCookieManager from "$lib/createCookieManager.js";
-import {leaderboardLogPrefix} from "$lib/consoleColorPrefixes.js";
-import type {ProfilePrefix} from "$lib/profiles.js";
-import {shallowSnakeCasedToCamelCasedObject} from "$lib/casing.js";
+import createCookieManager from "$utils/createCookieManager.js";
+import {leaderboardLogPrefix} from "$utils/consoleColorPrefixes.js";
+import type {ProfilePrefix} from "$utils/profiles.js";
+import {shallowSnakeCasedToCamelCasedObject} from "$utils/casing.js";
 
 import type {LeaderboardCache} from "$types/leaderboard.js";
 import type {PointsLeaderboardEntry, TypedSupabaseClient} from "$types/database.js";
