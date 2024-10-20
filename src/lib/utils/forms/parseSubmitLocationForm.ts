@@ -1,41 +1,12 @@
-import {isTimeSelectorValid, type TimeSelector} from "$utils/time.js";
-import type {ProfilePrefix} from "$utils/profiles.js";
+import isTimeSelectorValid from "$utils/forms/isTimeSelectorValid.js";
+import {jcsSites, possibleVisitPurposes} from "$utils/forms/formOptions.js";
+
+import type {ProfilePrefix} from "$types/profiles.js";
+import {type ParsedSubmitLocationForm, type TimeSelector} from "$types/forms.js";
 
 
 
-type ProfileIndexedList = Record<ProfilePrefix, string[]>;
-
-// TODO: make this not bad
-export const jcsSites: ProfileIndexedList = {
-	ast: ["ASH", "BES", "EJHS", "EJMS", "JCTC", "JELV", "NES", "RDES", "RED", "TPS", "WAR", "WES", "WJHS", "WJMS"],
-
-	maint: ["Annex", "ASH", "BES", "Bradley Building", "Bus Garage", "CO", "EJHS", "EJMS", "JCTC", "JELV", "Maintenance", "NES", "PAC Center", "RDES", "RED", "TPS", "Transportation Department", "WAR", "WES", "WJHS", "WJMS"]
-};
-
-
-
-export const possibleVisitPurposes: ProfileIndexedList = {
-	ast: [
-		"Administration team meeting",
-		"Check-in visit",
-		"Problem-solving support",
-		"Scheduled walkthrough",
-		"Unannounced walkthrough",
-		"Other"
-	],
-
-	maint: [
-		"Training",
-		"Grounds inspection",
-		"Building inspection",
-		"Vendor follow-up",
-		"Other"
-	]
-};
-
-
-
-export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocationForm {
+export default function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocationForm {
 	// TODO: make all of these their own parsers
 
 	// though i would like to believe these fields always exist, can't trust the client xd
@@ -91,27 +62,3 @@ export function parseSubmitLocationForm(formData: FormData): ParsedSubmitLocatio
 		}
 	}
 }
-
-
-
-type ParsedSubmitLocationForm = {
-	isValid: true;
-	errorMessage: null;
-
-	userLocation: string;
-	userPurpose: string;
-	didTypePurpose: boolean;
-
-	userProfile: ProfilePrefix;
-	logTime: TimeSelector | null;
-} | {
-	isValid: false;
-	errorMessage: string;
-
-	userLocation: null;
-	userPurpose: null;
-	didTypePurpose: null;
-
-	userProfile: null;
-	logTime: TimeSelector | null;
-};

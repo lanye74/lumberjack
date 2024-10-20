@@ -1,4 +1,4 @@
-import {resizeGoogleAvatarUrlLogPrefix} from "$utils/consoleColorPrefixes.js";
+import {resizeGoogleAvatarUrlLogPrefix} from "$utils/console.js";
 
 
 

@@ -6,8 +6,8 @@
 	import Navbar from "$components/Navbar.svelte";
 	import UpdateModal from "$components/UpdateModal.svelte";
 
-	import {enableCorrectTransitionForNavigation} from "$utils/routes.js";
-	import {formattedNavbarHeight, navbarHeight} from "$utils/stores.js";
+	import {enableCorrectTransitionForNavigation} from "$utils/routing/routes.js";
+	import {formattedNavbarHeight, navbarHeight} from "$utils/stores/navbarHeight.js";
 
 
 

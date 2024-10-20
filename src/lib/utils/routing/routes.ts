@@ -1,48 +1,7 @@
 import type {OnNavigate} from "@sveltejs/kit";
 
-
-
-export type AuthedRoute = "/home" | "/editor" | "/leaderboard" | "/profile"; //| "/about";
-
-type NonAuthedRoutes = "/" | "/auth" | "/auth/error";
-
-export type RedirectableRoute = AuthedRoute | NonAuthedRoutes;
-export type RedirectableRouteWithGroup = `/(authed)${AuthedRoute}` | NonAuthedRoutes;
-
-
-export type RedirectMap = Record<RedirectableRoute, string | null>;
-export type RoutePageTitleMap = Record<RedirectableRouteWithGroup, string>;
-
-
-
-const routePageTitleMappings: RoutePageTitleMap = {
-	"/(authed)/home": "Home",
-	"/(authed)/editor": "Log editor",
-	"/(authed)/leaderboard": "Leaderboard",
-	"/(authed)/profile": "User profile",
-	// "/(authed)/about": "About Lumberjack",
-
-	"/auth": "Sign in",
-	"/auth/error": "Error!",
-
-	"/": "Landing"
-};
-
-
-
-export const navbarRoutes: AuthedRoute[] = ["/home", "/leaderboard", "/profile"];
-
-export const routeAriaLabelMappings: Record<AuthedRoute, string> = {
-	"/home": "Navigate to home page",
-	"/editor": "Navigate to log editor",
-	"/leaderboard": "Navigate to the points leaderboad",
-	"/profile": "Navigate to your profile page",
-	// "/about": "Navigate to the about page"
-};
-
-
-
-const allRoutes = Object.keys(routePageTitleMappings);
+import {routePageTitleMappings, allRoutes} from "$utils/routing/maps.js";
+import type {RedirectableRouteWithGroup} from "$types/routing.js";
 
 
 

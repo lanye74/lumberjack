@@ -1,7 +1,8 @@
 import type {Cookies} from "@sveltejs/kit";
 
-import {defaultProfilePrefix, profilePrefixes, type ProfilePrefix} from "$utils/profiles.js";
+import {defaultProfilePrefix, profilePrefixes} from "$utils/profiles.js";
 
+import type {ProfilePrefix} from "$types/profiles.js";
 import type {TypedSupabaseClient} from "$types/database.js";
 
 

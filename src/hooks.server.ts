@@ -8,7 +8,8 @@ import fs from "node:fs";
 import path from "node:path";
 
 import createCookieManager from "$utils/createCookieManager.js";
-import type {RedirectableRoute, RedirectMap} from "$utils/routes.js";
+
+import type {RedirectableRoute, RedirectMap} from "$types/routing.js";
 
 
 

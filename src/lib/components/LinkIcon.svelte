@@ -1,6 +1,8 @@
 <script lang="ts">
-	import {type AuthedRoute, routeAriaLabelMappings} from "$utils/routes.js";
 	import {routeIconMappings} from "$utils/icons.js";
+    import {routeAriaLabelMappings} from "$utils/routing/maps.js";
+
+	import {type AuthedRoute} from "$types/routing.js";
 
 
 

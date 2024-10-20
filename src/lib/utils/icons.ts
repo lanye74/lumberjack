@@ -6,7 +6,7 @@ import ProfileIcon from "virtual:icons/fa-solid/user-circle";
 import ExchangeAlt from "virtual:icons/fa-solid/exchange-alt";
 import SignOutAlt from "virtual:icons/fa-solid/sign-out-alt";
 
-import type {AuthedRoute} from "$utils/routes.js";
+import type {AuthedRoute} from "$types/routing.js";
 
 
 

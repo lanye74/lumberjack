@@ -1,12 +1,6 @@
-import {createProfileCycler} from "$utils/stores.js";
+import createProfileCycler from "$utils/stores/profileCycler.js";
 
-import type {Enums} from "$types/supabase.js";
-
-
-
-export type ProfilePrefix = Enums<"Profiles">;
-// TODO: is there a better way to do this?
-export type ProfilePretty = "AST" | "Maintenance";
+import type {ProfilePrefix, ProfilePretty} from "$types/profiles.js";
 
 
 

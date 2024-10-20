@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type {TimePeriod, TimeSelector} from "$utils/time.js";
+	
+	import type {TimePeriod, TimeSelector} from "$types/forms";
 
 
 

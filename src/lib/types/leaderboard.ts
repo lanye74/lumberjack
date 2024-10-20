@@ -1,4 +1,4 @@
-import type {ProfilePrefix} from "$utils/profiles.js";
+import type {ProfilePrefix} from "$types/profiles.js";
 
 import type {PointsLeaderboardEntry} from "$types/database.js";
 

@@ -1,4 +1,4 @@
-import {logEditorLogPrefix} from "$utils/consoleColorPrefixes.js";
+import {logEditorLogPrefix} from "$utils/console.js";
 import {shallowSnakeCasedToCamelCasedObject} from "$utils/casing.js";
 
 import type {LoadLogsOutput, LocationLog} from "$types/database.js";
