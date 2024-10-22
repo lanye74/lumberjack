@@ -1,6 +1,5 @@
 import createCookieManager from "$utils/createCookieManager.js";
-import {leaderboardLogPrefix} from "$utils/console.js";
-import {shallowSnakeCasedToCamelCasedObject} from "$utils/casing.js";
+import fetchLeaderboardEntries from "$utils/database/leaderboard.js";
 
 import type {LeaderboardCache} from "$types/leaderboard.js";
 import type {PointsLeaderboardEntry, TypedSupabaseClient} from "$types/database.js";
@@ -43,6 +42,7 @@ export async function load({cookies, locals: {supabase, user}}) {
 
 
 
+// compile user icons into atlas when serving from leaderboard
 async function loadLeaderboardData(supabase: TypedSupabaseClient, currentProfile: ProfilePrefix, hasSubmittedPointsRecently: boolean): Promise<PointsLeaderboardEntry[] | null> {
 	const leaderboard = leaderboards[currentProfile];
 	const currentTime = Date.now();
@@ -58,43 +58,11 @@ async function loadLeaderboardData(supabase: TypedSupabaseClient, currentProfile
 
 
 	// TODO: if i read the database, i probably should set the user's points cookie, if they're on the leaderboard
-	const dataFromLeaderboard = await readDatabase(supabase, currentProfile);
+	const dataFromLeaderboard = await fetchLeaderboardEntries(supabase, currentProfile);
 	// i still don't trust pass by reference
 	leaderboards[currentProfile].cachedState = dataFromLeaderboard;
 	leaderboards[currentProfile].lastRefreshTime = Date.now();
 
 
 	return dataFromLeaderboard;
-}
-
-
-
-async function readDatabase(supabase: TypedSupabaseClient, leaderboardPrefix: ProfilePrefix) {
-	// baby's first join operation :)
-	// TODO: probably make this sql operation a constant
-	const getTopUsersByPointsResponse = await supabase.from(`${leaderboardPrefix}_leaderboard`)
-		.select(`
-			points,
-			public_user_data (
-				google_user_id,
-				full_name,
-				avatar_url
-			)
-		`)
-		.order("points", {ascending: false})
-		.limit(10);
-
-
-	if(getTopUsersByPointsResponse.error) {
-		// whatever bro
-		console.error(...leaderboardLogPrefix, getTopUsersByPointsResponse.error);
-		return null;
-	}
-
-
-	return getTopUsersByPointsResponse.data.map(user => ({
-		...(shallowSnakeCasedToCamelCasedObject(user.public_user_data)),
-		points: user.points
-	// TODO: unfortunate necessary typing
-	})) as PointsLeaderboardEntry[];
 }

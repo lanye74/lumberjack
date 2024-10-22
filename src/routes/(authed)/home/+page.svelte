@@ -4,7 +4,7 @@
 
 	import {currentDate, currentFormattedTime} from "$utils/stores/time.js";
 	import generateGreeting from "$utils/generateGreeting.js";
-    import {jcsSites, possibleVisitPurposes} from "$utils/forms/formOptions.js";
+    import {jcsSites, possibleVisitPurposes} from "$utils/forms/options.js";
 	import toaster from "$utils/stores/toaster.js";
 
 

@@ -1,6 +1,7 @@
 import type {Cookies} from "@sveltejs/kit";
 
-import {defaultProfilePrefix, profilePrefixes} from "$utils/profiles.js";
+import {profilePrefixes} from "$utils/profiles.js";
+import {fetchUserPoints, fetchUserProfile} from "$utils/database/user.js";
 
 import type {ProfilePrefix} from "$types/profiles.js";
 import type {TypedSupabaseClient} from "$types/database.js";
@@ -17,8 +18,6 @@ const defaultPointsCookie: PointsCookieJson = {
 function generateDefaultPointsCookie() {
 	return Object.assign({}, defaultPointsCookie);
 }
-
-
 
 
 
@@ -94,8 +93,6 @@ function setProfileCookie(cookies: Cookies, profilePrefix: ProfilePrefix) {
 
 
 
-
-
 function getLogSubmissionStatus(cookies: Cookies) {
 	const value = cookies.get("lumberjack_has_submitted_log_recently");
 
@@ -118,41 +115,8 @@ function setLogSubmissionStatusCookie(cookies: Cookies, state: boolean) {
 
 
 
-
-
 function deleteCookies(cookies: Cookies) {
 	cookies.delete("lumberjack_has_submitted_log_recently", {path: "/"});
 	cookies.delete("lumberjack_user_points", {path: "/"});
 	cookies.delete("lumberjack_user_profile", {path: "/"});
-}
-
-
-
-
-
-async function fetchUserPoints(supabase: TypedSupabaseClient, profilePrefix: ProfilePrefix, userId: string) {
-	const {data, error} = await supabase.from(`${profilePrefix}_leaderboard`)
-		.select("points")
-		.eq("google_user_id", userId)
-		.single()
-
-
-	if(error && error.code !== "PGRST116") {
-		console.error("Error in fetchUserPoints", error);
-		return null;
-	}
-
-
-	return data?.points ?? 0;
-}
-
-
-
-async function fetchUserProfile(supabase: TypedSupabaseClient, userId: string) {
-	const {data} = await supabase.from("public_user_data")
-		.select("profile")
-		.eq("google_user_id", userId)
-		.single();
-
-	return data?.profile ?? defaultProfilePrefix;
 }

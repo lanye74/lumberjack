@@ -99,6 +99,7 @@ export const actions = {
 
 
 
+// TODO: refactor this into wherever it should go
 function generateTimestampFromTimeSelector(timeSelector: TimeSelector | null) {
 	const dateObject = new Date();
 

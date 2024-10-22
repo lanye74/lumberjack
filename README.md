@@ -12,6 +12,17 @@ TODO: steal best practices from [cobalt](https://github.com/imputnet/cobalt/tree
 - possibly mimic their icon library?
 
 
+### stuff i've been thinking about
+- caching user profile images on the server and serving them as an atlas
+- finishing refactoring
+- svelte 5 is out!!!!
+	- make a new dummy project to see what the defaults are like and copy over
+	- svelte-migrate?
+	- sv?
+	- less dependencies finally?????
+
+
+
 ### 2.7.0
 try to get app a bit cleaner
 - rescale UI?

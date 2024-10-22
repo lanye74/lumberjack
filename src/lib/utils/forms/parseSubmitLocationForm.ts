@@ -1,5 +1,5 @@
 import isTimeSelectorValid from "$utils/forms/isTimeSelectorValid.js";
-import {jcsSites, possibleVisitPurposes} from "$utils/forms/formOptions.js";
+import {jcsSites, possibleVisitPurposes} from "$utils/forms/options.js";
 
 import type {ProfilePrefix} from "$types/profiles.js";
 import {type ParsedSubmitLocationForm, type TimeSelector} from "$types/forms.js";

@@ -2,7 +2,7 @@ import type {ProfileIndexedList} from "$types/forms.js";
 
 
 
-// TODO: make this not bad
+// TODO: make this less bad
 export const jcsSites: ProfileIndexedList = {
 	ast: ["ASH", "BES", "EJHS", "EJMS", "JCTC", "JELV", "NES", "RDES", "RED", "TPS", "WAR", "WES", "WJHS", "WJMS"],
 

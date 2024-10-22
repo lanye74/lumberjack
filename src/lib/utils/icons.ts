@@ -22,7 +22,6 @@ export type IconComponentId = keyof typeof iconComponentMap;
 
 
 
-
 export const routeIconMappings: Record<AuthedRoute, IconComponent> = {
 	"/home": HomeIcon,
 	"/editor": PencilIcon,
