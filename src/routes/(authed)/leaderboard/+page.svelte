@@ -8,17 +8,17 @@
 
 
 	export let data;
-	const {leaderboard} = data;
+	const {leaderboard, imageData} = data;
 
 
 	let topThree: PointsLeaderboardEntry[] = [];
 	let lastSeven: PointsLeaderboardEntry[] = [];
 
 
-	leaderboard.then(leaderboardEntries => {
-		topThree = leaderboardEntries?.slice(0, 3) ?? [];
-		lastSeven = leaderboardEntries?.slice(3, 10) ?? [];
-	});
+	// leaderboard.then(leaderboardEntries => {
+		topThree = leaderboard?.slice(0, 3) ?? [];
+		lastSeven = leaderboard?.slice(3, 10) ?? [];
+	// });
 </script>
 
 <style>
@@ -64,6 +64,10 @@
 		color: var(--subtext-color);
 	}
 </style>
+
+
+
+<img src={imageData} alt="atlas" width="1920" height="192">
 
 
 

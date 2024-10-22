@@ -1,5 +1,7 @@
+import {avatarSize} from "$utils/resizeGoogleAvatarUrl.js";
 import createCookieManager from "$utils/createCookieManager.js";
 import fetchLeaderboardEntries from "$utils/database/leaderboard.js";
+import {TextureAtlas} from "$utils/TextureAtlas.js";
 
 import type {LeaderboardCache} from "$types/leaderboard.js";
 import type {PointsLeaderboardEntry, TypedSupabaseClient} from "$types/database.js";
@@ -35,8 +37,18 @@ export async function load({cookies, locals: {supabase, user}}) {
 	const currentProfile = await createCookieManager(cookies, supabase).getProfile(user!.id);
 
 
+	// TODO: stop blocking!!!!!!
+	const leaderboardData = await loadLeaderboardData(supabase, currentProfile, hasSubmittedPointsRecently) as PointsLeaderboardEntry[];
+
+
+	const textureAtlas = new TextureAtlas(avatarSize, avatarSize);
+	await textureAtlas.loadImages(leaderboardData.map(user => user.avatarUrl!));
+
+	textureAtlas.constructAtlasFromImages();
+
 	return {
-		leaderboard: loadLeaderboardData(supabase, currentProfile, hasSubmittedPointsRecently)
+		leaderboard: leaderboardData,
+		imageData: textureAtlas.export()
 	};
 }
 

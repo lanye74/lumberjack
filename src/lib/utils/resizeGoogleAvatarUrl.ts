@@ -2,8 +2,9 @@ import {resizeGoogleAvatarUrlLogPrefix} from "$utils/console.js";
 
 
 
-const targetSizes = [32, 64, 96, 128, 192, 256, 384, 512, 1024];
-const maxSizeIndex = targetSizes.length - 1;
+// const targetSizes = [32, 64, 96, 128, 192, 256, 384, 512, 1024];
+// const maxSizeIndex = targetSizes.length - 1;
+export const avatarSize = 192;
 
 const sizeRegex = new RegExp(/=s(\d+)(-[a-z])?/);
 
@@ -26,7 +27,7 @@ export default function resizeGoogleAvatarUrl(url: string) {
 	}
 
 
-	const parsedSize = parseInt(match[1]);
+	/* const parsedSize = parseInt(match[1]);
 	const sizeIndex = targetSizes.indexOf(parsedSize);
 
 	if(sizeIndex === -1) {
@@ -37,7 +38,8 @@ export default function resizeGoogleAvatarUrl(url: string) {
 
 
 	const resizedIndex = Math.min(sizeIndex + 2, maxSizeIndex);
-	const newSize = targetSizes[resizedIndex];
+	const newSize = targetSizes[resizedIndex]; */
+	const newSize = avatarSize;
 
 
 	// the $2 represents the second capturing group, so any trailing data (the -c stuff) gets kept
