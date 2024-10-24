@@ -37,18 +37,25 @@ export async function load({cookies, locals: {supabase, user}}) {
 	const currentProfile = await createCookieManager(cookies, supabase).getProfile(user!.id);
 
 
-	// TODO: stop blocking!!!!!!
-	const leaderboardData = await loadLeaderboardData(supabase, currentProfile, hasSubmittedPointsRecently) as PointsLeaderboardEntry[];
+	const leaderboardDataPromise = loadLeaderboardData(supabase, currentProfile, hasSubmittedPointsRecently);
 
 
-	const textureAtlas = new TextureAtlas(avatarSize, avatarSize);
-	await textureAtlas.loadImages(leaderboardData.map(user => user.avatarUrl!));
+	const profileAtlasPromise = leaderboardDataPromise.then(async leaderboardData => {
+		if(leaderboardData === null) return null;
 
-	textureAtlas.constructAtlasFromImages();
+		const textureAtlas = new TextureAtlas(avatarSize, avatarSize);
+		await textureAtlas.loadImages(leaderboardData.map(user => user.avatarUrl!));
+
+		textureAtlas.constructAtlasFromImages();
+
+
+		return textureAtlas.export();
+	})
+
 
 	return {
-		leaderboard: leaderboardData,
-		imageData: textureAtlas.export()
+		leaderboard: leaderboardDataPromise,
+		imageData: profileAtlasPromise
 	};
 }
 

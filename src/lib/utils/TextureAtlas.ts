@@ -5,6 +5,7 @@ import {Canvas, type Image, loadImage} from "skia-canvas";
 export class TextureAtlas {
 	width: number;
 	height: number;
+
 	images?: Image[];
 	canvas?: Canvas;
 

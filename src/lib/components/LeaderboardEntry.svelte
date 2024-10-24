@@ -1,12 +1,14 @@
 <script lang="ts">
-	import UserAvatar from "$components/UserAvatar.svelte";
-
 	import type {PointsLeaderboardEntry} from "$types/database.js";
+    import {avatarSize} from "$utils/resizeGoogleAvatarUrl.js";
+    import AvatarFromAtlas from "./AvatarFromAtlas.svelte";
 
 
 
 	export let user: PointsLeaderboardEntry;
 	export let index: number;
+
+	export let atlasSrc: string | null;
 
 
 
@@ -76,7 +78,9 @@
 
 	<!-- TODO: figure out how to use skeleton loaders for this stuff
 	           currently waiting for the server halts page loading = bad UX -->
-	<UserAvatar src={user.avatarUrl} absoluteSize="5rem" />
+	<AvatarFromAtlas src={atlasSrc} absoluteSize="5rem"
+		positionIndex={{x: index, y: 0}}
+	/>
 
 	<div class="text">
 		<p class="name">{user.fullName}</p>

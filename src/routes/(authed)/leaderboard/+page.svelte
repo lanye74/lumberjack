@@ -14,11 +14,17 @@
 	let topThree: PointsLeaderboardEntry[] = [];
 	let lastSeven: PointsLeaderboardEntry[] = [];
 
+	leaderboard.then(leaderboardEntries => {
+		topThree = leaderboardEntries?.slice(0, 3) ?? [];
+		lastSeven = leaderboardEntries?.slice(3) ?? [];
+	});
 
-	// leaderboard.then(leaderboardEntries => {
-		topThree = leaderboard?.slice(0, 3) ?? [];
-		lastSeven = leaderboard?.slice(3, 10) ?? [];
-	// });
+
+	let atlasSrc = "";
+
+	imageData.then(src => {
+		atlasSrc = src ?? "";
+	});
 </script>
 
 <style>
@@ -67,8 +73,8 @@
 
 
 
-<img src={imageData} alt="atlas" width="1920" height="192">
 
+<img src={atlasSrc} alt="atlas" width="1920" height="192">
 
 
 {#await leaderboard}
@@ -92,7 +98,7 @@
 
 		<section class="leaderboard">
 			{#each lastSeven as user, index}
-				<LeaderboardEntry {user} index={index + 3} />
+				<LeaderboardEntry {atlasSrc} {user} index={index + 3} />
 			{/each}
 
 			{#if lastSeven.length < 7 && topThree.length > 0}
