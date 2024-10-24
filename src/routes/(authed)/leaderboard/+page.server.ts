@@ -26,6 +26,8 @@ const leaderboards: LeaderboardCache = {
 
 const autoRefreshPeriod = 1e3 * 60 * 3; // 3 mins
 
+const textureAtlas = new TextureAtlas(avatarSize, avatarSize);
+
 
 
 // TODO: use skeleton loaders
@@ -41,15 +43,8 @@ export async function load({cookies, locals: {supabase, user}}) {
 
 
 	const profileAtlasPromise = leaderboardDataPromise.then(async leaderboardData => {
-		if(leaderboardData === null) return null;
-
-		const textureAtlas = new TextureAtlas(avatarSize, avatarSize);
-		await textureAtlas.loadImages(leaderboardData.map(user => user.avatarUrl!));
-
-		textureAtlas.constructAtlasFromImages();
-
-		return textureAtlas.export();
-	})
+		return await textureAtlas.getAtlasFromLeaderboardData(leaderboardData);
+	});
 
 
 	return {
