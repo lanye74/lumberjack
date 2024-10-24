@@ -9,8 +9,14 @@
 
 	// TODO: export an atlasDimensions thing
 	export let positionIndex: {x: number, y: number};
+	export let atlasTiles: {x: number, y: number};
 
-	const backgroundPosition = `calc(${positionIndex.x} * calc(100% / 9)) calc(${positionIndex.y} * 100%)`;
+
+	const backgroundXTransform = `calc(${positionIndex.x} * calc(100% / ${Math.max(atlasTiles.x - 1, 1)}))`;
+	const backgroundYTransform = `calc(${positionIndex.y} * calc(100% / ${Math.max(atlasTiles.y - 1, 1)}))`;
+
+
+	const backgroundPosition = `${backgroundXTransform} ${backgroundYTransform}`;
 	const backgroundSize = "cover";
 
 

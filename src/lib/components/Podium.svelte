@@ -157,7 +157,8 @@
 		{#each users as user, index}
 			<div class="podium-place" data-place={index + 1}>
 				<AvatarFromAtlas src={atlasSrc} percentageSize={80}
-					positionIndex={{x: index, y: 0}} />
+					positionIndex={{x: index, y: 0}}
+					atlasTiles={{x: 10, y: 1}} />
 
 				<div class="user-info">
 					<p class="name">{user.fullName}</p>
