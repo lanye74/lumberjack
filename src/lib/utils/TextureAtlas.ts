@@ -20,7 +20,8 @@ export class TextureAtlas {
 
 	constructAtlasFromImages() {
 		if(!this.images || this.images instanceof Promise) {
-			throw new Error("TextureAtlas images not loaded!");
+			console.error("TextureAtlas images not loaded!");
+			return null;
 		}
 
 
@@ -34,7 +35,8 @@ export class TextureAtlas {
 
 	export() {
 		if(!this.canvas) {
-			throw new Error("TextureAtlas missing canvas!");
+			console.error("TextureAtlas missing canvas!");
+			return null;
 		}
 
 

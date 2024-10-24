@@ -1,7 +1,9 @@
 <script lang="ts">
-    import ImageWithIconFallback from "$components/ImageWithIconFallback.svelte";
+	// import ImageWithIconFallback from "$components/ImageWithIconFallback.svelte";
+	import ProfileIcon from "virtual:icons/fa-solid/user-circle";
 
-    import {formatPixels} from "$utils/formatters.js";
+	import {formatPixels} from "$utils/formatters.js";
+    import {onMount} from "svelte";
 
 
 
@@ -26,8 +28,23 @@
 
 
 	let iconWidth = absoluteSize ?? `${percentageSize}%`;
-	let iconHeight = absoluteSize ?? "unset";
 	$: fontSize = absoluteSize ?? formatPixels(wrapperWidth);
+	$: iconHeight = absoluteSize ?? fontSize;
+
+
+	let isError = false;
+
+	onMount(async () => {
+		if(src === null) {
+			isError = true;
+			return;
+		}
+
+
+		isError = await fetch(src)
+			.catch(() => isError = true)
+			.then(() => isError = false)
+	});
 </script>
 
 <style>
@@ -55,7 +72,9 @@
 
 	style:background-position={backgroundPosition}
 	style:background-size={backgroundSize}
-	style:background-image={`url('${src}')`}
+	style:background-image={`url("${src}")`}
 >
-	<!-- <ImageWithIconFallback {src} alt="User profile picture" iconId="user-circle" /> -->
+	{#if isError}
+		<ProfileIcon />
+	{/if}
 </div>

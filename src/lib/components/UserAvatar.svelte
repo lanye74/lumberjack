@@ -19,8 +19,8 @@
 
 
 	let iconWidth = absoluteSize ?? `${percentageSize}%`;
-	let iconHeight = absoluteSize ?? "unset";
 	$: fontSize = absoluteSize ?? formatPixels(wrapperWidth);
+	$: iconHeight = absoluteSize ?? fontSize;
 </script>
 
 <style>

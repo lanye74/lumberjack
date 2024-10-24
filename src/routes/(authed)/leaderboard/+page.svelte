@@ -1,4 +1,6 @@
 <script lang="ts">
+	import {onMount} from "svelte";
+
 	import BorderBox from "$components/BorderBox.svelte";
 	import LeaderboardEntry from "$components/LeaderboardEntry.svelte";
 	import Podium from "$components/Podium.svelte";
@@ -22,9 +24,25 @@
 
 	let atlasSrc = "";
 
-	imageData.then(src => {
-		atlasSrc = src ?? "";
+	imageData.then(async data => {
+		if(data === null) {
+			atlasSrc = "";
+			return;
+		}
+
+
+		await fetch(data)
+			.then(data => data.blob())
+			.then(blob => URL.createObjectURL(blob))
+			.then(url => atlasSrc = url);
 	});
+
+
+	onMount(() => {
+		return () => {
+			if(atlasSrc !== "") URL.revokeObjectURL(atlasSrc);
+		}
+	})
 </script>
 
 <style>
@@ -93,7 +111,7 @@
 				</div>
 			{/if}
 
-			<Podium users={topThree} />
+			<Podium {atlasSrc} users={topThree} />
 		</BorderBox>
 
 		<section class="leaderboard">

@@ -40,6 +40,8 @@ export async function load({cookies, locals: {supabase, user}}) {
 	const leaderboardDataPromise = loadLeaderboardData(supabase, currentProfile, hasSubmittedPointsRecently);
 
 
+	// console.log("leaderboard load triggered")
+
 	const profileAtlasPromise = leaderboardDataPromise.then(async leaderboardData => {
 		if(leaderboardData === null) return null;
 
@@ -47,7 +49,6 @@ export async function load({cookies, locals: {supabase, user}}) {
 		await textureAtlas.loadImages(leaderboardData.map(user => user.avatarUrl!));
 
 		textureAtlas.constructAtlasFromImages();
-
 
 		return textureAtlas.export();
 	})

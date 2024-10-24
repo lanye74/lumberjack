@@ -1,5 +1,6 @@
 <script lang="ts">
-	import UserAvatar from "$components/UserAvatar.svelte";
+	// import UserAvatar from "$components/UserAvatar.svelte";
+    import AvatarFromAtlas from "$components/AvatarFromAtlas.svelte";
 
 	import {formatPoints} from "$utils/formatters.js";
 
@@ -8,6 +9,7 @@
 
 
 	export let users: PointsLeaderboardEntry[];
+	export let atlasSrc: string | null;
 
 	$: numberPlaces = Math.min(users.length, 3);
 </script>
@@ -154,7 +156,8 @@
 	{:else}
 		{#each users as user, index}
 			<div class="podium-place" data-place={index + 1}>
-				<UserAvatar	src={user.avatarUrl} percentageSize={80} />
+				<AvatarFromAtlas src={atlasSrc} percentageSize={80}
+					positionIndex={{x: index, y: 0}} />
 
 				<div class="user-info">
 					<p class="name">{user.fullName}</p>
