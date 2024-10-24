@@ -63,7 +63,7 @@
 	<!-- TODO: why does user-circle take up more height than it's supposed to?
 	           I know it's not a 1:1 aspect ratio and is skewed vertically but all the same i need it to scale by height, not width
 	           need to take a look at my icon setup -->
-	<svelte:component this={mappedIcon} font-size="inherit" color="inherit" style="height: min-content;" />
+	<svelte:component this={mappedIcon} font-size="inherit" color="inherit" />
 {:else}
 	<img src={loadedSrc} {alt}>
 {/if}

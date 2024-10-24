@@ -6,6 +6,7 @@
 	import Podium from "$components/Podium.svelte";
 
 	import type {PointsLeaderboardEntry} from "$types/database.js";
+    import {writable} from "svelte/store";
 
 
 
@@ -22,11 +23,12 @@
 	});
 
 
-	let atlasSrc = "";
+	let atlasSrc = writable("");
+
 
 	imageData.then(async data => {
 		if(data === null) {
-			atlasSrc = "";
+			$atlasSrc = "";
 			return;
 		}
 
@@ -34,13 +36,13 @@
 		await fetch(data)
 			.then(data => data.blob())
 			.then(blob => URL.createObjectURL(blob))
-			.then(url => atlasSrc = url);
+			.then(url => $atlasSrc = url);
 	});
 
 
 	onMount(() => {
 		return () => {
-			if(atlasSrc !== "") URL.revokeObjectURL(atlasSrc);
+			if($atlasSrc !== "") URL.revokeObjectURL($atlasSrc);
 		}
 	})
 </script>
@@ -91,10 +93,6 @@
 
 
 
-
-<img src={atlasSrc} alt="atlas" width="1920" height="192">
-
-
 {#await leaderboard}
 	<BorderBox direction="column">
 		<h2>Loading...</h2>
@@ -111,12 +109,12 @@
 				</div>
 			{/if}
 
-			<Podium {atlasSrc} users={topThree} />
+			<Podium atlasSrc={$atlasSrc} users={topThree} />
 		</BorderBox>
 
 		<section class="leaderboard">
 			{#each lastSeven as user, index}
-				<LeaderboardEntry {atlasSrc} {user} index={index + 3} />
+				<LeaderboardEntry atlasSrc={$atlasSrc} {user} index={index + 3} />
 			{/each}
 
 			{#if lastSeven.length < 7 && topThree.length > 0}

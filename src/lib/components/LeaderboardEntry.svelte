@@ -78,9 +78,8 @@
 
 	<!-- TODO: figure out how to use skeleton loaders for this stuff
 	           currently waiting for the server halts page loading = bad UX -->
-	<AvatarFromAtlas src={atlasSrc} absoluteSize="4.5rem"
-		positionIndex={{x: index, y: 0}}
-	/>
+	<AvatarFromAtlas src={atlasSrc} absoluteSize="5rem"
+		positionIndex={{x: index, y: 0}} />
 
 	<div class="text">
 		<p class="name">{user.fullName}</p>
