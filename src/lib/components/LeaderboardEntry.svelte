@@ -9,6 +9,7 @@
 	export let index: number;
 
 	export let atlasSrc: string | null;
+	export let hasAvatarError: boolean;
 
 
 
@@ -80,7 +81,8 @@
 	           currently waiting for the server halts page loading = bad UX -->
 	<AvatarFromAtlas src={atlasSrc} absoluteSize="5rem"
 		positionIndex={{x: index, y: 0}}
-		atlasTiles={{x: 10, y: 1}} />
+		atlasTiles={{x: 10, y: 1}}
+		hasError={hasAvatarError} />
 
 	<div class="text">
 		<p class="name">{user.fullName}</p>

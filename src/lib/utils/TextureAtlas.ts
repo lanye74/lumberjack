@@ -5,6 +5,7 @@ import type {PointsLeaderboardEntry} from "$types/database.js";
 
 
 
+// TODO: this probably shold be renamed to AvatarAtlas
 export class TextureAtlas {
 	width: number;
 	height: number;

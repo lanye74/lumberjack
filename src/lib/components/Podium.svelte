@@ -8,7 +8,9 @@
 
 
 	export let users: PointsLeaderboardEntry[];
+
 	export let atlasSrc: string | null;
+	export let avatarErrors: boolean[];
 
 	$: numberPlaces = Math.min(users.length, 3);
 </script>
@@ -157,7 +159,8 @@
 			<div class="podium-place" data-place={index + 1}>
 				<AvatarFromAtlas src={atlasSrc} percentageSize={80}
 					positionIndex={{x: index, y: 0}}
-					atlasTiles={{x: 10, y: 1}} />
+					atlasTiles={{x: 10, y: 1}}
+					hasError={avatarErrors[index]} />
 
 				<div class="user-info">
 					<p class="name">{user.fullName}</p>

@@ -113,12 +113,13 @@
 				</div>
 			{/if}
 
-			<Podium {atlasSrc} users={topThree} />
+			<Podium {atlasSrc} {avatarErrors} users={topThree} />
 		</BorderBox>
 
 		<section class="leaderboard">
 			{#each lastSeven as user, index}
-				<LeaderboardEntry {atlasSrc} {user} index={index + 3} />
+				<LeaderboardEntry {atlasSrc} hasAvatarError={avatarErrors[index + 3]}
+					{user} index={index + 3} />
 			{/each}
 
 			{#if lastSeven.length < 7 && topThree.length > 0}

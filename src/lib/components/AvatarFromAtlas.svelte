@@ -11,6 +11,8 @@
 	export let positionIndex: {x: number, y: number};
 	export let atlasTiles: {x: number, y: number};
 
+	export let hasError: boolean = false;
+
 
 	const backgroundXTransform = `calc(${positionIndex.x} * calc(100% / ${Math.max(atlasTiles.x - 1, 1)}))`;
 	const backgroundYTransform = `calc(${positionIndex.y} * calc(100% / ${Math.max(atlasTiles.y - 1, 1)}))`;
@@ -34,11 +36,11 @@
 	$: fontSize = absoluteSize ?? formatPixels(wrapperWidth);
 
 
-	let isError = false;
+	let internalIsError = false;
 
 
 	$: {
-		isError = (src === null || src === "");
+		internalIsError = (src === null || src === "" || hasError);
 	}
 </script>
 
@@ -74,9 +76,9 @@
 
 	style:background-position={backgroundPosition}
 	style:background-size={backgroundSize}
-	style:background-image={`url("${src}")`}
+	style:background-image={internalIsError ? "none" : `url("${src}")`}
 >
-	{#if isError}
+	{#if internalIsError}
 		<ProfileIcon />
 	{/if}
 </div>
