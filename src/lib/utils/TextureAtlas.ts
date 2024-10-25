@@ -9,7 +9,7 @@ export class TextureAtlas {
 	width: number;
 	height: number;
 
-	storedTextures: Map<string, string>;
+	storedTextures: Map<string, Texture>;
 	hasher: Hash;
 
 	constructor(width: number, height: number) {
@@ -28,59 +28,72 @@ export class TextureAtlas {
 
 		const hash = createHash("md5").update(urlsStringified).digest("hex");
 
-		if(this.storedTextures.has(hash)) {
-			return this.storedTextures.get(hash)!;
+
+		const storedTexture = this.storedTextures.get(hash);
+
+		// attempt to rebuild the atlas if it has errors
+		if(storedTexture !== undefined && storedTexture.hasErrors === false) {
+			return storedTexture;
 		}
 
 
-		const atlas = await this.constructAtlasFromUrls(urls);
-		this.storedTextures.set(hash, atlas);
+		const texture = await this.buildTextureFromAvatarURLs(urls);
+		this.storedTextures.set(hash, texture);
 
-		return atlas;
+		return texture;
 	}
 
-	async constructAtlasFromUrls(urls: (string | null)[]) {
-		// TODO: figure out how to actually handle null avatars
-		const userProfilePictures = await this.fetchUserProfilePictures(urls);
+	async buildTextureFromAvatarURLs(urls: (string | null)[]): Promise<Texture> {
+		const userAvatars = await this.fetchUserAvatars(urls);
 
-		const canvas = new Canvas(this.width * userProfilePictures.length, this.height);
+		const canvas = new Canvas(this.width * userAvatars.length, this.height);
 		const context = canvas.getContext("2d");
 
 
-		userProfilePictures.forEach((profilePicture, index) => {
+		userAvatars.forEach((profilePicture, index) => {
 			if(profilePicture.image) {
 				context.drawImage(profilePicture.image, this.width * index, 0);
 			}
 		});
 
 
-		// TODO: investigate returning the buffer directly, but svelte throws some errors
-		// when it tries to load the buffer on the client
-		return canvas.toDataURL("jpg", {quality: 0.85});
+		return {
+			// TODO: investigate returning the buffer directly, but svelte throws some errors when it tries to load the buffer on the client
+			imageData: await canvas.toDataURL("jpg", {quality: 0.85}),
+			avatarErrors: userAvatars.map(avatar => avatar.error),
+			hasErrors: userAvatars.some(avatar => avatar.error === true)
+		};
 	}
 
-	async fetchUserProfilePictures(urls: (string | null)[]): Promise<UserProfilePicture[]> {
+	async fetchUserAvatars(urls: (string | null)[]): Promise<UserAvatar[]> {
 		return await Promise.all(urls.map(url =>
 			loadImage(url ?? "")
 				.then(image => ({
 					error: false,
 					image
-				}) satisfies UserProfilePicture)
+				}) satisfies UserAvatar)
 				.catch(() => ({
 					error: true,
 					image: null
-				}) satisfies UserProfilePicture)
+				}) satisfies UserAvatar)
 		));
 	}
 }
 
 
 
-// TODO: rename types
-type UserProfilePicture = {
+type UserAvatar = {
 	error: false;
 	image: Image;
 } | {
 	error: true;
 	image: null;
 };
+
+
+
+type Texture = {
+	imageData: string;
+	avatarErrors: boolean[];
+	hasErrors: boolean;
+}

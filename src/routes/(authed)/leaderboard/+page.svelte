@@ -10,7 +10,7 @@
 
 
 	export let data;
-	const {leaderboard, imageData} = data;
+	const {leaderboard, avatarAtlas} = data;
 
 
 	let topThree: PointsLeaderboardEntry[] = [];
@@ -24,12 +24,17 @@
 
 
 	let atlasSrc = "";
+	let avatarErrors: boolean[] = [];
 
-	imageData.then(data => {
-		if(data === null) return;
+	avatarAtlas.then(texture => {
+		if(texture === null) return;
 
 
-		const byteData = atob(data.split(",")[1]); // remove the mime type
+		// overrides for avatars that didn't load
+		avatarErrors = texture.avatarErrors;
+
+
+		const byteData = atob(texture.imageData.split(",")[1]); // remove the mime type
 		const bytes = new Uint8Array(byteData.length);
 
 		for(let i = 0; i < byteData.length; i++) {
