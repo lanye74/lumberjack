@@ -1,4 +1,4 @@
-import {Canvas, type Image, loadImage} from "skia-canvas";
+import {Canvas, loadImage} from "skia-canvas";
 import {createHash, type Hash} from "node:crypto";
 
 import type {PointsLeaderboardEntry} from "$types/database.js";
@@ -30,7 +30,7 @@ export class TextureAtlas {
 		const hash = createHash("md5").update(urlsStringified).digest("hex");
 
 		if(this.storedTextures.has(hash)) {
-			return this.storedTextures.get(hash) as string;
+			return this.storedTextures.get(hash)!;
 		}
 
 
@@ -44,17 +44,17 @@ export class TextureAtlas {
 		// TODO: figure out how to actually handle null avatars
 		const images = await Promise.all(urls.map(url => loadImage(url ?? "")));
 
-		this.hasher.update(JSON.stringify(urls));
-
-
 		const canvas = new Canvas(this.width * images.length, this.height);
 		const context = canvas.getContext("2d");
+
 
 		images.forEach((image, index) => {
 			context.drawImage(image, this.width * index, 0);
 		});
 
 
-		return canvas.toDataURLSync("jpg", {quality: 0.85});
+		// TODO: investigate returning the buffer directly, but svelte throws some errors
+		// when it tries to load the buffer on the client
+		return canvas.toDataURL("jpg", {quality: 0.85});
 	}
 }

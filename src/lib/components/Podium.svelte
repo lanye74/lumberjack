@@ -1,6 +1,5 @@
 <script lang="ts">
-	// import UserAvatar from "$components/UserAvatar.svelte";
-    import AvatarFromAtlas from "$components/AvatarFromAtlas.svelte";
+	import AvatarFromAtlas from "$components/AvatarFromAtlas.svelte";
 
 	import {formatPoints} from "$utils/formatters.js";
 

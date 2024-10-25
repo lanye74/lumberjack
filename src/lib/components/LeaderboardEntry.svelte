@@ -1,7 +1,7 @@
 <script lang="ts">
+	import AvatarFromAtlas from "$components/AvatarFromAtlas.svelte";
+
 	import type {PointsLeaderboardEntry} from "$types/database.js";
-    import {avatarSize} from "$utils/resizeGoogleAvatarUrl.js";
-    import AvatarFromAtlas from "./AvatarFromAtlas.svelte";
 
 
 

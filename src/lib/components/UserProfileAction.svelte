@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {MouseEventHandler} from "svelte/elements";
 
-    import {iconComponentMap, type IconComponentId} from "$utils/icons.js";
+	import {iconComponentMap, type IconComponentId} from "$utils/icons.js";
 
 
 

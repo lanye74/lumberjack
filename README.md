@@ -77,9 +77,11 @@ ui rework
 - possibly bonus points for visiting underserved schools?
 - bounties??
 	- this would require an actual homepage instead of josh's "just throw the clock in on the front page"
+		- this needs to happen anyway when i make the form something you click through instead of just throwing all the controls on one page (lmao)
 - ranked splits xd (actually do it though)
 - points --> themes
 - profile borders???
 	- discord cat ears border (real and true)
 - stealing points?
 - idk
+- custom color name (real and true)

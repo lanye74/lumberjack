@@ -1,12 +1,11 @@
 <script lang="ts">
-	import {onMount} from "svelte";
+	import {onDestroy} from "svelte";
 
 	import BorderBox from "$components/BorderBox.svelte";
 	import LeaderboardEntry from "$components/LeaderboardEntry.svelte";
 	import Podium from "$components/Podium.svelte";
 
 	import type {PointsLeaderboardEntry} from "$types/database.js";
-    import {writable} from "svelte/store";
 
 
 
@@ -23,28 +22,27 @@
 	});
 
 
-	let atlasSrc = writable("");
 
+	let atlasSrc = "";
 
-	imageData.then(async data => {
-		if(data === null) {
-			$atlasSrc = "";
-			return;
+	imageData.then(data => {
+		if(data === null) return;
+
+		const byteData = atob(data.split(",")[1]); // remove the mime type
+		const bytes = new Uint8Array(byteData.length);
+
+		for(let i = 0; i < byteData.length; i++) {
+			bytes[i] = byteData.charCodeAt(i);
 		}
 
-
-		await fetch(data)
-			.then(data => data.blob())
-			.then(blob => URL.createObjectURL(blob))
-			.then(url => $atlasSrc = url);
+		const blob = new Blob([bytes], {type: "image/jpeg"});
+		atlasSrc = URL.createObjectURL(blob);
 	});
 
 
-	onMount(() => {
-		return () => {
-			if($atlasSrc !== "") URL.revokeObjectURL($atlasSrc);
-		}
-	})
+	onDestroy(() => {
+		if(atlasSrc.startsWith("blob:")) URL.revokeObjectURL(atlasSrc);
+	});
 </script>
 
 <style>
@@ -109,12 +107,12 @@
 				</div>
 			{/if}
 
-			<Podium atlasSrc={$atlasSrc} users={topThree} />
+			<Podium atlasSrc={atlasSrc} users={topThree} />
 		</BorderBox>
 
 		<section class="leaderboard">
 			{#each lastSeven as user, index}
-				<LeaderboardEntry atlasSrc={$atlasSrc} {user} index={index + 3} />
+				<LeaderboardEntry atlasSrc={atlasSrc} {user} index={index + 3} />
 			{/each}
 
 			{#if lastSeven.length < 7 && topThree.length > 0}

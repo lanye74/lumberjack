@@ -1,7 +1,7 @@
 import {leaderboardLogPrefix} from "$utils/console.js";
 import {shallowSnakeCasedToCamelCasedObject} from "$utils/casing.js";
 
-import type {TypedSupabaseClient, PointsLeaderboardEntry} from "$types/database.js";
+import type {PointsLeaderboardEntry, TypedSupabaseClient} from "$types/database.js";
 import type {ProfilePrefix} from "$types/profiles.js";
 
 
@@ -33,5 +33,6 @@ export default async function fetchLeaderboardEntries(supabase: TypedSupabaseCli
 		...(shallowSnakeCasedToCamelCasedObject(user.public_user_data)),
 		points: user.points
 	// TODO: unfortunate necessary typing
+	// TODO: (2) make avatarUrl non-nullable and provide a default
 	})) as PointsLeaderboardEntry[];
 }

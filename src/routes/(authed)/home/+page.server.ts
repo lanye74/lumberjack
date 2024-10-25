@@ -81,12 +81,10 @@ export const actions = {
 		}
 
 
-
 		// IMPORTANT
 		// let the server know to not serve a cached leadboard read
 		createCookieManager(cookies).setLogSubmissionStatus(true);
-
-		createCookieManager(cookies).setProfilePoints(userProfile as ProfilePrefix, newPoints);
+		createCookieManager(cookies).setProfilePoints(userProfile, newPoints);
 
 
 

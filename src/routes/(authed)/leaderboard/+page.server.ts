@@ -41,10 +41,8 @@ export async function load({cookies, locals: {supabase, user}}) {
 
 	const leaderboardDataPromise = loadLeaderboardData(supabase, currentProfile, hasSubmittedPointsRecently);
 
-
-	const profileAtlasPromise = leaderboardDataPromise.then(async leaderboardData => {
-		return await textureAtlas.getAtlasFromLeaderboardData(leaderboardData);
-	});
+	const profileAtlasPromise = leaderboardDataPromise
+		.then(leaderboardData => textureAtlas.getAtlasFromLeaderboardData(leaderboardData));
 
 
 	return {
