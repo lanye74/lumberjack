@@ -1,8 +1,7 @@
-import {Canvas, loadImage} from "skia-canvas";
+import {Canvas, Image, loadImage} from "skia-canvas";
 import {createHash, type Hash} from "node:crypto";
 
 import type {PointsLeaderboardEntry} from "$types/database.js";
-
 
 
 
@@ -42,14 +41,16 @@ export class TextureAtlas {
 
 	async constructAtlasFromUrls(urls: (string | null)[]) {
 		// TODO: figure out how to actually handle null avatars
-		const images = await Promise.all(urls.map(url => loadImage(url ?? "")));
+		const userProfilePictures = await this.fetchUserProfilePictures(urls);
 
-		const canvas = new Canvas(this.width * images.length, this.height);
+		const canvas = new Canvas(this.width * userProfilePictures.length, this.height);
 		const context = canvas.getContext("2d");
 
 
-		images.forEach((image, index) => {
-			context.drawImage(image, this.width * index, 0);
+		userProfilePictures.forEach((profilePicture, index) => {
+			if(profilePicture.image) {
+				context.drawImage(profilePicture.image, this.width * index, 0);
+			}
 		});
 
 
@@ -57,4 +58,29 @@ export class TextureAtlas {
 		// when it tries to load the buffer on the client
 		return canvas.toDataURL("jpg", {quality: 0.85});
 	}
+
+	async fetchUserProfilePictures(urls: (string | null)[]): Promise<UserProfilePicture[]> {
+		return await Promise.all(urls.map(url =>
+			loadImage(url ?? "")
+				.then(image => ({
+					error: false,
+					image
+				}) satisfies UserProfilePicture)
+				.catch(() => ({
+					error: true,
+					image: null
+				}) satisfies UserProfilePicture)
+		));
+	}
 }
+
+
+
+// TODO: rename types
+type UserProfilePicture = {
+	error: false;
+	image: Image;
+} | {
+	error: true;
+	image: null;
+};

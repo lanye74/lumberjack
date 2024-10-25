@@ -28,6 +28,7 @@
 	imageData.then(data => {
 		if(data === null) return;
 
+
 		const byteData = atob(data.split(",")[1]); // remove the mime type
 		const bytes = new Uint8Array(byteData.length);
 
@@ -107,12 +108,12 @@
 				</div>
 			{/if}
 
-			<Podium atlasSrc={atlasSrc} users={topThree} />
+			<Podium {atlasSrc} users={topThree} />
 		</BorderBox>
 
 		<section class="leaderboard">
 			{#each lastSeven as user, index}
-				<LeaderboardEntry atlasSrc={atlasSrc} {user} index={index + 3} />
+				<LeaderboardEntry {atlasSrc} {user} index={index + 3} />
 			{/each}
 
 			{#if lastSeven.length < 7 && topThree.length > 0}
