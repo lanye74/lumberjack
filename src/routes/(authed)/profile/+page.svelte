@@ -1,18 +1,21 @@
 <script lang="ts">
+    import {applyAction, enhance} from "$app/forms";
 	import {invalidateAll} from "$app/navigation";
-	import type {MouseEventHandler} from "svelte/elements";
+    import type {SubmitFunction} from "@sveltejs/kit";
 
 	import BorderBox from "$components/BorderBox.svelte";
 	import UserAvatar from "$components/UserAvatar.svelte";
-	import UserProfileAction from "$components/UserProfileAction.svelte";
 
-	import {currentProfile, nextProfile} from "$utils/profiles.js";
+	import {currentProfile, nextProfile, profilePrefixes} from "$utils/profiles.js";
 	import {formatPoints} from "$utils/formatters.js";
 	import resizeGoogleAvatarUrl from "$utils/resizeGoogleAvatarUrl.js";
+    import toaster from "$utils/stores/toaster.js";
+    import {iconComponentMap} from "$utils/icons.js";
 
 
 
-	export let data;
+	export let data, form;
+
 
 	const user = data.user!;
 	const profilePrefix = data.profilePrefix!;
@@ -30,31 +33,6 @@
 	// TODO: should this be in a separate file?
 	$: userProfileActions = [
 		{
-			iconId: "exchange-alt",
-			text: `Switch to ${$nextProfile.pretty}`,
-			callback: async () => {
-				const formData = new FormData();
-				formData.append("new-profile", $nextProfile.prefix);
-
-				const response = await fetch("?/swapProfile", {
-					method: "POST",
-					body: formData
-				});
-
-				// TODO: actually handle this
-				if(!response.ok) return;
-
-
-				currentProfile.increment();
-
-				const json = await response.json();
-
-				const points = JSON.parse(json.data)[1] as number;
-				pointsText = formatPoints(points ?? 0);
-			}
-		},
-
-		{
 			iconId: "sign-out-alt",
 			text: "Sign out",
 			callback: async () => {
@@ -62,8 +40,37 @@
 				invalidateAll();
 			}
 		}
-		// TODO: this sucks
-	] as {iconId: "exchange-alt" | "sign-out-alt"; text: string; callback: MouseEventHandler<HTMLButtonElement>}[];
+	];
+
+
+	const swapProfile: SubmitFunction = ({formData, cancel}) => {
+		const profile = formData.get("new-profile");
+
+		// TODO: how to not have to ts-ignore this?
+		// @ts-ignore
+		if(profilePrefixes.includes(profile)) {
+			return async ({result, update}) => {
+				if(result.type !== "success") {
+					// TODO: clean this up
+					console.log(":(");
+					return;
+				}
+
+
+				currentProfile.increment();
+				pointsText = formatPoints(result.data?.profilePoints ?? 0);
+
+				// is `update` needed here?
+				// update({reset: false});
+			}
+		}
+
+
+		console.log("bowomp");
+
+		cancel();
+		// applyAction();
+	}
 </script>
 
 <style>
@@ -106,6 +113,34 @@
 		font: inherit;
 		font-weight: 600;
 	}
+
+
+
+	button {
+		border: none;
+		background: none;
+		padding: 1.25rem 2rem;
+
+		font-size: 1.75rem;
+		cursor: pointer;
+
+		width: 100%;
+		text-align: left;
+
+		border-bottom: 0.25rem solid var(--border-color);
+
+		display: flex;
+		flex-direction: row;
+		gap: 2rem;
+
+		align-items: center;
+
+		color: #000;
+	}
+
+	button:first-child {
+		border-top: 0.25rem solid var(--border-color);
+	}
 </style>
 
 
@@ -125,8 +160,14 @@
 	</BorderBox>
 
 	<div class="options">
-		{#each userProfileActions as action}
-			<UserProfileAction {...action} />
-		{/each}
+		<form method="POST" action="?/swapProfile" use:enhance={swapProfile}>
+			<button type="submit">
+				<svelte:component this={iconComponentMap["exchange-alt"]} font-size="3rem" />
+
+				<input type="hidden" name="new-profile" value={$nextProfile.prefix}>
+
+				Switch to {$nextProfile.pretty}
+			</button>
+		</form>
 	</div>
 </section>

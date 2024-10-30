@@ -32,6 +32,7 @@
 
 	let wrapperWidth = 0;
 
+	// TODO: rename this property
 	let iconWidth = absoluteSize ?? `${percentageSize}%`;
 	$: fontSize = absoluteSize ?? formatPixels(wrapperWidth);
 

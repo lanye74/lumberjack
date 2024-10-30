@@ -32,7 +32,6 @@ export default async function fetchLeaderboardEntries(supabase: TypedSupabaseCli
 	return getTopUsersByPointsResponse.data.map(user => ({
 		...(shallowSnakeCasedToCamelCasedObject(user.public_user_data)),
 		points: user.points
-	// TODO: unfortunate necessary typing
-	// TODO: (2) make avatarUrl non-nullable and provide a default
+		// TODO:
 	})) as PointsLeaderboardEntry[];
 }

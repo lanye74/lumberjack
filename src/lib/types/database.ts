@@ -10,7 +10,7 @@ export type TypedSupabaseClient = SupabaseClient<Database>;
 
 export type LocationLog = NestedSnakeToCamelCase<Tables<"ast_location_logs">>;
 
-export type PointsLeaderboardEntry = {points: number} & UserPublicInfo;
+export type PointsLeaderboardEntry = {points: number} & Omit<UserPublicInfo, "profile">;
 
 type UserPublicInfo = NestedSnakeToCamelCase<Tables<"public_user_data">>;
 
