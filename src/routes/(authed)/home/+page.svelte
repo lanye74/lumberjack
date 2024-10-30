@@ -24,7 +24,7 @@
 
 
 	$: if(form && form.message) {
-		toaster.toast({duration: 4000, content: form.message!});
+		toaster.toast({duration: 4000, content: form.message});
 	}
 </script>
 

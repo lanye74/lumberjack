@@ -12,6 +12,8 @@
     import toaster from "$utils/stores/toaster.js";
     import {iconComponentMap} from "$utils/icons.js";
 
+    import type {ProfilePrefix} from "$types/profiles.js";
+
 
 
 	export let data, form;
@@ -30,47 +32,43 @@
 	let pointsText = formatPoints(data.profilePoints ?? 0);
 
 
-	// TODO: should this be in a separate file?
-	$: userProfileActions = [
-		{
-			iconId: "sign-out-alt",
-			text: "Sign out",
-			callback: async () => {
-				await fetch("/auth/logout", {method: "POST"});
-				invalidateAll();
-			}
-		}
-	];
-
-
 	const swapProfile: SubmitFunction = ({formData, cancel}) => {
-		const profile = formData.get("new-profile");
+		const profile = formData.get("new-profile") as ProfilePrefix | undefined;
 
-		// TODO: how to not have to ts-ignore this?
-		// @ts-ignore
-		if(profilePrefixes.includes(profile)) {
+
+		if(profile !== undefined && profilePrefixes.includes(profile)) {
 			return async ({result, update}) => {
 				if(result.type !== "success") {
-					// TODO: clean this up
-					console.log(":(");
+					console.log(`form from callback: ${form}`);
 					return;
 				}
-
 
 				currentProfile.increment();
 				pointsText = formatPoints(result.data?.profilePoints ?? 0);
 
-				// is `update` needed here?
-				// update({reset: false});
+				update({reset: false});
 			}
 		}
 
 
-		console.log("bowomp");
-
 		cancel();
-		// applyAction();
+
+		applyAction({
+			type: "failure",
+			status: 400,
+
+			data: {
+				message: "You can't switch to that profile!"
+			}
+		});
 	}
+
+
+	/* $: console.log(`form from $: ${form}`);
+
+	$: if(form && form.message) {
+		toaster.toast({duration: 4000, content: form.message});
+	} */
 </script>
 
 <style>
@@ -127,8 +125,6 @@
 		width: 100%;
 		text-align: left;
 
-		border-bottom: 0.25rem solid var(--border-color);
-
 		display: flex;
 		flex-direction: row;
 		gap: 2rem;
@@ -138,7 +134,11 @@
 		color: #000;
 	}
 
-	button:first-child {
+	form {
+		border-bottom: 0.25rem solid var(--border-color);
+	}
+
+	form:first-child {
 		border-top: 0.25rem solid var(--border-color);
 	}
 </style>
@@ -164,9 +164,18 @@
 			<button type="submit">
 				<svelte:component this={iconComponentMap["exchange-alt"]} font-size="3rem" />
 
-				<input type="hidden" name="new-profile" value={$nextProfile.prefix}>
-
 				Switch to {$nextProfile.pretty}
+			</button>
+
+			<input type="hidden" name="new-profile" value={$nextProfile.prefix}>
+		</form>
+
+
+		<form method="POST" action="/auth/logout" on:submit={() => invalidateAll()}>
+			<button type="submit">
+				<svelte:component this={iconComponentMap["sign-out-alt"]} font-size="3rem" />
+
+				Sign out
 			</button>
 		</form>
 	</div>

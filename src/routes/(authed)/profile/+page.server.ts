@@ -23,14 +23,14 @@ export async function load({cookies, locals: {supabase, user}}) {
 export const actions = {
 	swapProfile: async ({cookies, locals: {supabase, user}, request}) => {
 		const formData = await request.formData();
-
 		const profilePrefix = formData.get("new-profile")?.toString() as ProfilePrefix | undefined;
 
-		// TODO: make this check run client side lmao
 		if(profilePrefix === undefined || !profilePrefixes.includes(profilePrefix)) {
-			// TODO: make this not return an error and instead be sensible
 			console.error(`Error swapping profiles: trying to swap to "${profilePrefix}"`);
-			return error(400, "No profile provided!");
+
+			return fail(400, {
+				message: "Invalid profile provided!"
+			});
 		}
 
 
@@ -40,9 +40,11 @@ export const actions = {
 
 
 		if(changeProfileResponse.error) {
-			// TODO: do better
 			console.error("Supabase error while swapping profiles", changeProfileResponse.error);
-			return error(500, "Unable to update your profile!");
+
+			return fail(500, {
+				message: "Unable to update your profile!"
+			});
 		}
 
 
