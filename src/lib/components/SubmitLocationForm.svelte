@@ -40,13 +40,14 @@
 			// maybe it's a training cutoff diff. but thank you claude
 			// if i stared at the use:enhance documentation perhaps i would've realized my error but i mistakenly assumed that it entirely wasn't possible. honestly, i enjoy reading documentation—but sveltekit's drives me insane
 			// oh well. i know whom to ask questions to instead of chatgpt now lmao
-			return ({result, update}) => {
+			return async ({result, update}) => {
 				if(result.type === "success") {
 					currentlySelectedPurpose = "";
 					timeInputMethodSelector = "Use current time";
 				}
 
-				update({reset: true});
+
+				await update({reset: true});
 			}
 		}
 

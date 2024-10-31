@@ -38,15 +38,14 @@
 
 		if(profile !== undefined && profilePrefixes.includes(profile)) {
 			return async ({result, update}) => {
-				if(result.type !== "success") {
-					console.log(`form from callback: ${form}`);
+				if(result.type === "success") {
+					currentProfile.increment();
+					pointsText = formatPoints(result.data?.profilePoints ?? 0);
 					return;
 				}
 
-				currentProfile.increment();
-				pointsText = formatPoints(result.data?.profilePoints ?? 0);
 
-				update({reset: false});
+				await update({reset: false});
 			}
 		}
 
@@ -64,11 +63,10 @@
 	}
 
 
-	/* $: console.log(`form from $: ${form}`);
 
 	$: if(form && form.message) {
 		toaster.toast({duration: 4000, content: form.message});
-	} */
+	}
 </script>
 
 <style>
