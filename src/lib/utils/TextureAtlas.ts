@@ -67,8 +67,17 @@ export class TextureAtlas {
 	}
 
 	async fetchUserAvatars(urls: (string | null)[]): Promise<UserAvatar[]> {
-		return await Promise.all(urls.map(url =>
-			loadImage(url ?? "")
+		// TODO: This may be converted to an async function. ts(80006)
+		// ...should it? isn't the whole point that promise.all deals with it all at once?
+		return await Promise.all(urls.map(url => {
+			if(url === null) {
+				return Promise.resolve(({
+					error: true,
+					image: null
+				} satisfies UserAvatar));
+			}
+
+			return loadImage(url)
 				.then(image => ({
 					error: false,
 					image
@@ -77,6 +86,7 @@ export class TextureAtlas {
 					error: true,
 					image: null
 				}) satisfies UserAvatar)
+			}
 		));
 	}
 }

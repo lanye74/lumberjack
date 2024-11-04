@@ -85,3 +85,4 @@ ui rework
 - stealing points?
 - idk
 - custom color name (real and true)
+- double-check package json scripts against a new svelte 5 project `sv create`

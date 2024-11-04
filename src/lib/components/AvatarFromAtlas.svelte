@@ -5,44 +5,51 @@
 
 
 
-	export let src: string | null = null;
+	type Props = {
+		src: string | null;
+		positionIndex: {x: number, y: number};
+		atlasTiles: {x: number, y: number};
+		hasError?: boolean;
 
-	// TODO: export an atlasDimensions thing
-	export let positionIndex: {x: number, y: number};
-	export let atlasTiles: {x: number, y: number};
+		absoluteSize?: string;
+		percentageSize?: number;
+	};
 
-	export let hasError: boolean = false;
+	const {
+		src,
+		positionIndex,
+		atlasTiles,
+		hasError = false,
+
+		// TODO: should these have defaults of undefined?
+		// that is redundant, yes? i'm not crazy?
+		absoluteSize,
+		percentageSize
+	}: Props = $props();
+
 
 
 	const backgroundXTransform = `calc(${positionIndex.x} * calc(100% / ${Math.max(atlasTiles.x - 1, 1)}))`;
 	const backgroundYTransform = `calc(${positionIndex.y} * calc(100% / ${Math.max(atlasTiles.y - 1, 1)}))`;
 
-
 	const backgroundPosition = `${backgroundXTransform} ${backgroundYTransform}`;
 	const backgroundSize = "cover";
 
 
-	export let absoluteSize: string | undefined = undefined;
-	export let percentageSize: number | undefined = undefined;
 
 	if(absoluteSize === undefined && percentageSize === undefined) {
 		console.error("AvatarFromAtlas instantiated with no size!");
 	}
 
 
-	let wrapperWidth = 0;
+	let wrapperWidth = $state(0);
 
 	// TODO: rename this property
 	let iconWidth = absoluteSize ?? `${percentageSize}%`;
-	$: fontSize = absoluteSize ?? formatPixels(wrapperWidth);
+	let fontSize = $derived(absoluteSize ?? formatPixels(wrapperWidth));
 
 
-	let internalIsError = false;
-
-
-	$: {
-		internalIsError = (src === null || src === "" || hasError);
-	}
+	let internalIsError = $derived(src === null || src === "" || hasError);
 </script>
 
 <style>
