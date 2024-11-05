@@ -13,15 +13,9 @@ TODO: steal best practices from [cobalt](https://github.com/imputnet/cobalt/tree
 
 
 ### stuff i've been thinking about
-- caching user profile images on the server and serving them as an atlas
 - finishing refactoring
 - svelte 5 is out!!!!
-	- make a new dummy project to see what the defaults are like and copy over
-	- svelte-migrate?
-	- sv?
 	- less dependencies finally?????
-
-
 
 ### 2.7.0
 try to get app a bit cleaner
@@ -59,7 +53,6 @@ ui rework
 - perhaps use a UI library
 
 ### at some point
-- switch to svelte 5
 - add a page-by-page log input ui
 - do more server calls on client-side maybe
 - make it more PWA-y
@@ -83,6 +76,4 @@ ui rework
 - profile borders???
 	- discord cat ears border (real and true)
 - stealing points?
-- idk
 - custom color name (real and true)
-- double-check package json scripts against a new svelte 5 project `sv create`
