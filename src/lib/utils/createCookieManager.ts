@@ -53,6 +53,7 @@ function getPointsCookie(cookies: Cookies): PointsCookieJson {
 // returns current profile's points
 async function getProfilePoints(cookies: Cookies, supabase: TypedSupabaseClient, profilePrefix: ProfilePrefix, userId: string) {
 	const pointsJson = getPointsCookie(cookies);
+	// TODO: can i use ??= here?
 	const points = pointsJson[profilePrefix] ?? await fetchUserPoints(supabase, profilePrefix, userId);
 
 	pointsJson[profilePrefix] = points;

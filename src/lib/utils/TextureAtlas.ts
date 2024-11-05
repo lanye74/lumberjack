@@ -1,4 +1,4 @@
-import {Canvas, Image, loadImage} from "skia-canvas";
+import {Canvas, type Image, loadImage} from "skia-canvas";
 import {createHash, type Hash} from "node:crypto";
 
 import type {PointsLeaderboardEntry} from "$types/database.js";

@@ -117,9 +117,12 @@
 		</BorderBox>
 
 		<section class="leaderboard">
-			{#each lastSeven as user, index}
-				<LeaderboardEntry {atlasSrc} hasAvatarError={avatarErrors[index + 3]}
-					{user} index={index + 3} />
+			{#each lastSeven as user, loopIndex}
+				<!-- these start from part-way through the leaderboard data array, but leaderboardentry can't process that -->
+				{@const index = loopIndex + 3}
+
+				<LeaderboardEntry {atlasSrc} hasAvatarError={avatarErrors[index]}
+					{user} {index} />
 			{/each}
 
 			{#if lastSeven.length < 7 && topThree.length > 0}
