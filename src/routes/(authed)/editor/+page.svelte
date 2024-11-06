@@ -1,5 +1,5 @@
 <script lang="ts">
-	const {data} = $props();
+	let {data} = $props();
 
 	const {recentLogs} = data;
 </script>

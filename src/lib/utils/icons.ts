@@ -5,6 +5,7 @@ import ProfileIcon from "virtual:icons/fa-solid/user-circle";
 // import InfoIcon from "virtual:icons/fa-solid/info-circle";
 import ExchangeAlt from "virtual:icons/fa-solid/exchange-alt";
 import SignOutAlt from "virtual:icons/fa-solid/sign-out-alt";
+import RedoIcon from "virtual:icons/fa-solid/redo-alt"
 
 import type {AuthedRoute} from "$types/routing.js";
 
@@ -15,7 +16,8 @@ export type IconComponent = typeof ProfileIcon;
 export const iconComponentMap: Record<string, IconComponent> = {
 	"user-circle": ProfileIcon,
 	"exchange-alt": ExchangeAlt,
-	"sign-out-alt": SignOutAlt
+	"sign-out-alt": SignOutAlt,
+	"redo-alt": RedoIcon
 };
 
 export type IconComponentId = keyof typeof iconComponentMap;

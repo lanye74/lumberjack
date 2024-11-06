@@ -16,7 +16,7 @@
 
 
 
-	export let data, form;
+	let {data, form} = $props();
 
 
 	const user = data.user!;
@@ -25,11 +25,15 @@
 	currentProfile.setPrefix(profilePrefix);
 
 
-	let avatarUrl = user.user_metadata.avatar_url as string;
-	avatarUrl = resizeGoogleAvatarUrl(avatarUrl);
+	const avatarUrl = resizeGoogleAvatarUrl(user.user_metadata.avatar_url as string);
 
 
-	let pointsText = formatPoints(data.profilePoints ?? 0);
+	let pointsText = $state(formatPoints(data.profilePoints ?? 0));
+
+
+	const ExchangeIcon = iconComponentMap["exchange-alt"];
+	const SignOutIcon = iconComponentMap["sign-out-alt"];
+
 
 
 	const swapProfile: SubmitFunction = ({formData, cancel}) => {
@@ -64,9 +68,11 @@
 
 
 
-	$: if(form && form.message) {
-		toaster.toast({duration: 4000, content: form.message});
-	}
+	$effect(() => {
+		if(form && form.message) {
+			toaster.toast({duration: 4000, content: form.message});
+		}
+	});
 </script>
 
 <style>
@@ -160,7 +166,7 @@
 	<div class="options">
 		<form method="POST" action="?/swapProfile" use:enhance={swapProfile}>
 			<button type="submit">
-				<svelte:component this={iconComponentMap["exchange-alt"]} font-size="3rem" />
+				<ExchangeIcon font-size="3rem" />
 
 				Switch to {$nextProfile.pretty}
 			</button>
@@ -171,7 +177,7 @@
 
 		<form method="POST" action="/auth/logout" onsubmit={() => invalidateAll()}>
 			<button type="submit">
-				<svelte:component this={iconComponentMap["sign-out-alt"]} font-size="3rem" />
+				<SignOutIcon font-size="3rem" />
 
 				Sign out
 			</button>

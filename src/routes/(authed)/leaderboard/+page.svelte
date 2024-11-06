@@ -9,12 +9,13 @@
 
 
 
-	const {data} = $props();
+	// TODO: can these lets be consts?
+	let {data} = $props();
 	let {leaderboard, avatarAtlas} = data;
 
 
-	let topThree: PointsLeaderboardEntry[] = $state([]);
-	let lastSeven: PointsLeaderboardEntry[] = $state([]);
+	let topThree = $state<PointsLeaderboardEntry[]>([]);
+	let lastSeven = $state<PointsLeaderboardEntry[]>([]);
 
 	leaderboard.then(leaderboardEntries => {
 		topThree = leaderboardEntries?.slice(0, 3) ?? [];

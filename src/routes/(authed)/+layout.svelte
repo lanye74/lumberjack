@@ -11,6 +11,10 @@
 
 
 
+	const {children} = $props();
+
+
+
 	// TODO: swipe controls?
 	onNavigate(navigation => {
 		if(!document.startViewTransition ||
@@ -109,8 +113,7 @@
 
 
 <main>
-
-	<slot />
+	{@render children()}
 </main>
 
 

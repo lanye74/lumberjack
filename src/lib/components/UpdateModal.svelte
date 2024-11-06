@@ -1,11 +1,14 @@
 <script lang="ts">
 	import {onMount} from "svelte";
-	import RedoIcon from "virtual:icons/fa-solid/redo-alt";
 
+    import {iconComponentMap} from "$utils/icons.js";
+
+
+
+	const RedoIcon = iconComponentMap["redo-alt"];
 
 
 	let modal: HTMLDialogElement;
-
 
 	onMount(() => {
 		modal.showModal();

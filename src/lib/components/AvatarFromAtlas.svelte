@@ -1,7 +1,10 @@
 <script lang="ts">
-	import ProfileIcon from "virtual:icons/fa-solid/user-circle";
-
 	import {formatPixels} from "$utils/formatters.js";
+    import {iconComponentMap} from "$utils/icons.js";
+
+
+
+	const ProfileIcon = iconComponentMap["user-circle"];
 
 
 
