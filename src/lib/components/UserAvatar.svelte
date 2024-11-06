@@ -4,24 +4,24 @@
 	import {formatPixels} from "$utils/formatters.js";
 
 
+	type Props = {
+		src: string | null;
+		absoluteSize?: string;
+		percentageSize?: number;
+	};
 
-	export let src: string | null;
+	const {src, absoluteSize, percentageSize}: Props = $props();
 
-	export let absoluteSize: string | undefined = undefined;
-	export let percentageSize: number | undefined = undefined;
 
 	if(absoluteSize === undefined && percentageSize === undefined) {
 		console.error("UserAvatar instantiated with no size!");
 	}
 
 
-	let wrapperWidth = 0;
-
+	let wrapperWidth = $state(0);
 
 	let iconWidth = absoluteSize ?? `${percentageSize}%`;
-	$: fontSize = absoluteSize ?? formatPixels(wrapperWidth);
-	// TODO: remove this (see AFA)
-	$: iconHeight = absoluteSize ?? fontSize;
+	let fontSize = $derived(absoluteSize ?? formatPixels(wrapperWidth))
 </script>
 
 <style>
@@ -34,8 +34,9 @@
 		color: var(--avatar-color);
 
 		width: var(--icon-width);
-		height: var(--icon-height);
 		font-size: var(--font-size);
+
+		aspect-ratio: 1 / 1;
 	}
 
 	/* .image-wrapper:has(img) {
@@ -47,7 +48,6 @@
 
 <div class="image-wrapper"
 	style:--icon-width={iconWidth}
-	style:--icon-height={iconHeight}
 	style:--font-size={fontSize}
 	bind:clientWidth={wrapperWidth}
 >
