@@ -5,19 +5,24 @@
 
 
 
-	export let src: string | null;
-	export let alt: string;
+	type Props = {
+		src: string | null;
+		alt: string;
 
-	export let iconId: IconComponentId;
+		iconId: IconComponentId;
+	};
 
-	const mappedIcon = iconComponentMap[iconId];
+	// TODO: rename this to "inputSrc" or something
+	const {src, alt, iconId}: Props = $props();
+
+	const IconFallback = iconComponentMap[iconId];
 
 
 
-	let isLoading = true;
-	let hadError = false;
+	let isLoading = $state(true);
+	let hadError = $state(false);
 
-	let loadedSrc = "";
+	let loadedSrc = $state("");
 
 
 	onMount(() => {
@@ -63,7 +68,7 @@
 	<!-- TODO: why does user-circle take up more height than it's supposed to?
 	           I know it's not a 1:1 aspect ratio and is skewed vertically but all the same i need it to scale by height, not width
 	           need to take a look at my icon setup -->
-	<svelte:component this={mappedIcon} font-size="inherit" color="inherit" />
+	<IconFallback font-size="inherit" color="inherit" />
 {:else}
 	<img src={loadedSrc} {alt}>
 {/if}

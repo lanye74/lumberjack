@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type {TimePeriod, TimeSelector} from "$types/forms";
-    import {untrack} from "svelte";
 
 
 
@@ -13,7 +12,7 @@
 	let {
 		margin = "0",
 		// TODO: a default empty time selector
-		time = $bindable({
+		time: externalTime = $bindable({
 			hours: NaN,
 			minutes: NaN,
 			period: "AM"
@@ -36,8 +35,8 @@
 	// https://svelte.dev/docs/svelte/$effect#When-not-to-use-$effect
 	// TODO: figure out if there is a better way to do this
 	$effect(() => {
-		time = internalTime;
-	})
+		externalTime = internalTime;
+	});
 
 
 	// >:(
@@ -82,6 +81,7 @@
 	<!-- TODO: use snippets -->
 	<label hidden={true} for="hours-input">Hours input</label>
 	<select id="hours-input" bind:value={selectedHour}>
+		<!-- TODO: why did this break from migration? -->
 		<option selected hidden value="">--</option>
 
 		{#each possibleHours as hour}
