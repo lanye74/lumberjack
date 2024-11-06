@@ -2,7 +2,6 @@ import createCookieManager from "$utils/createCookieManager.js";
 import parseSubmitLocationForm from "$utils/forms/parseSubmitLocationForm.js";
 import {submitLocationLogPrefix} from "$utils/console.js";
 
-import type {ProfilePrefix} from "$types/profiles.js";
 import type {TimeSelector} from "$types/forms";
 
 

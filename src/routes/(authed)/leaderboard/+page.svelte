@@ -9,12 +9,12 @@
 
 
 
-	export let data;
-	const {leaderboard, avatarAtlas} = data;
+	const {data} = $props();
+	let {leaderboard, avatarAtlas} = data;
 
 
-	let topThree: PointsLeaderboardEntry[] = [];
-	let lastSeven: PointsLeaderboardEntry[] = [];
+	let topThree: PointsLeaderboardEntry[] = $state([]);
+	let lastSeven: PointsLeaderboardEntry[] = $state([]);
 
 	leaderboard.then(leaderboardEntries => {
 		topThree = leaderboardEntries?.slice(0, 3) ?? [];
@@ -23,8 +23,8 @@
 
 
 
-	let atlasSrc = "";
-	let avatarErrors: boolean[] = [];
+	let atlasSrc = $state("");
+	let avatarErrors: boolean[] = $state([]);
 
 	avatarAtlas.then(texture => {
 		if(texture === null) return;

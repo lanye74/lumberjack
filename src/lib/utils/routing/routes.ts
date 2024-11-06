@@ -1,6 +1,7 @@
 import type {OnNavigate} from "@sveltejs/kit";
 
 import {routePageTitleMappings, allRoutes} from "$utils/routing/maps.js";
+
 import type {RedirectableRouteWithGroup} from "$types/routing.js";
 
 

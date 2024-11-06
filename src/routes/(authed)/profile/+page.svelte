@@ -169,7 +169,7 @@
 		</form>
 
 
-		<form method="POST" action="/auth/logout" on:submit={() => invalidateAll()}>
+		<form method="POST" action="/auth/logout" onsubmit={() => invalidateAll()}>
 			<button type="submit">
 				<svelte:component this={iconComponentMap["sign-out-alt"]} font-size="3rem" />
 

@@ -18,4 +18,4 @@ type UserPublicInfo = NestedSnakeToCamelCase<Tables<"public_user_data">>;
 
 export type LoadLogsOutput = {
 	recentLogs: LocationLog[] | null;
-}
+};

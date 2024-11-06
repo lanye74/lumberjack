@@ -9,7 +9,7 @@
 
 
 
-	export let data, form;
+	let {data, form} = $props();
 	// no nice way to use destructuring to get around this
 	const user = data.user!;
 
@@ -20,12 +20,13 @@
 
 	// this really doesn't need to be reactive but it'll make me feel fancy
 	// there's no way that this is an expensive enough operation i really have to trash it
-	$: greeting = generateGreeting(user, $currentDate);
+	let greeting = $derived(generateGreeting(user, $currentDate));
 
-
-	$: if(form && form.message) {
-		toaster.toast({duration: 4000, content: form.message});
-	}
+	$effect(() => {
+		if(form && form.message) {
+			toaster.toast({duration: 4000, content: form.message});
+		}
+	});
 </script>
 
 <style>

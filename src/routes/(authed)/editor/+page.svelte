@@ -1,5 +1,6 @@
 <script lang="ts">
-	export let data;
+	const {data} = $props();
+
 	const {recentLogs} = data;
 </script>
 
