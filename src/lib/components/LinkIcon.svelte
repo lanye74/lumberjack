@@ -6,11 +6,9 @@
 
 
 
-	export let path: AuthedRoute;
+	const {path}: {path: AuthedRoute} = $props();
 
-
-
-	const mappedIcon = routeIconMappings[path];
+	const Icon = routeIconMappings[path];
 	const mappedAriaLabel = routeAriaLabelMappings[path];
 </script>
 
@@ -42,5 +40,5 @@
 
 <!-- TODO: aria-current -->
 <a href={path} data-sveltekit-preload-data="hover" aria-label={mappedAriaLabel}>
-	<svelte:component this={mappedIcon} font-size="3.5rem" />
+	<Icon font-size="3.5rem" />
 </a>

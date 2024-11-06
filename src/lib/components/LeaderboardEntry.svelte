@@ -5,12 +5,20 @@
 
 
 
-	export let user: PointsLeaderboardEntry;
-	export let index: number;
+	type Props = {
+		user: PointsLeaderboardEntry;
+		index: number;
 
-	export let atlasSrc: string | null;
-	export let hasAvatarError: boolean;
+		atlasSrc: string | null;
+		hasAvatarError?: boolean
+	};
 
+	const {
+		user,
+		index,
+		atlasSrc,
+		hasAvatarError = false
+	}: Props = $props();
 
 
 	const formatNumber = new Intl.NumberFormat().format;

@@ -12,18 +12,21 @@
 
 
 
-	export let currentProfile: ProfilePrefix;
-	export let siteChoices: string[];
-	export let purposeChoices: string[];
+	type Props = {
+		currentProfile: ProfilePrefix;
+		siteChoices: string[];
+		purposeChoices: string[]
+	};
+
+	const {currentProfile, siteChoices, purposeChoices}: Props = $props();
 
 
-
-	let currentlySelectedPurpose: string = "";
+	let currentlySelectedPurpose = $state("");
 	// TODO: this should not be a random string floating around; it should have a constant
-	let timeInputMethodSelector: string = "Use current time";
-	let customTime: TimeSelector = {hours: NaN, minutes: NaN, period: "AM"};
+	let timeInputMethodSelector = $state("Use current time");
+	let customTime = $state<TimeSelector>({hours: NaN, minutes: NaN, period: "AM"});
 
-	$: exportedTime = timeInputMethodSelector === "Use current time" ? null : JSON.stringify(customTime);
+	let exportedTime = $derived(timeInputMethodSelector === "Use current time" ? null : JSON.stringify(customTime));
 
 
 	// my `function` syntax.....
@@ -253,7 +256,7 @@
 
 	<button type="submit" style:--navbar-height={$formattedNavbarHeight}>Submit</button>
 
-	<input name="user-profile" type="hidden" bind:value={currentProfile}>
+	<input name="user-profile" type="hidden" value={currentProfile}>
 
-	<input name="log-time" type="hidden" bind:value={exportedTime}>
+	<input name="log-time" type="hidden" value={exportedTime}>
 </form>

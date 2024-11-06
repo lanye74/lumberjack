@@ -132,7 +132,7 @@
 		<p>Press the button below to load the latest version.</p>
 	</div>
 
-	<button on:click={() => window.location.reload()}>
+	<button onclick={() => window.location.reload()}>
 		<RedoIcon style="align-self: center" />
 		<p>Reload</p>
 	</button>

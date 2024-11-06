@@ -7,12 +7,17 @@
 
 
 
-	export let users: PointsLeaderboardEntry[];
+	type Props = {
+		users: PointsLeaderboardEntry[];
 
-	export let atlasSrc: string | null;
-	export let avatarErrors: boolean[];
+		atlasSrc: string | null;
+		avatarErrors: boolean[];
+	};
 
-	$: numberPlaces = Math.min(users.length, 3);
+
+	const {users, atlasSrc, avatarErrors}: Props = $props();
+
+	let numberPlaces = $derived(Math.min(users.length, 3));
 </script>
 
 <style>

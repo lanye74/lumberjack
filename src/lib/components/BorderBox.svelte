@@ -5,9 +5,9 @@
 
 	type Props = {
 		direction: string;
-		alignItems: string; // TODO: these can be typed more strictly
-		justifyContent: string;
-		gap: string;
+		alignItems?: string; // TODO: these can be typed more strictly
+		justifyContent?: string;
+		gap?: string;
 
 		children: Snippet;
 	};

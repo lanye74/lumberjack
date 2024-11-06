@@ -5,7 +5,9 @@
 
 
 
-	export let height;
+	let {
+		height = $bindable(0)
+	}: {height: number} = $props();
 </script>
 
 <style>
