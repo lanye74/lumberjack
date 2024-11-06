@@ -4,6 +4,7 @@ import {formatTime} from "$utils/formatters.js";
 
 
 
+// TODO: investigate SvelteDate from "svelte/reactivity"
 export const currentDate = readable(new Date(), set => {
 	const interval = setInterval(() => {
 		set(new Date());

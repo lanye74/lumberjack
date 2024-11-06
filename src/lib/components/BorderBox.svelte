@@ -1,8 +1,25 @@
 <script lang="ts">
-	export let direction: string;
-	export let alignItems: string = "normal";
-	export let justifyContent: string = "normal";
-	export let gap: string = "0";
+	import type {Snippet} from "svelte";
+
+
+
+	type Props = {
+		direction: string;
+		alignItems: string; // TODO: these can be typed more strictly
+		justifyContent: string;
+		gap: string;
+
+		children: Snippet;
+	};
+
+	const {
+		direction,
+		alignItems = "normal",
+		justifyContent = "normal",
+		gap = "0",
+
+		children
+	}: Props = $props();
 </script>
 
 <style>
@@ -26,5 +43,5 @@
          style:align-items={alignItems}
          style:justify-content={justifyContent}
          style:gap={gap}>
-	<slot />
+	{@render children()}
 </section>
