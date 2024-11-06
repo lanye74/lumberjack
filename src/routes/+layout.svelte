@@ -9,12 +9,10 @@
 
 
 
-	export let data;
-	$: ({session, supabase} = data);
+	let {data, children} = $props();
 
-
-	$: title = mapRouteToPageTitle($page.route.id);
-
+	let {session, supabase} = $derived(data);
+	let title = $derived(mapRouteToPageTitle($page.route.id));
 
 
 	onMount(() => {
@@ -102,7 +100,7 @@
 
 
 
-<slot />
+{@render children()}
 
 
 
