@@ -1,7 +1,9 @@
 import {defineConfig} from "vite";
-import Icons from "unplugin-icons/vite";
-import {sveltekit} from "@sveltejs/kit/vite";
-import {SvelteKitPWA} from "@vite-pwa/sveltekit";
+
+import {visualizer as pluginBundleVisualizer} from "rollup-plugin-visualizer";
+import {SvelteKitPWA as pluginPWA} from "@vite-pwa/sveltekit";
+import {sveltekit as pluginSvelteKit} from "@sveltejs/kit/vite";
+import pluginUnpluginIcons from "unplugin-icons/vite";
 
 import {readFileSync} from "node:fs";
 import path from "node:path";
@@ -31,9 +33,16 @@ export default defineConfig(args => {
 
 	return {
 		plugins: [
-			sveltekit(),
-			SvelteKitPWA({...pwaManifest}),
-			Icons({compiler: "svelte"}),
+			pluginSvelteKit(),
+
+			pluginPWA({...pwaManifest}),
+
+			pluginUnpluginIcons({compiler: "svelte"}),
+
+			pluginBundleVisualizer({
+				emitFile: true,
+				template: "flamegraph"
+			})
 		],
 
 		preview

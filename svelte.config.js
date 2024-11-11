@@ -19,7 +19,7 @@ const config = {
 		},
 
 		version: {
-			pollInterval: 5000
+			pollInterval: 10000
 		}
 	}
 };
