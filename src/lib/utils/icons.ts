@@ -2,7 +2,7 @@ import HomeIcon from "virtual:icons/fa-solid/home";
 import PencilIcon from "virtual:icons/fa-solid/pencil-alt";
 import TrophyIcon from "virtual:icons/fa-solid/trophy";
 import ProfileIcon from "virtual:icons/fa-solid/user-circle";
-// import InfoIcon from "virtual:icons/fa-solid/info-circle";
+import InfoIcon from "virtual:icons/fa-solid/info-circle";
 import ExchangeAlt from "virtual:icons/fa-solid/exchange-alt";
 import SignOutAlt from "virtual:icons/fa-solid/sign-out-alt";
 import RedoIcon from "virtual:icons/fa-solid/redo-alt"
@@ -29,5 +29,5 @@ export const routeIconMappings: Record<AuthedRoute, IconComponent> = {
 	"/editor": PencilIcon,
 	"/leaderboard": TrophyIcon,
 	"/profile": ProfileIcon,
-	// "/about": InfoIcon
+	"/about": InfoIcon
 };

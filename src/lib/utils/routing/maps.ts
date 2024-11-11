@@ -7,7 +7,7 @@ export const routePageTitleMappings: RoutePageTitleMap = {
 	"/(authed)/editor": "Log editor",
 	"/(authed)/leaderboard": "Leaderboard",
 	"/(authed)/profile": "User profile",
-	// "/(authed)/about": "About Lumberjack",
+	"/(authed)/about": "About Lumberjack",
 
 	"/auth": "Sign in",
 	"/auth/error": "Error!",
@@ -24,9 +24,9 @@ export const routeAriaLabelMappings: Record<AuthedRoute, string> = {
 	"/editor": "Navigate to log editor",
 	"/leaderboard": "Navigate to the points leaderboad",
 	"/profile": "Navigate to your profile page",
-	// "/about": "Navigate to the about page"
+	"/about": "Navigate to the about page"
 };
 
 
 
-export const navbarRoutes: AuthedRoute[] = ["/home", "/leaderboard", "/profile"];
+export const navbarRoutes: AuthedRoute[] = ["/home", "/leaderboard", "/profile", "/about"];
