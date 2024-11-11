@@ -3,11 +3,15 @@
 
 
 
-	const attributes: any[] = [];
+	const attributes: any[] = [
+		"Version 2.6.0",
+		"Last updated September 26th, 2024\n→ commit 6ae08fe",
+		"Changelog:\n"
+	];
 </script>
 
 <style>
-	h2, p {
+	h2, h3, p {
 		margin: 0;
 	}
 
@@ -20,37 +24,56 @@
 		white-space: pre-wrap;
 	}
 
+	h3 {
+		font: bold 2rem var(--font-serif);
+	}
+
+	ul > li {
+		font: 1.5rem var(--font-serif);
+	}
+
 	img {
-		width: 6rem;
+		width: 8rem;
 		border-radius: 50%;
 	}
 
-	.attribute {
+
+
+	.attributes > * {
 		padding: 1.25rem 2rem;
 		box-sizing: border-box;
 
 		border-bottom: 0.25rem solid var(--border-color);
 	}
 
-	.attribute:first-child {
+	.attributes > *:first-child {
 		border-top: 0.25rem solid var(--border-color);
 	}
 
-	.attribute:last-child {
+	.attributes > *:last-child {
 		border-bottom: none;
 	}
-
 </style>
 
 
 
-<!-- TODO: finish this -->
-
-<BorderBox direction="row" alignItems="center" gap="1.5rem">
+<BorderBox direction="column" alignItems="center" gap="1.5rem">
 	<img src="/icons/lumberjack-512-circle-padded.png" alt="Lumberjack logo">
+
+	<h2>JCS Lumberjack</h2>
+	<p>by Layne Ogden</p>
 </BorderBox>
 
+<!-- TODO: this sucks -->
+<div class="attributes">
+	<p>Version 2.6.0</p>
+	<p>Last updated September 26th, 2024<br />→ commit 6ae08fe</p>
 
-{#each attributes as attribue}
-	<div class="attribute"><p>{attribue.text}</p></div>
-{/each}
+	<div>
+		<h3>Changelog</h3>
+
+		<ul>
+			<li>The leaderboard should now load significantly faster as a result of streaming</li>
+		</ul>
+	</div>
+</div>

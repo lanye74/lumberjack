@@ -98,7 +98,7 @@
 	.user-info {
 		display: flex;
 		flex-wrap: wrap;
-		align-items: flex-start;
+		align-items: start;
 		width: 100%;
 		gap: 0.3rem;
 	}

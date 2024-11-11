@@ -14,7 +14,7 @@
 
 		display: flex;
 		flex-direction: column-reverse;
-		align-items: flex-end;
+		align-items: end;
 		gap: 0.5rem;
 
 		z-index: 30;

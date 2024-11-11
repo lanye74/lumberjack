@@ -3,10 +3,13 @@
 
 
 
+	type AlignItemsValues = "start" | "center" | "end" | "normal";
+	type JustifyContentValues = AlignItemsValues | "space-between" | "space-around" | "space-evenly";
+
 	type Props = {
-		direction: string;
-		alignItems?: string; // TODO: these can be typed more strictly
-		justifyContent?: string;
+		direction: "row" | "column";
+		alignItems?: AlignItemsValues;
+		justifyContent?: JustifyContentValues;
 		gap?: string;
 
 		children: Snippet;
