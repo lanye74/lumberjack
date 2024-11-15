@@ -30,6 +30,23 @@
 	span.time {
 		font: 600 2rem var(--time-font);
 	}
+
+
+	.tiles {
+		display: flex;
+		flex-direction: column;
+		padding: 0 2rem;
+	}
+
+	.tile {
+		background-color: var(--jcs-blue);
+		color: white;
+
+		border-radius: 1rem;
+		padding: 1rem;
+
+		font: 3rem var(--font-serif);
+	}
 </style>
 
 
@@ -41,9 +58,9 @@
 </BorderBox>
 
 <!-- is this really a nav?
-     ...should this be exempted from the layout? -->
+     ...should this file be exempted from the layout? -->
 <section class="tiles">
 	<div class="tile">
-
+		text
 	</div>
 </section>
