@@ -1,5 +1,5 @@
 import HomeIcon from "virtual:icons/fa-solid/home";
-import PencilIcon from "virtual:icons/fa-solid/pencil-alt";
+// import PencilIcon from "virtual:icons/fa-solid/pencil-alt";
 import TrophyIcon from "virtual:icons/fa-solid/trophy";
 import ProfileIcon from "virtual:icons/fa-solid/user-circle";
 import InfoIcon from "virtual:icons/fa-solid/info-circle";

@@ -1,34 +1,29 @@
 import type {Session} from "@supabase/supabase-js";
 
-import type {RedirectMap, RedirectableRoute} from "$types/routing.js";
+import type {AuthedRoute, RedirectableRoute} from "$types/routing.js";
 
 
 
-export default function getRedirect(url: string, session?: Session | null) {
-	const mustBeAuthenticated = !session ? "/auth" : null;
-	const mustNotBeAuthenticated = session ? "/home" : null;
+const authedRoutes: AuthedRoute[] = ["/home", "/form", "/leaderboard", "/profile", "/about"];
 
 
-	const redirectMap: RedirectMap = {
-		"/": "/home", // always route this to home i cba to make a proper homepage /auth is good enough
 
-		"/auth": mustNotBeAuthenticated,
-		"/auth/error": null,
-
-		"/home": mustBeAuthenticated,
-		// "/editor": redirectIfNotAuthenticated,
-		// "/editor": "/home",
-		"/form": mustBeAuthenticated,
-		"/leaderboard": mustBeAuthenticated,
-		"/profile": mustBeAuthenticated,
-		// TODO: shouldn't need to be authenticated, but I don't have a landing page
-		"/about": mustBeAuthenticated
-	};
+export default function getRedirect(url: URL, session?: Session | null) {
+	const requestedPath = url.pathname as RedirectableRoute;
 
 
-	const redirectPath = redirectMap[url as RedirectableRoute];
+	// always route / to home i cba to make a proper homepage /auth is good enough
+	// also route /auth to /home if we are authed
+	if(requestedPath === "/" ||
+	   (requestedPath === "/auth" && session)) {
+		return "/home";
+	}
 
-	return redirectPath;
+	// routes must be authententicated, route to /auth if not
+	if(authedRoutes.includes(requestedPath as AuthedRoute) && !session) {
+		return "/auth";
+	}
+
+
+	return null;
 }
-
-

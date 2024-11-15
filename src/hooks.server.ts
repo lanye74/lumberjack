@@ -12,7 +12,7 @@ import getRedirect from "$utils/routing/getRedirect.js";
 
 
 
-const supabaseHandle: Handle = async({event, resolve}) => {
+const supabaseHandle: Handle = async ({event, resolve}) => {
 	event.locals.supabase = createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 		cookies: generateSupabaseClientCookieMethods(event.cookies)
 	});
@@ -46,7 +46,7 @@ const supabaseHandle: Handle = async({event, resolve}) => {
 
 
 
-const acmeChallengeHandle: Handle = async({event: requestEvent, resolve}) => {
+const acmeChallengeHandle: Handle = async ({event: requestEvent, resolve}) => {
 	const requestUrl = requestEvent.url.pathname;
 
 	if(requestUrl.startsWith("/.well-known/acme-challenge/")) {
@@ -65,7 +65,7 @@ const acmeChallengeHandle: Handle = async({event: requestEvent, resolve}) => {
 
 
 
-const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
+const authGuardHandle: Handle = async ({event: requestEvent, resolve}) => {
 	const {session, user} = await requestEvent.locals.safeGetSession();
 	const {locals, url} = requestEvent;
 
@@ -73,10 +73,10 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 	locals.user = user;
 
 
-	const redirectPath = getRedirect(url.pathname, session);
+	const redirectTarget = getRedirect(url, session);
 
-	if(redirectPath) {
-		return redirect(303, redirectPath);
+	if(redirectTarget) {
+		return redirect(303, redirectTarget);
 	}
 
 
