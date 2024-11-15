@@ -86,7 +86,8 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 
 		"/home": mustBeAuthenticated,
 		// "/editor": redirectIfNotAuthenticated,
-		"/editor": "/home",
+		// "/editor": "/home",
+		"/form": mustBeAuthenticated,
 		"/leaderboard": mustBeAuthenticated,
 		"/profile": mustBeAuthenticated,
 		// TODO: shouldn't need to be authenticated, but I don't have a landing page

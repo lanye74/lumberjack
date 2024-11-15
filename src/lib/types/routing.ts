@@ -1,4 +1,4 @@
-export type AuthedRoute = "/home" | "/editor" | "/leaderboard" | "/profile" | "/about";
+export type AuthedRoute = "/home" | "/form" | "/leaderboard" | "/profile" | "/about"; // "/editor"
 
 type NonAuthedRoutes = "/" | "/auth" | "/auth/error";
 

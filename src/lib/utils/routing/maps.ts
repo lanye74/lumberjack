@@ -4,7 +4,8 @@ import type {RoutePageTitleMap, AuthedRoute} from "$types/routing.js";
 
 export const routePageTitleMappings: RoutePageTitleMap = {
 	"/(authed)/home": "Home",
-	"/(authed)/editor": "Log editor",
+	// "/(authed)/editor": "Log editor",
+	"/(authed)/form": "Form submission",
 	"/(authed)/leaderboard": "Leaderboard",
 	"/(authed)/profile": "User profile",
 	"/(authed)/about": "About Lumberjack",
@@ -21,7 +22,8 @@ export const allRoutes = Object.keys(routePageTitleMappings);
 
 export const routeAriaLabelMappings: Record<AuthedRoute, string> = {
 	"/home": "Navigate to home page",
-	"/editor": "Navigate to log editor",
+	// "/editor": "Navigate to log editor",
+	"/form": "Submit a location log",
 	"/leaderboard": "Navigate to the points leaderboad",
 	"/profile": "Navigate to your profile page",
 	"/about": "Navigate to the about page"
