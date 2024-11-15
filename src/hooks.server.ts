@@ -8,8 +8,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import createCookieManager from "$utils/createCookieManager.js";
-
-import type {RedirectableRoute, RedirectMap} from "$types/routing.js";
+import getRedirect from "$utils/routing/getRedirect.js";
 
 
 
@@ -74,29 +73,7 @@ const authGuardHandle: Handle = async({event: requestEvent, resolve}) => {
 	locals.user = user;
 
 
-	const mustBeAuthenticated = !session ? "/auth" : null;
-	const mustNotBeAuthenticated = session ? "/home" : null;
-
-
-	const redirectMap: RedirectMap = {
-		"/": "/home", // always route this to home i cba to make a proper homepage /auth is good enough
-
-		"/auth": mustNotBeAuthenticated,
-		"/auth/error": null,
-
-		"/home": mustBeAuthenticated,
-		// "/editor": redirectIfNotAuthenticated,
-		// "/editor": "/home",
-		"/form": mustBeAuthenticated,
-		"/leaderboard": mustBeAuthenticated,
-		"/profile": mustBeAuthenticated,
-		// TODO: shouldn't need to be authenticated, but I don't have a landing page
-		"/about": mustBeAuthenticated
-	};
-
-
-	const redirectPath = redirectMap[url.pathname as RedirectableRoute];
-
+	const redirectPath = getRedirect(url.pathname, session);
 
 	if(redirectPath) {
 		return redirect(303, redirectPath);
