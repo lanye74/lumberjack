@@ -6,10 +6,12 @@
 	type Props = {
 		href: string;
 		background: string;
+		backgroundSize: string;
+
 		children?: Snippet;
 	};
 
-	const {href, background, children}: Props = $props();
+	const {href, background, backgroundSize, children}: Props = $props();
 
 	let cssBackground = `url("${background}")`;
 </script>
@@ -18,35 +20,52 @@
 	a {
 		background-color: var(--jcs-blue);
 		color: white;
+		text-decoration: none;
+
+		position: relative;
 
 		border-radius: 1rem;
 		padding: 1rem;
 
 		font: 3rem var(--font-serif);
+	}
 
-		background-image: url("/tiles/trophy.svg");
-		background-size: 4rem 4rem;
+	a > .background {
+		/* --additional-size: calc(-1 * var(--background-size)); */
 
-		text-decoration: none;
-
+		position: absolute;
+		/* top: var(--additional-size); */
+		/* left: var(--additional-size); */
+		/* bottom: var(--additional-size); */
+		/* right: var(--additional-size); */
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
 		animation: panBackground 7s infinite linear;
+		background-size: var(--background-size);
 	}
 
 
 	/* TODO: make a background element that's translated, since background-position does a bunch of style recalcs */
 	@keyframes panBackground {
 		from {
-			background-position: 0 0;
+			translate: 0 0;
 		}
 
 		to {
-			background-position: 4rem 4rem;
+			translate: var(--background-size);
 		}
 	}
 </style>
 
 
 
-<a {href} style:background-image={cssBackground}>
+<a {href}>
+	<div class="background"
+	     style:background-image={`url("${background}")`}
+		 style:--background-size={backgroundSize}
+	></div>
+
 	{@render children?.()}
 </a>

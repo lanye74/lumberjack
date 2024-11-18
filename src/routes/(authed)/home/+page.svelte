@@ -52,7 +52,8 @@
 <!-- is this really a nav?
      ...should this file be exempted from the layout? -->
 <section class="tiles">
-	<LinkTile href="/leaderboard" background="/tiles/trophy.svg">
+	<LinkTile background="/tiles/trophy.svg" backgroundSize="4rem 4rem"
+	          href="/leaderboard">
 		Leaderboard
 	</LinkTile>
 </section>
