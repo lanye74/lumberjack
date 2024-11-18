@@ -14,6 +14,10 @@
 	// this really doesn't need to be reactive but it'll make me feel fancy
 	// there's no way that this is an expensive enough operation i really have to trash it
 	let greeting = $derived(generateGreeting(user, $currentDate));
+
+
+
+	export const renderNav = false;
 </script>
 
 <style>
@@ -50,18 +54,20 @@
 	<p>What have you been up to? It’s currently <span class="time">{$currentFormattedTime.string}.</span></p>
 </BorderBox>
 
-<!-- is this really a nav?
-     ...should this file be exempted from the layout? -->
+
 <section class="tiles">
 	<LinkTile background="/tiles/trophy.svg"
-	          backgroundSize={{x: "4.5rem", y: "4.5rem"}}
+	          backgroundSize="4.5rem"
 	          href="/leaderboard"
 	>
 		Leaderboard
 	</LinkTile>
 
+	<!-- oklch(34.9% 0.108 253) = jcs blue -->
+	<!-- oklch(34.9% 0.108 145) = #02480f -->
 	<LinkTile background="/tiles/tree.svg"
-	          backgroundSize={{x: "4.5rem", y: "4.5rem"}}
+	          backgroundSize="3.75rem"
+			  backgroundColor="#02480f"
 	          href="/form"
 	>
 		Submit a log
