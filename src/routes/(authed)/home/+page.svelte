@@ -59,4 +59,11 @@
 	>
 		Leaderboard
 	</LinkTile>
+
+	<LinkTile background="/tiles/tree.svg"
+	          backgroundSize={{x: "4.5rem", y: "4.5rem"}}
+	          href="/form"
+	>
+		Submit a log
+	</LinkTile>
 </section>
