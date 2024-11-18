@@ -6,14 +6,12 @@
 	type Props = {
 		href: string;
 		background: string;
-		backgroundSize: string;
+		backgroundSize: {x: string, y: string};
 
 		children?: Snippet;
 	};
 
 	const {href, background, backgroundSize, children}: Props = $props();
-
-	let cssBackground = `url("${background}")`;
 </script>
 
 <style>
@@ -25,36 +23,36 @@
 		position: relative;
 
 		border-radius: 1rem;
-		padding: 1rem;
+		padding: 1.5rem 1rem;
 
-		font: 3rem var(--font-serif);
+		font: 600 2.5rem var(--font-serif);
+
+		overflow: hidden;
+
+		/* box-shadow: 0 0 1rem #000a inset; */
+		/* border: 0.25rem solid var(--gray-2); */
+		/* box-sizing: border-box; */
 	}
 
 	a > .background {
-		/* --additional-size: calc(-1 * var(--background-size)); */
-
 		position: absolute;
-		/* top: var(--additional-size); */
-		/* left: var(--additional-size); */
-		/* bottom: var(--additional-size); */
-		/* right: var(--additional-size); */
-		top: 0;
-		left: 0;
+		top: calc(-1 * var(--background-size-y));
+		left: calc(-1 * var(--background-size-x));
 		bottom: 0;
 		right: 0;
 		animation: panBackground 7s infinite linear;
-		background-size: var(--background-size);
+		background-size: var(--background-size-x) var(--background-size-y);
 	}
 
 
-	/* TODO: make a background element that's translated, since background-position does a bunch of style recalcs */
+
 	@keyframes panBackground {
 		from {
 			translate: 0 0;
 		}
 
 		to {
-			translate: var(--background-size);
+			translate: var(--background-size-x) var(--background-size-y);
 		}
 	}
 </style>
@@ -64,8 +62,7 @@
 <a {href}>
 	<div class="background"
 	     style:background-image={`url("${background}")`}
-		 style:--background-size={backgroundSize}
-	></div>
-
+		 style:--background-size-x={backgroundSize.x}
+		 style:--background-size-y={backgroundSize.y}></div>
 	{@render children?.()}
 </a>

@@ -38,6 +38,7 @@
 		display: flex;
 		flex-direction: column;
 		padding: 0 2rem;
+		gap: 1rem;
 	}
 </style>
 
@@ -52,8 +53,10 @@
 <!-- is this really a nav?
      ...should this file be exempted from the layout? -->
 <section class="tiles">
-	<LinkTile background="/tiles/trophy.svg" backgroundSize="4rem 4rem"
-	          href="/leaderboard">
+	<LinkTile background="/tiles/trophy.svg"
+	          backgroundSize={{x: "4.5rem", y: "4.5rem"}}
+	          href="/leaderboard"
+	>
 		Leaderboard
 	</LinkTile>
 </section>
