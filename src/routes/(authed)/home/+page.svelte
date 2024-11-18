@@ -1,6 +1,8 @@
 <script lang="ts">
 	import BorderBox from "$components/BorderBox.svelte";
 
+    import LinkTile from "$components/LinkTile.svelte";
+
 	import {currentDate, currentFormattedTime} from "$utils/stores/time.js";
 	import generateGreeting from "$utils/generateGreeting.js";
 
@@ -37,33 +39,6 @@
 		flex-direction: column;
 		padding: 0 2rem;
 	}
-
-	.tile {
-		background-color: var(--jcs-blue);
-		color: white;
-
-		border-radius: 1rem;
-		padding: 1rem;
-
-		font: 3rem var(--font-serif);
-
-		background-image: url("/tiles/trophy.svg");
-		background-size: 4rem 4rem;
-
-		animation: panBackground 7s infinite linear;
-	}
-
-
-	/* TODO: make a background element that's translated, since background-position does a bunch of style recalcs */
-	@keyframes panBackground {
-		from {
-			background-position: 0 0;
-		}
-
-		to {
-			background-position: 4rem 4rem;
-		}
-	}
 </style>
 
 
@@ -77,7 +52,7 @@
 <!-- is this really a nav?
      ...should this file be exempted from the layout? -->
 <section class="tiles">
-	<div class="tile">
-		text
-	</div>
+	<LinkTile href="/leaderboard" background="/tiles/trophy.svg">
+		Leaderboard
+	</LinkTile>
 </section>
