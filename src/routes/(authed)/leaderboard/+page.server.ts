@@ -1,7 +1,7 @@
+import {AvatarAtlas} from "$utils/AvatarAtlas.js";
 import {avatarSize} from "$utils/resizeGoogleAvatarUrl.js";
 import createCookieManager from "$utils/createCookieManager.js";
 import fetchLeaderboardEntries from "$utils/database/leaderboard.js";
-import {TextureAtlas} from "$utils/TextureAtlas.js";
 
 import type {LeaderboardCache} from "$types/leaderboard.js";
 import type {UserNameWithPoints, UserDataWithPoints, TypedSupabaseClient} from "$types/database.js";
@@ -26,7 +26,11 @@ const leaderboards: LeaderboardCache = {
 
 const autoRefreshPeriod = 1e3 * 60 * 3; // 3 mins
 
-const textureAtlas = new TextureAtlas(avatarSize, avatarSize);
+const textureAtlas = new AvatarAtlas({
+	width: avatarSize,
+	height: avatarSize,
+	quality: 0.8
+});
 
 
 

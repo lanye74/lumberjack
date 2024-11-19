@@ -1,34 +1,30 @@
 import {Canvas, type Image, loadImage} from "skia-canvas";
-import {createHash, type Hash} from "node:crypto";
+import {createHash} from "node:crypto";
 
 import type {UserDataWithPoints} from "$types/database.js";
 
 
 
-// TODO: this probably shold be renamed to AvatarAtlas
-export class TextureAtlas {
+export class AvatarAtlas {
 	width: number;
 	height: number;
+	quality: number;
 
-	storedTextures: Map<string, Texture>;
-	hasher: Hash;
+	storedTextures: Map<string, GeneratedAtlas>;
 
-	constructor(width: number, height: number) {
+	constructor({width, height, quality = 0.8}: AvatarAtlasConstructor) {
 		this.width = width;
 		this.height = height;
+		this.quality = quality;
 
 		this.storedTextures = new Map();
-		this.hasher = createHash("sha256");
 	}
 
 	async getAtlasFromLeaderboardData(leaderboardData: UserDataWithPoints[] | null) {
 		if(leaderboardData === null) return null;
 
 		const urls = leaderboardData.map(user => user.avatarUrl);
-		const urlsStringified = JSON.stringify(urls);
-
-		const hash = createHash("md5").update(urlsStringified).digest("hex");
-
+		const hash = this.generateURLsHash(urls);
 
 		const storedTexture = this.storedTextures.get(hash);
 
@@ -44,7 +40,13 @@ export class TextureAtlas {
 		return texture;
 	}
 
-	async buildTextureFromAvatarURLs(urls: (string | null)[]): Promise<Texture> {
+	generateURLsHash(urls: URLs) {
+		return createHash("md5")
+			.update(JSON.stringify(urls))
+			.digest("hex");
+	}
+
+	async buildTextureFromAvatarURLs(urls: URLs): Promise<GeneratedAtlas> {
 		const userAvatars = await this.fetchUserAvatars(urls);
 
 		const canvas = new Canvas(this.width * userAvatars.length, this.height);
@@ -59,37 +61,49 @@ export class TextureAtlas {
 
 
 		return {
-			// TODO: investigate returning the buffer directly, but svelte throws some errors when it tries to load the buffer on the client
-			imageData: await canvas.toDataURL("jpg", {quality: 0.85}),
+			// TODO: investigate returning the buffer directly, but sveltekit throws some errors when it tries to load the buffer on the client
+			imageData: await canvas.toDataURL("jpg", {quality: this.quality}),
 			avatarErrors: userAvatars.map(avatar => avatar.error),
 			hasErrors: userAvatars.some(avatar => avatar.error === true)
 		};
 	}
 
-	async fetchUserAvatars(urls: (string | null)[]): Promise<UserAvatar[]> {
-		// TODO: This may be converted to an async function. ts(80006)
-		// ...should it? isn't the whole point that promise.all deals with it all at once?
-		return await Promise.all(urls.map(url => {
+	async fetchUserAvatars(urls: URLs): Promise<UserAvatar[]> {
+		return await Promise.all(urls.map(async url => {
 			if(url === null) {
-				return Promise.resolve(({
+				return ({
 					error: true,
 					image: null
-				} satisfies UserAvatar));
+				});
 			}
 
-			return loadImage(url)
-				.then(image => ({
+			try {
+				const image = await loadImage(url);
+				return ({
 					error: false,
 					image
-				}) satisfies UserAvatar)
-				.catch(() => ({
+				}) satisfies UserAvatar;
+			} catch {
+				return ({
 					error: true,
 					image: null
-				}) satisfies UserAvatar)
+				}) satisfies UserAvatar;
 			}
-		));
+		}));
 	}
 }
+
+
+
+type AvatarAtlasConstructor = {
+	width: number;
+	height: number;
+	quality?: number;
+};
+
+
+
+type URLs = (string | null)[];
 
 
 
@@ -103,8 +117,8 @@ type UserAvatar = {
 
 
 
-type Texture = {
+type GeneratedAtlas = {
 	imageData: string;
 	avatarErrors: boolean[];
 	hasErrors: boolean;
-}
+};
