@@ -1,7 +1,7 @@
 import {Canvas, type Image, loadImage} from "skia-canvas";
 import {createHash, type Hash} from "node:crypto";
 
-import type {PointsLeaderboardEntry} from "$types/database.js";
+import type {UserDataWithPoints} from "$types/database.js";
 
 
 
@@ -21,7 +21,7 @@ export class TextureAtlas {
 		this.hasher = createHash("sha256");
 	}
 
-	async getAtlasFromLeaderboardData(leaderboardData: PointsLeaderboardEntry[] | null) {
+	async getAtlasFromLeaderboardData(leaderboardData: UserDataWithPoints[] | null) {
 		if(leaderboardData === null) return null;
 
 		const urls = leaderboardData.map(user => user.avatarUrl);

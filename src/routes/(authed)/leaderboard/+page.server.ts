@@ -4,7 +4,7 @@ import fetchLeaderboardEntries from "$utils/database/leaderboard.js";
 import {TextureAtlas} from "$utils/TextureAtlas.js";
 
 import type {LeaderboardCache} from "$types/leaderboard.js";
-import type {LeaderboardEntryData, PointsLeaderboardEntry, TypedSupabaseClient} from "$types/database.js";
+import type {UserNameWithPoints, UserDataWithPoints, TypedSupabaseClient} from "$types/database.js";
 import type {ProfilePrefix} from "$types/profiles.js";
 
 
@@ -41,27 +41,27 @@ export async function load({cookies, locals: {supabase, user}}) {
 
 	const leaderboardDataPromise = loadLeaderboardData(supabase, currentProfile, hasSubmittedPointsRecently);
 
+
 	const avatarAtlasPromise = leaderboardDataPromise
 		.then(leaderboardData => textureAtlas.getAtlasFromLeaderboardData(leaderboardData));
 
-	const leaderboardDataStripped = leaderboardDataPromise
+	const strippedleaderboardDataPromise = leaderboardDataPromise
 		.then(leaderboardData => leaderboardData?.map(user => {
 			const {avatarUrl: _, googleUserId: __, ...rest} = user;
 			return rest;
-		}) ?? null) satisfies Promise<null | LeaderboardEntryData[]>;
+		}) ?? null) satisfies Promise<null | UserNameWithPoints[]>;
 
 
 	return {
-		leaderboard: leaderboardDataStripped,
+		leaderboard: strippedleaderboardDataPromise,
 		avatarAtlas: avatarAtlasPromise,
-		// strippedData: leaderboardDataStripped
 	};
 }
 
 
 
 // compile user icons into atlas when serving from leaderboard
-async function loadLeaderboardData(supabase: TypedSupabaseClient, currentProfile: ProfilePrefix, hasSubmittedPointsRecently: boolean): Promise<PointsLeaderboardEntry[] | null> {
+async function loadLeaderboardData(supabase: TypedSupabaseClient, currentProfile: ProfilePrefix, hasSubmittedPointsRecently: boolean): Promise<UserDataWithPoints[] | null> {
 	const leaderboard = leaderboards[currentProfile];
 	const currentTime = Date.now();
 

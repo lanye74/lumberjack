@@ -1,17 +1,11 @@
 import {logEditorLogPrefix} from "$utils/console.js";
 import {shallowSnakeCasedToCamelCasedObject} from "$utils/casing.js";
 
-import type {LoadLogsOutput, LocationLog} from "$types/database.js";
+import type {LocationLog} from "$types/database.js";
 
 
 
 export async function load({locals: {supabase}}) {
-	let output: LoadLogsOutput = {
-		recentLogs: null
-	};
-
-
-
 	const currentTime = new Date();
 
 	// 1000 ms/s * 60s/m * 60m/h * 24h/d * 24d/w
@@ -30,18 +24,22 @@ export async function load({locals: {supabase}}) {
 	if(getUserLogs.error) {
 		// whatever bro
 		console.error(...logEditorLogPrefix, getUserLogs.error);
-		return output;
+		return {
+			recentLogs: null
+		};
 	}
 
 
 	const recentUserLogs = getUserLogs.data;
 
 	// TODO: fix types
-	output.recentLogs = recentUserLogs.map(log => shallowSnakeCasedToCamelCasedObject(log)) as (LocationLog[] | null);
+	const recentLogs = recentUserLogs.map(log => shallowSnakeCasedToCamelCasedObject(log)) as (LocationLog[] | null);
 
 
 
-	console.log(...logEditorLogPrefix, "Recent logs fetched", output);
+	console.log(...logEditorLogPrefix, "Recent logs fetched", recentLogs);
 
-	return output;
+	return {
+		recentLogs
+	}
 }
