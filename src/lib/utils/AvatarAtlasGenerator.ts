@@ -5,19 +5,19 @@ import type {UserDataWithPoints} from "$types/database.js";
 
 
 
-export class AvatarAtlas {
+export default class AvatarAtlasGenerator {
 	width: number;
 	height: number;
 	quality: number;
 
-	storedTextures: Map<string, GeneratedAtlas>;
+	storedAtlases: Map<string, GeneratedAtlas>;
 
-	constructor({width, height, quality = 0.8}: AvatarAtlasConstructor) {
+	constructor({width, height, quality = 0.8}: AAGConstructor) {
 		this.width = width;
 		this.height = height;
 		this.quality = quality;
 
-		this.storedTextures = new Map();
+		this.storedAtlases = new Map();
 	}
 
 	async getAtlasFromLeaderboardData(leaderboardData: UserDataWithPoints[] | null) {
@@ -26,18 +26,18 @@ export class AvatarAtlas {
 		const urls = leaderboardData.map(user => user.avatarUrl);
 		const hash = this.generateURLsHash(urls);
 
-		const storedTexture = this.storedTextures.get(hash);
+		const storedAtlas = this.storedAtlases.get(hash);
 
 		// attempt to rebuild the atlas if it has errors
-		if(storedTexture !== undefined && storedTexture.hasErrors === false) {
-			return storedTexture;
+		if(storedAtlas !== undefined && storedAtlas.hasErrors === false) {
+			return storedAtlas;
 		}
 
 
-		const texture = await this.buildTextureFromAvatarURLs(urls);
-		this.storedTextures.set(hash, texture);
+		const atlas = await this.buildAtlasFromAvatarURLs(urls);
+		this.storedAtlases.set(hash, atlas);
 
-		return texture;
+		return atlas;
 	}
 
 	generateURLsHash(urls: URLs) {
@@ -46,7 +46,7 @@ export class AvatarAtlas {
 			.digest("hex");
 	}
 
-	async buildTextureFromAvatarURLs(urls: URLs): Promise<GeneratedAtlas> {
+	async buildAtlasFromAvatarURLs(urls: URLs): Promise<GeneratedAtlas> {
 		const userAvatars = await this.fetchUserAvatars(urls);
 
 		const canvas = new Canvas(this.width * userAvatars.length, this.height);
@@ -95,7 +95,7 @@ export class AvatarAtlas {
 
 
 
-type AvatarAtlasConstructor = {
+type AAGConstructor = {
 	width: number;
 	height: number;
 	quality?: number;

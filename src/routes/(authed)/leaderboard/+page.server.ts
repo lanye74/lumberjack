@@ -1,4 +1,4 @@
-import {AvatarAtlas} from "$utils/AvatarAtlas.js";
+import AvatarAtlasGenerator from "$utils/AvatarAtlasGenerator.js";
 import {avatarSize} from "$utils/resizeGoogleAvatarUrl.js";
 import createCookieManager from "$utils/createCookieManager.js";
 import fetchLeaderboardEntries from "$utils/database/leaderboard.js";
@@ -26,7 +26,7 @@ const leaderboards: LeaderboardCache = {
 
 const autoRefreshPeriod = 1e3 * 60 * 3; // 3 mins
 
-const textureAtlas = new AvatarAtlas({
+const avatarAtlasGenerator = new AvatarAtlasGenerator({
 	width: avatarSize,
 	height: avatarSize,
 	quality: 0.8
@@ -47,7 +47,7 @@ export async function load({cookies, locals: {supabase, user}}) {
 
 
 	const avatarAtlasPromise = leaderboardDataPromise
-		.then(leaderboardData => textureAtlas.getAtlasFromLeaderboardData(leaderboardData));
+		.then(leaderboardData => avatarAtlasGenerator.getAtlasFromLeaderboardData(leaderboardData));
 
 	const strippedleaderboardDataPromise = leaderboardDataPromise
 		.then(leaderboardData => leaderboardData?.map(user => {

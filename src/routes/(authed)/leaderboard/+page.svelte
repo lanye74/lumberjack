@@ -27,15 +27,15 @@
 	let atlasSrc = $state("");
 	let avatarErrors: boolean[] = $state([]);
 
-	avatarAtlas.then(texture => {
-		if(texture === null) return;
+	avatarAtlas.then(atlas => {
+		if(atlas === null) return;
 
 
 		// overrides for avatars that didn't load
-		avatarErrors = texture.avatarErrors;
+		avatarErrors = atlas.avatarErrors;
 
 
-		const byteData = atob(texture.imageData.split(",")[1]); // remove the mime type
+		const byteData = atob(atlas.imageData.split(",")[1]); // remove the mime type
 		const bytes = new Uint8Array(byteData.length);
 
 		for(let i = 0; i < byteData.length; i++) {
