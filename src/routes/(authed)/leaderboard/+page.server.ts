@@ -4,7 +4,7 @@ import fetchLeaderboardEntries from "$utils/database/leaderboard.js";
 import {TextureAtlas} from "$utils/TextureAtlas.js";
 
 import type {LeaderboardCache} from "$types/leaderboard.js";
-import type {PointsLeaderboardEntry, TypedSupabaseClient} from "$types/database.js";
+import type {LeaderboardEntryData, PointsLeaderboardEntry, TypedSupabaseClient} from "$types/database.js";
 import type {ProfilePrefix} from "$types/profiles.js";
 
 
@@ -44,10 +44,17 @@ export async function load({cookies, locals: {supabase, user}}) {
 	const avatarAtlasPromise = leaderboardDataPromise
 		.then(leaderboardData => textureAtlas.getAtlasFromLeaderboardData(leaderboardData));
 
+	const leaderboardDataStripped = leaderboardDataPromise
+		.then(leaderboardData => leaderboardData?.map(user => {
+			const {avatarUrl: _, googleUserId: __, ...rest} = user;
+			return rest;
+		}) ?? null) satisfies Promise<null | LeaderboardEntryData[]>;
+
 
 	return {
-		leaderboard: leaderboardDataPromise,
-		avatarAtlas: avatarAtlasPromise
+		leaderboard: leaderboardDataStripped,
+		avatarAtlas: avatarAtlasPromise,
+		// strippedData: leaderboardDataStripped
 	};
 }
 
@@ -71,8 +78,10 @@ async function loadLeaderboardData(supabase: TypedSupabaseClient, currentProfile
 	// TODO: if i read the database, i probably should set the user's points cookie, if they're on the leaderboard
 	const dataFromLeaderboard = await fetchLeaderboardEntries(supabase, currentProfile);
 	// i still don't trust pass by reference
-	leaderboards[currentProfile].cachedState = dataFromLeaderboard;
-	leaderboards[currentProfile].lastRefreshTime = Date.now();
+	leaderboards[currentProfile] = {
+		cachedState: dataFromLeaderboard,
+		lastRefreshTime: Date.now()
+	};
 
 
 	return dataFromLeaderboard;

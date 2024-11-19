@@ -3,12 +3,12 @@
 
 	import {formatPoints} from "$utils/formatters.js";
 
-	import type {PointsLeaderboardEntry} from "$types/database.js";
+	import type {LeaderboardEntryData} from "$types/database.js";
 
 
 
 	type Props = {
-		users: PointsLeaderboardEntry[];
+		users: LeaderboardEntryData[];
 
 		atlasSrc: string | null;
 		avatarErrors: boolean[];

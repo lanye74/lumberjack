@@ -5,7 +5,7 @@
 	import LeaderboardEntry from "$components/LeaderboardEntry.svelte";
 	import Podium from "$components/Podium.svelte";
 
-	import type {PointsLeaderboardEntry} from "$types/database.js";
+	import type {LeaderboardEntryData, PointsLeaderboardEntry} from "$types/database.js";
 
 
 
@@ -14,8 +14,8 @@
 	let {leaderboard, avatarAtlas} = data;
 
 
-	let topThree = $state<PointsLeaderboardEntry[]>([]);
-	let lastSeven = $state<PointsLeaderboardEntry[]>([]);
+	let topThree = $state<LeaderboardEntryData[]>([]);
+	let lastSeven = $state<LeaderboardEntryData[]>([]);
 
 	leaderboard.then(leaderboardEntries => {
 		topThree = leaderboardEntries?.slice(0, 3) ?? [];

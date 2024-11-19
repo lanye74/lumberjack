@@ -1,12 +1,12 @@
 <script lang="ts">
 	import AvatarFromAtlas from "$components/AvatarFromAtlas.svelte";
 
-	import type {PointsLeaderboardEntry} from "$types/database.js";
+	import type {LeaderboardEntryData} from "$types/database.js";
 
 
 
 	type Props = {
-		user: PointsLeaderboardEntry;
+		user: LeaderboardEntryData;
 		index: number;
 
 		atlasSrc: string | null;

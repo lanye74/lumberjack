@@ -14,6 +14,12 @@ export type PointsLeaderboardEntry = {points: number} & Omit<UserPublicInfo, "pr
 
 type UserPublicInfo = NestedSnakeToCamelCase<Tables<"public_user_data">>;
 
+// TODO: this is stupid
+type BarebonesUser = Omit<UserPublicInfo, "avatarUrl" | "googleUserId" | "profile">
+
+// TODO: these names suck
+export type LeaderboardEntryData = BarebonesUser & {points: number};
+
 
 
 export type LoadLogsOutput = {
