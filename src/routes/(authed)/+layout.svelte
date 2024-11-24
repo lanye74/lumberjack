@@ -13,9 +13,11 @@
 
 	const {children} = $props();
 
+	// let showNav = $derived($page.route.id !== "/(authed)/home");
 
 
 	// TODO: swipe controls?
+	// TODO: why isn't a bunch of this stuff in  the /routes layout?
 	onNavigate(navigation => {
 		if(!document.startViewTransition ||
 		   navigation.to?.route.id === $page.route.id) return;
@@ -120,4 +122,7 @@
 
 <div class="bottom-padding" style:--height={$formattedNavbarHeight}></div>
 
+
+<!-- {#if showNav} -->
 <Navbar bind:height={$navbarHeight} />
+<!-- {/if} -->

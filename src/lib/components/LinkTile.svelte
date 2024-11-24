@@ -32,7 +32,7 @@
 		padding: 1.5rem 1rem;
 		box-shadow: 0 0 0.5rem #000a inset;
 
-		font: 600 2.5rem var(--font-serif);
+		font: 600 2.25rem var(--font-serif);
 
 		overflow: hidden;
 	}

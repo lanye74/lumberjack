@@ -17,6 +17,8 @@ TODO: steal best practices from [cobalt](https://github.com/imputnet/cobalt/tree
 - svelte 5 is out!!!!
 	- less dependencies finally?????
 - tauri...
+- remember site purpose
+- triple dot nav - indication when each part is complete
 
 ### 2.7.0
 try to get app a bit cleaner

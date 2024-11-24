@@ -15,6 +15,7 @@ export const currentDate = readable(new Date(), set => {
 
 
 
+// TODO: contemplate removing this
 export const currentFormattedTime = derived(currentDate, date => {
 	const modulusHours = date.getHours() % 12;
 
