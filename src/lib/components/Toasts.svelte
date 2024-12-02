@@ -93,7 +93,7 @@
 			     aria-label="Toast—click or press space/enter to dismiss"
 
 			     onclick={() => toaster.dismiss(toast.id)}
-			     onkeydown={(event) => {if(["Space", "Enter"].includes(event?.code)) toaster.dismiss(toast.id)}}
+			     onkeydown={(event) => {if(["Space", "Enter"].includes(event.code)) toaster.dismiss(toast.id)}}
 			>
 				<!-- TODO: possibly put an icon & progress bar here -->
 				<h3>Lumberjack</h3>

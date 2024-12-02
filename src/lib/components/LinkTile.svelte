@@ -35,6 +35,8 @@
 		font: 600 2.25rem var(--font-serif);
 
 		overflow: hidden;
+
+		/* background-image: linear-gradient(45deg, #0006, transparent); */
 	}
 
 	a > .background {
@@ -51,8 +53,6 @@
 		z-index: -10;
 
 		filter: saturate(1);
-
-		/* filter: blur(0.1rem); */
 	}
 
 
@@ -73,8 +73,8 @@
 <a {href}>
 	<div class="background"
 	     style:background-image={`url("${background}")`}
-		 style:--background-size={backgroundSize}
-		 style:background-color={backgroundColor}></div>
+	     style:--background-size={backgroundSize}
+	     style:background-color={backgroundColor}></div>
 
 	{@render children?.()}
 </a>

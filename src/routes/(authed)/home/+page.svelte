@@ -45,6 +45,7 @@
 </BorderBox>
 
 
+
 <section class="tiles">
 	<LinkTile background="/tiles/trophy.svg"
 	          backgroundSize="4.5rem"

@@ -1,8 +1,15 @@
 <script lang="ts">
-	import SubmitLocationForm from "$components/SubmitLocationForm.svelte";
+	import {applyAction, enhance} from "$app/forms";
+	import type {SubmitFunction} from "@sveltejs/kit";
 
+	import EditableTime from "$components/EditableTime.svelte";
+
+	import {formattedNavbarHeight} from "$utils/stores/navbarHeight.js";
+	import parseSubmitLocationForm from "$utils/forms/parseSubmitLocationForm.js";
 	import {jcsSites, possibleVisitPurposes} from "$utils/forms/options.js";
 	import toaster from "$utils/stores/toaster.js";
+
+	import type {TimeSelector} from "$types/forms";
 
 
 
@@ -10,8 +17,8 @@
 	// no nice way to use destructuring to get around this
 
 	const {currentProfile} = data;
-	const formSites = jcsSites[currentProfile];
-	const formPurposes = possibleVisitPurposes[currentProfile];
+	const siteChoices = jcsSites[currentProfile];
+	const purposeChoices = possibleVisitPurposes[currentProfile];
 
 
 	$effect(() => {
@@ -19,10 +26,259 @@
 			toaster.toast({duration: 4000, content: form.message});
 		}
 	});
+
+
+	// for the form stuff
+	let currentlySelectedPurpose = $state("");
+	// TODO: this should not be a random string floating around; it should have a constant
+	let timeInputMethodSelector = $state("Use current time");
+	let customTime = $state<TimeSelector>({hours: NaN, minutes: NaN, period: "AM"});
+
+	let exportedTime = $derived(timeInputMethodSelector === "Use current time" ? null : JSON.stringify(customTime));
+
+
+	// my `function` syntax.....
+	const performClientSideValidation: SubmitFunction = ({formData, cancel}) => {
+		const {isValid, errorMessage} = parseSubmitLocationForm(formData);
+
+		if(isValid === true) {
+			// fun fact:
+			// as i'm continuing to learn svelte and sveltekit, whenever i have problems i can't solve (for example making currentlySelectedPurpose actually reset) i'll ask an LLM for pointers
+			// i hate the idea of AI replacing jobs with a passion but i do enjoy having a semi-intelligent interface between me (a mortal) and the entire sum of humanity's knowledge
+			// i try to solve problems by myself but really the issue is that i was focusing too much on running things based on the state of form, $page, etc.
+			// chatgpt-4o mini is useless and i spend an hour banging my head into a wall. no, stop asking me to use onMount, it doesn't re-run after form submission
+			// i feed my code to claude 3.5 sonnet and it immediately shows me how to provide a callback in SubmitFunction that runs after the form completes (which is what i was really trying to emulate the whole time)
+			// maybe it's a training cutoff diff. but thank you claude
+			// if i stared at the use:enhance documentation perhaps i would've realized my error but i mistakenly assumed that it entirely wasn't possible. honestly, i enjoy reading documentation—but sveltekit's drives me insane
+			// oh well. i know whom to ask questions to instead of chatgpt now lmao
+			return async ({result, update}) => {
+				if(result.type === "success") {
+					currentlySelectedPurpose = "";
+					timeInputMethodSelector = "Use current time";
+				}
+
+
+				await update({reset: true});
+			}
+		}
+
+
+		cancel();
+		// console.error("Invalid form submitted!");
+
+
+		// simulate that that form did fail, so that we can display the error
+		applyAction({
+			type: "failure",
+			status: 400,
+
+			data: {
+				error: true,
+				message: errorMessage
+				// source: "client"
+			}
+		});
+	}
 </script>
 
+<style>
+	form {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+
+		margin: 2rem;
+		box-sizing: border-box;
+	}
+
+	fieldset {
+		border: none;
+		margin: 0;
+		padding: 0;
+
+		display: flex;
+		flex-direction: column;
+	}
+
+	legend {
+		/* i love u variable fonts */
+		font: 600 2rem var(--font-serif);
+		margin-bottom: 0.25rem;
+		padding: 0;
+	}
+
+	select {
+		border: 0.25rem solid var(--border-color);
+		border-radius: 0.25rem;
+
+		padding: 0.25rem;
+
+		background-color: #fff;
+		color: #000;
+	}
+
+	select:focus, input[type="text"]:focus {
+		/* TODO: make a "focusable" class that does this */
+		outline: 0.25rem solid #000;
+		border-radius: 0.25rem;
+	}
+
+	select, option, input[type="text"] {
+		font-size: 1.5rem;
+	}
+
+
+
+	.has-bar {
+		--gap: 1rem;
+		position: relative;
+	}
+
+	/* TODO: clean this up it's so ungodly unprocessable */
+	/* TODO: (2) learn SASS */
+	input[type="text"] {
+		position: relative;
+
+		margin: var(--gap) 2rem;
+		/* padding  left margin  right margin */
+		/* 0.25 * 2 + 2          + 2 = 4.5rem */
+		width: calc(100% - 4.5rem);
+		padding: 0.25rem;
+
+		border: none;
+		border-bottom: 0.25rem solid var(--gray-1);
+	}
+
+	.has-bar span::after {
+		content: "";
+		position: absolute;
+
+		width: 0.25rem;
+		height: calc(100% - var(--gap));
+		top: calc(var(--gap) / 2);
+		left: 0.5rem;
+
+		background-color: var(--border-color);
+	}
+
+
+
+	button {
+		border: none;
+		border-radius: 0.25rem;
+		padding: 0.5rem 2rem;
+
+		background-color: var(--jcs-blue);
+
+		color: white;
+		font: bold 2rem var(--font-serif);
+
+		cursor: pointer;
+		position: relative;
+		/* TODO: use below code
+		         and also don't commit a hate crime on UX while doing so. if you scroll with below code, it will block the lower content unless i make navbar height bigger */
+		/* position: fixed; */
+
+		/* width: calc(100% - 4rem); */
+		/* bottom: calc(var(--navbar-height) + 2rem); */
+	}
+
+
+	/* transitioning the box-shadow property is slow and requires a bazillion re-paints. opacity shift instead */
+	button::after {
+		content: "";
+		position: absolute;
+
+		width: 100%;
+		height: 100%;
+		left: 0;
+		top: 0;
+
+		border-radius: 0.25rem;
+
+		box-shadow: 0 0.25rem 1.5rem 0rem #0006;
+
+		opacity: 0;
+		transition: opacity 0.2s;
+	}
+
+	button:hover::after {
+		opacity: 1;
+	}
+</style>
+
 <section>
-	<SubmitLocationForm {currentProfile}
-		purposeChoices={formPurposes}
-		siteChoices={formSites} />
+	<!-- TODO: more a11y here -->
+	{#snippet timeInput()}
+		<fieldset>
+			<legend id="time-legend">Log time</legend>
+
+			<select name="time-selector" aria-labelledby="time-legend" bind:value={timeInputMethodSelector}>
+				<option>Use current time</option>
+				<option>Input custom time</option>
+			</select>
+
+			{#if timeInputMethodSelector === "Input custom time"}
+				<div class="has-bar">
+					<span></span>
+					<EditableTime margin="1rem 2rem" bind:time={customTime} />
+				</div>
+			{/if}
+		</fieldset>
+	{/snippet}
+
+	{#snippet locationInput()}
+		<fieldset>
+			<legend id="location-legend">Location</legend>
+
+			<select name="location-selector" aria-labelledby="location-legend">
+				<option selected hidden value="">Select a site...</option>
+				{#each siteChoices as site}
+					<option>{site}</option>
+				{/each}
+			</select>
+		</fieldset>
+	{/snippet}
+
+	{#snippet purposeInput()}
+		<fieldset>
+			<legend id="purpose-legend">Purpose for visiting</legend>
+
+			<select name="purpose-selector" aria-labelledby="purpose-legend" bind:value={currentlySelectedPurpose}>
+				<option selected hidden value="">Select a reason...</option>
+				{#each purposeChoices as purpose}
+					<option>{purpose}</option>
+				{/each}
+			</select>
+
+			{#if currentlySelectedPurpose === "Other"}
+				<div class="has-bar">
+					<span></span>
+					<input type="text" name="location-purpose" aria-labelledby="purpose-legend" placeholder="Type a reason...">
+				</div>
+			{/if}
+		</fieldset>
+	{/snippet}
+
+	{#snippet renderItem(which: "timeInput" | "locationInput" | "purposeInput")}
+		{#if which === "timeInput"}
+			{@render timeInput()}
+		{:else if which === "locationInput"}
+			{@render locationInput()}
+		{:else}
+			{@render purposeInput()}
+		{/if}
+	{/snippet}
+
+
+
+	<form method="POST" action="?/submitLocation" use:enhance={performClientSideValidation}>
+		{@render renderItem("timeInput")}
+		{@render renderItem("locationInput")}
+		{@render renderItem("purposeInput")}
+
+		<button type="submit" style:--navbar-height={$formattedNavbarHeight}>Submit</button>
+		<input name="user-profile" type="hidden" value={currentProfile}>
+		<input name="log-time" type="hidden" value={exportedTime}>
+	</form>
 </section>

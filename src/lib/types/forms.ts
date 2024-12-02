@@ -28,6 +28,7 @@ export type ParsedSubmitLocationForm = {
 
 export type TimePeriod = "AM" | "PM";
 
+// fun idea if i ever have time: store this as a nine-bit number
 export type TimeSelector = {
 	hours: number;
 	minutes: number;

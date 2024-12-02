@@ -102,13 +102,14 @@ function generateTimestampFromTimeSelector(timeSelector: TimeSelector | null) {
 
 	if(timeSelector === null) return dateObject.toISOString();
 
-	const {hours: hour, minutes: minute, period} = timeSelector;
+	const {hours, minutes, period} = timeSelector;
 
-	dateObject.setHours(hour % 12 + (period === "AM" ? 0 : 12));
-	dateObject.setMinutes(minute);
+	dateObject.setHours(hours % 12 + (period === "AM" ? 0 : 12));
+	dateObject.setMinutes(minutes);
 
 	dateObject.setSeconds(0);
 	dateObject.setMilliseconds(0);
+
 
 	return dateObject.toISOString();
 }
