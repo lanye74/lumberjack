@@ -196,7 +196,7 @@
 
 		border-radius: 0.25rem;
 
-		box-shadow: 0 0.25rem 1.5rem 0rem #0006;
+		box-shadow: 0 0.25rem 1.5rem 0 #0006;
 
 		opacity: 0;
 		transition: opacity 0.2s;
@@ -260,7 +260,7 @@
 		</fieldset>
 	{/snippet}
 
-	{#snippet renderItem(which: "timeInput" | "locationInput" | "purposeInput")}
+	{#snippet renderField(which: "timeInput" | "locationInput" | "purposeInput")}
 		{#if which === "timeInput"}
 			{@render timeInput()}
 		{:else if which === "locationInput"}
@@ -273,9 +273,9 @@
 
 
 	<form method="POST" action="?/submitLocation" use:enhance={performClientSideValidation}>
-		{@render renderItem("timeInput")}
-		{@render renderItem("locationInput")}
-		{@render renderItem("purposeInput")}
+		{@render renderField("timeInput")}
+		{@render renderField("locationInput")}
+		{@render renderField("purposeInput")}
 
 		<button type="submit" style:--navbar-height={$formattedNavbarHeight}>Submit</button>
 		<input name="user-profile" type="hidden" value={currentProfile}>
