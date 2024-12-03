@@ -21,25 +21,26 @@
 	const purposeChoices = possibleVisitPurposes[currentProfile];
 
 
-	$effect(() => {
-		if(form && form.message) {
-			toaster.toast({duration: 4000, content: form.message});
-		}
-	});
-
 
 	// for the form stuff
 	let currentlySelectedPurpose = $state("");
+	let currentlySelectedSite = $state("");
 	// TODO: this should not be a random string floating around; it should have a constant
 	let timeInputMethodSelector = $state("Use current time");
 	let customTime = $state<TimeSelector>({hours: NaN, minutes: NaN, period: "AM"});
 
 	let exportedTime = $derived(timeInputMethodSelector === "Use current time" ? null : JSON.stringify(customTime));
 
+	let typedPurpose = $state("");
+
 
 	// my `function` syntax.....
 	const performClientSideValidation: SubmitFunction = ({formData, cancel}) => {
-		const {isValid, errorMessage} = parseSubmitLocationForm(formData);
+		// const {isValid, errorMessage} = parseSubmitLocationForm(formData);
+		const parsedData = parseSubmitLocationForm(formData);
+		const {isValid, errorMessage} = parsedData;
+
+		console.log(parsedData);
 
 		if(isValid === true) {
 			// fun fact:
@@ -53,8 +54,10 @@
 			// oh well. i know whom to ask questions to instead of chatgpt now lmao
 			return async ({result, update}) => {
 				if(result.type === "success") {
-					currentlySelectedPurpose = "";
 					timeInputMethodSelector = "Use current time";
+					currentlySelectedSite = "";
+					currentlySelectedPurpose = "";
+					typedPurpose = "";
 				}
 
 
@@ -79,6 +82,17 @@
 			}
 		});
 	}
+
+
+
+	$effect(() => {
+		if(form && form.message) {
+			toaster.toast({duration: 4000, content: form.message});
+		}
+	});
+
+
+	let index = $state(0);
 </script>
 
 <style>
@@ -213,7 +227,7 @@
 		<fieldset>
 			<legend id="time-legend">Log time</legend>
 
-			<select name="time-selector" aria-labelledby="time-legend" bind:value={timeInputMethodSelector}>
+			<select aria-labelledby="time-legend" bind:value={timeInputMethodSelector}>
 				<option>Use current time</option>
 				<option>Input custom time</option>
 			</select>
@@ -231,7 +245,7 @@
 		<fieldset>
 			<legend id="location-legend">Location</legend>
 
-			<select name="location-selector" aria-labelledby="location-legend">
+			<select aria-labelledby="location-legend" bind:value={currentlySelectedSite}>
 				<option selected hidden value="">Select a site...</option>
 				{#each siteChoices as site}
 					<option>{site}</option>
@@ -244,7 +258,7 @@
 		<fieldset>
 			<legend id="purpose-legend">Purpose for visiting</legend>
 
-			<select name="purpose-selector" aria-labelledby="purpose-legend" bind:value={currentlySelectedPurpose}>
+			<select aria-labelledby="purpose-legend" bind:value={currentlySelectedPurpose}>
 				<option selected hidden value="">Select a reason...</option>
 				{#each purposeChoices as purpose}
 					<option>{purpose}</option>
@@ -254,31 +268,35 @@
 			{#if currentlySelectedPurpose === "Other"}
 				<div class="has-bar">
 					<span></span>
-					<input type="text" name="location-purpose" aria-labelledby="purpose-legend" placeholder="Type a reason...">
+					<input type="text" aria-labelledby="purpose-legend" placeholder="Type a reason..." bind:value={typedPurpose}>
 				</div>
 			{/if}
 		</fieldset>
 	{/snippet}
 
-	{#snippet renderField(which: "timeInput" | "locationInput" | "purposeInput")}
-		{#if which === "timeInput"}
+
+
+	<form method="POST" action="?/submitLocation" use:enhance={performClientSideValidation}>
+		{#if index % 3 === 0}
 			{@render timeInput()}
-		{:else if which === "locationInput"}
+		{:else if index % 3 === 1}
 			{@render locationInput()}
 		{:else}
 			{@render purposeInput()}
 		{/if}
-	{/snippet}
 
-
-
-	<form method="POST" action="?/submitLocation" use:enhance={performClientSideValidation}>
-		{@render renderField("timeInput")}
-		{@render renderField("locationInput")}
-		{@render renderField("purposeInput")}
+		<button type="button" onclick={() => {index++}}>Cycle input</button>
 
 		<button type="submit" style:--navbar-height={$formattedNavbarHeight}>Submit</button>
-		<input name="user-profile" type="hidden" value={currentProfile}>
+
+
+
+		<input name="time-selector" type="hidden" value={timeInputMethodSelector}>
 		<input name="log-time" type="hidden" value={exportedTime}>
+		<input name="location-selector" type="hidden" value={currentlySelectedSite}>
+		<input name="location-purpose" type="hidden" value={currentlySelectedSite}>
+		<input name="purpose-selector" type="hidden" value={currentlySelectedPurpose}>
+
+		<input name="user-profile" type="hidden" value={currentProfile}>
 	</form>
 </section>
