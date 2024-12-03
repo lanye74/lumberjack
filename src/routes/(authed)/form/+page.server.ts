@@ -20,6 +20,8 @@ export async function load({cookies, locals: {supabase, user}}) {
 // TODO: this is the worst thing ever and needs to be refactored
 export const actions = {
 	submitLocation: async ({cookies, locals, request}) => {
+		console.log("received")
+
 		const formData = await request.formData();
 		const parsedForm = parseSubmitLocationForm(formData);
 

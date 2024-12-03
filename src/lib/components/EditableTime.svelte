@@ -3,26 +3,31 @@
 
 
 
+	// TODO: this whole thing sucks
 	type Props = {
 		margin: string;
 		time: TimeSelector;
+		initialTime?: TimeSelector
 	};
 
 
 	let {
 		margin = "0",
+
 		// TODO: a default empty time selector
-		time: externalTime = $bindable({
+		initialTime = {
 			hours: NaN,
 			minutes: NaN,
 			period: "AM"
-		})
+		},
+
+		time: externalTime = $bindable(initialTime)
 	}: Props = $props();
 
 
-	let selectedHour = $state("NaN");
-	let selectedMinute = $state("NaN");
-	let selectedPeriod = $state<TimePeriod>("AM");
+	let selectedHour = $state(initialTime.hours.toString().padStart(2, "0"));
+	let selectedMinute = $state(initialTime.minutes.toString().padStart(2, "0"));
+	let selectedPeriod = $state<TimePeriod>(initialTime.period);
 
 
 	let internalTime = $derived<TimeSelector>({
@@ -79,10 +84,9 @@
 <!-- TODO: perhaps this should be a fieldset(s) -->
 <div class="editable-time" style:margin={margin}>
 	<!-- TODO: use snippets -->
-	<label hidden={true} for="hours-input">Hours input</label>
+	<label hidden for="hours-input">Hours input</label>
 	<select id="hours-input" bind:value={selectedHour}>
-		<!-- TODO: why did this break from migration? -->
-		<option selected hidden value="">--</option>
+		<option hidden value="NaN">--</option>
 
 		{#each possibleHours as hour}
 			<option>{hour}</option>
@@ -91,9 +95,9 @@
 
 	<span class="colon">:</span>
 
-	<label hidden={true} for="minutes-input">Minutes input</label>
+	<label hidden for="minutes-input">Minutes input</label>
 	<select id="minutes-input" bind:value={selectedMinute}>
-		<option selected hidden value="">--</option>
+		<option hidden value="NaN">--</option>
 
 		{#each possibleMinutes as minute}
 			<option>{minute}</option>
@@ -102,9 +106,9 @@
 
 	<span class="spacer"></span>
 
-	<label hidden={true} for="am-pm-input">AM/PM Selector</label>
+	<label hidden for="am-pm-input">AM/PM Selector</label>
 	<select id="am-pm-input" bind:value={selectedPeriod}>
-		<option selected hidden value="">--</option>
+		<option hidden value="">--</option>
 		<option>AM</option>
 		<option>PM</option>
 	</select>

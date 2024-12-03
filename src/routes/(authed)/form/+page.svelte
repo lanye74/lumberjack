@@ -4,7 +4,6 @@
 
 	import EditableTime from "$components/EditableTime.svelte";
 
-	import {formattedNavbarHeight} from "$utils/stores/navbarHeight.js";
 	import parseSubmitLocationForm from "$utils/forms/parseSubmitLocationForm.js";
 	import {jcsSites, possibleVisitPurposes} from "$utils/forms/options.js";
 	import toaster from "$utils/stores/toaster.js";
@@ -22,25 +21,45 @@
 
 
 
-	// for the form stuff
-	let currentlySelectedPurpose = $state("");
-	let currentlySelectedSite = $state("");
-	// TODO: this should not be a random string floating around; it should have a constant
-	let timeInputMethodSelector = $state("Use current time");
-	let customTime = $state<TimeSelector>({hours: NaN, minutes: NaN, period: "AM"});
+	type FormState = {
+		timeInputMethod: "Use current time" | "Input custom time";
+		customTime: TimeSelector;
+		selectedSite: string;
+		selectedPurpose: string;
+		typedPurpose: string;
+	};
 
-	let exportedTime = $derived(timeInputMethodSelector === "Use current time" ? null : JSON.stringify(customTime));
+	const defaultFormState: FormState = {
+		timeInputMethod: "Use current time",
+		customTime: {hours: NaN, minutes: NaN, period: "AM"},
+		selectedSite: "",
+		selectedPurpose: "",
+		typedPurpose: ""
+	};
 
-	let typedPurpose = $state("");
+
+
+	let formState: FormState = $state(Object.assign({}, defaultFormState));
+	// $inspect(formState);
+
+
+	function resetForm() {
+		formState = Object.assign({}, defaultFormState);
+	}
+
+
+
+	let exportedTime = $derived(formState.timeInputMethod === "Use current time" ? null : JSON.stringify(formState.customTime));
+	// $inspect(exportedTime);
+
+	let currentQuestion = $state(0);
+
 
 
 	// my `function` syntax.....
 	const performClientSideValidation: SubmitFunction = ({formData, cancel}) => {
-		// const {isValid, errorMessage} = parseSubmitLocationForm(formData);
-		const parsedData = parseSubmitLocationForm(formData);
-		const {isValid, errorMessage} = parsedData;
+		const {isValid, errorMessage} = parseSubmitLocationForm(formData);
 
-		console.log(parsedData);
 
 		if(isValid === true) {
 			// fun fact:
@@ -54,10 +73,7 @@
 			// oh well. i know whom to ask questions to instead of chatgpt now lmao
 			return async ({result, update}) => {
 				if(result.type === "success") {
-					timeInputMethodSelector = "Use current time";
-					currentlySelectedSite = "";
-					currentlySelectedPurpose = "";
-					typedPurpose = "";
+					resetForm();
 				}
 
 
@@ -86,13 +102,10 @@
 
 
 	$effect(() => {
-		if(form && form.message) {
+		if(form?.message) {
 			toaster.toast({duration: 4000, content: form.message});
 		}
 	});
-
-
-	let index = $state(0);
 </script>
 
 <style>
@@ -189,12 +202,6 @@
 
 		cursor: pointer;
 		position: relative;
-		/* TODO: use below code
-		         and also don't commit a hate crime on UX while doing so. if you scroll with below code, it will block the lower content unless i make navbar height bigger */
-		/* position: fixed; */
-
-		/* width: calc(100% - 4rem); */
-		/* bottom: calc(var(--navbar-height) + 2rem); */
 	}
 
 
@@ -227,15 +234,15 @@
 		<fieldset>
 			<legend id="time-legend">Log time</legend>
 
-			<select aria-labelledby="time-legend" bind:value={timeInputMethodSelector}>
+			<select aria-labelledby="time-legend" bind:value={formState.timeInputMethod}>
 				<option>Use current time</option>
 				<option>Input custom time</option>
 			</select>
 
-			{#if timeInputMethodSelector === "Input custom time"}
+			{#if formState.timeInputMethod === "Input custom time"}
 				<div class="has-bar">
 					<span></span>
-					<EditableTime margin="1rem 2rem" bind:time={customTime} />
+					<EditableTime margin="1rem 2rem" initialTime={formState.customTime} bind:time={formState.customTime} />
 				</div>
 			{/if}
 		</fieldset>
@@ -245,7 +252,7 @@
 		<fieldset>
 			<legend id="location-legend">Location</legend>
 
-			<select aria-labelledby="location-legend" bind:value={currentlySelectedSite}>
+			<select aria-labelledby="location-legend" bind:value={formState.selectedSite}>
 				<option selected hidden value="">Select a site...</option>
 				{#each siteChoices as site}
 					<option>{site}</option>
@@ -258,17 +265,17 @@
 		<fieldset>
 			<legend id="purpose-legend">Purpose for visiting</legend>
 
-			<select aria-labelledby="purpose-legend" bind:value={currentlySelectedPurpose}>
+			<select aria-labelledby="purpose-legend" bind:value={formState.selectedPurpose}>
 				<option selected hidden value="">Select a reason...</option>
 				{#each purposeChoices as purpose}
 					<option>{purpose}</option>
 				{/each}
 			</select>
 
-			{#if currentlySelectedPurpose === "Other"}
+			{#if formState.selectedPurpose === "Other"}
 				<div class="has-bar">
 					<span></span>
-					<input type="text" aria-labelledby="purpose-legend" placeholder="Type a reason..." bind:value={typedPurpose}>
+					<input type="text" aria-labelledby="purpose-legend" placeholder="Type a reason..." bind:value={formState.typedPurpose}>
 				</div>
 			{/if}
 		</fieldset>
@@ -277,25 +284,24 @@
 
 
 	<form method="POST" action="?/submitLocation" use:enhance={performClientSideValidation}>
-		{#if index % 3 === 0}
+		{#if currentQuestion % 3 === 0}
 			{@render timeInput()}
-		{:else if index % 3 === 1}
+		{:else if currentQuestion % 3 === 1}
 			{@render locationInput()}
 		{:else}
 			{@render purposeInput()}
 		{/if}
 
-		<button type="button" onclick={() => {index++}}>Cycle input</button>
+		<button type="button" onclick={() => {currentQuestion++}}>Cycle input</button>
 
-		<button type="submit" style:--navbar-height={$formattedNavbarHeight}>Submit</button>
+		<button type="submit">Submit</button>
 
 
-
-		<input name="time-selector" type="hidden" value={timeInputMethodSelector}>
+		<input name="time-selector" type="hidden" value={formState.customTime}>
 		<input name="log-time" type="hidden" value={exportedTime}>
-		<input name="location-selector" type="hidden" value={currentlySelectedSite}>
-		<input name="location-purpose" type="hidden" value={currentlySelectedSite}>
-		<input name="purpose-selector" type="hidden" value={currentlySelectedPurpose}>
+		<input name="location-selector" type="hidden" value={formState.selectedSite}>
+		<input name="purpose-selector" type="hidden" value={formState.selectedPurpose}>
+		<input name="typed-purpose" type="hidden" value={formState.typedPurpose}>
 
 		<input name="user-profile" type="hidden" value={currentProfile}>
 	</form>

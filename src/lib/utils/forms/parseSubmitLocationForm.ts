@@ -13,7 +13,7 @@ export default function parseSubmitLocationForm(formData: FormData): ParsedSubmi
 	const userLocation = formData.get("location-selector")?.toString().trim() ?? "";
 	const userPurposeMultiple = formData.get("purpose-selector")?.toString().trim() ?? "";
 	// in the formData, this field does not exist if disabled disabled (i.e., null when userPurposeMultiple !== "Other")
-	const userPurposeText = formData.get("location-purpose")?.toString().trim() ?? "";
+	const userPurposeText = formData.get("typed-purpose")?.toString().trim() ?? "";
 
 	const didTypePurpose = userPurposeMultiple === "Other";
 	const userPurpose = didTypePurpose ? userPurposeText : userPurposeMultiple;
