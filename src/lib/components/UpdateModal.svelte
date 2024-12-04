@@ -14,10 +14,12 @@
 		modal.showModal();
 
 		function showModal() {
+			// TODO: use pushState
 			modal.showModal();
 		}
 
 
+		// TODO: stop.
 		// prevent closing; they must accept the reload
 		modal.addEventListener("close", showModal);
 

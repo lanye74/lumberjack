@@ -13,7 +13,7 @@
 
 	const {children} = $props();
 
-	// let showNav = $derived($page.route.id !== "/(authed)/home");
+	let showNav = $derived($page.route.id !== "/(authed)/home");
 
 
 	// TODO: swipe controls?
@@ -123,6 +123,6 @@
 <div class="bottom-padding" style:--height={$formattedNavbarHeight}></div>
 
 
-<!-- {#if showNav} -->
-<Navbar bind:height={$navbarHeight} />
-<!-- {/if} -->
+{#if showNav}
+	<Navbar bind:height={$navbarHeight} />
+{/if}

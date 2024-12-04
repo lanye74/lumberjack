@@ -38,22 +38,10 @@
 	};
 
 
-
 	let formState: FormState = $state(Object.assign({}, defaultFormState));
-	// $inspect(formState);
-
-
-	function resetForm() {
-		formState = Object.assign({}, defaultFormState);
-	}
-
-
-
 	let exportedTime = $derived(formState.timeInputMethod === "Use current time" ? null : JSON.stringify(formState.customTime));
-	// $inspect(exportedTime);
 
 	let currentQuestion = $state(0);
-
 
 
 	// my `function` syntax.....
@@ -73,7 +61,7 @@
 			// oh well. i know whom to ask questions to instead of chatgpt now lmao
 			return async ({result, update}) => {
 				if(result.type === "success") {
-					resetForm();
+					formState = Object.assign({}, defaultFormState);
 				}
 
 
@@ -82,11 +70,9 @@
 		}
 
 
-		cancel();
-		// console.error("Invalid form submitted!");
-
-
 		// simulate that that form did fail, so that we can display the error
+		cancel();
+
 		applyAction({
 			type: "failure",
 			status: 400,
@@ -190,7 +176,7 @@
 
 
 
-	button {
+	button[type="submit"] {
 		border: none;
 		border-radius: 0.25rem;
 		padding: 0.5rem 2rem;
@@ -206,7 +192,7 @@
 
 
 	/* transitioning the box-shadow property is slow and requires a bazillion re-paints. opacity shift instead */
-	button::after {
+	button[type="submit"]::after {
 		content: "";
 		position: absolute;
 
@@ -223,7 +209,7 @@
 		transition: opacity 0.2s;
 	}
 
-	button:hover::after {
+	button[type="submit"]:hover::after {
 		opacity: 1;
 	}
 </style>
@@ -292,17 +278,21 @@
 			{@render purposeInput()}
 		{/if}
 
-		<button type="button" onclick={() => {currentQuestion++}}>Cycle input</button>
+		<nav id="question-cycler">
+			<button type="button" onclick={() => currentQuestion = 0}>1</button>
+			<button type="button" onclick={() => currentQuestion = 1}>2</button>
+			<button type="button" onclick={() => currentQuestion = 2}>3</button>
+		</nav>
 
 		<button type="submit">Submit</button>
 
 
 		<input name="time-selector" type="hidden" value={formState.customTime}>
-		<input name="log-time" type="hidden" value={exportedTime}>
 		<input name="location-selector" type="hidden" value={formState.selectedSite}>
 		<input name="purpose-selector" type="hidden" value={formState.selectedPurpose}>
 		<input name="typed-purpose" type="hidden" value={formState.typedPurpose}>
 
+		<input name="log-time" type="hidden" value={exportedTime}>
 		<input name="user-profile" type="hidden" value={currentProfile}>
 	</form>
 </section>

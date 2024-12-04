@@ -1,4 +1,6 @@
 <script lang="ts">
+    import {fly} from "svelte/transition";
+
 	import LinkIcon from "$components/LinkIcon.svelte";
 
 	import {navbarRoutes} from "$utils/routing/maps.js";
@@ -40,7 +42,10 @@
 
 
 
-<nav bind:clientHeight={height}>
+<nav bind:clientHeight={height}
+     in:fly={{y: height, opacity: 1, duration: 300}}
+     out:fly={{y: height, opacity: 1, duration: 300}}
+>
 	{#each navbarRoutes as path}
 		<LinkIcon {path} />
 	{/each}
