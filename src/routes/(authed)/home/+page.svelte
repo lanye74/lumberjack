@@ -47,8 +47,10 @@
 
 
 <section class="tiles">
+	<!-- oklch(34.9% 0.108 100) -->
 	<LinkTile background="/tiles/trophy.svg"
 	          backgroundSize="4.5rem"
+			  backgroundColor="#463a00"
 	          href="/leaderboard"
 	>
 		View the leaderboard
@@ -62,5 +64,23 @@
 	          href="/form"
 	>
 		Submit a log
+	</LinkTile>
+
+	<!-- TODO: change these colors -->
+	<LinkTile background="/tiles/profile.svg"
+	          backgroundSize="3.75rem"
+			  backgroundColor="#003a70"
+	          href="/form"
+	>
+		View your profile
+	</LinkTile>
+
+	<!-- oklch(35% 0.108 310) -->
+	<LinkTile background="/tiles/info.svg"
+	          backgroundSize="3.75rem"
+			  backgroundColor="#4c2664"
+	          href="/form"
+	>
+		View Lumberjack info
 	</LinkTile>
 </section>
