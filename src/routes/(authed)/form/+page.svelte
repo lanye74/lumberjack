@@ -92,6 +92,12 @@
 			toaster.toast({duration: 4000, content: form.message});
 		}
 	});
+
+
+
+	function navigateTo(question: number) {
+		currentQuestion = question - 1;
+	}
 </script>
 
 <style>
@@ -212,6 +218,42 @@
 	button[type="submit"]:hover::after {
 		opacity: 1;
 	}
+
+
+
+	#question-cycler {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-evenly;
+
+		max-width: 70vw;
+		align-self: center;
+	}
+
+	#question-cycler > button {
+		width: 2.5rem;
+		height: 2.5rem;
+
+		background-color: transparent;
+		outline: none;
+
+		box-sizing: border-box;
+		border: 0.25rem solid black;
+		border-radius: 50%;
+		cursor: pointer;
+	}
+
+	#question-cycler > .progress-bar {
+		width: 2.5rem;
+		height: 0.25rem;
+		background-color: transparent;
+		align-self: center;
+	}
+
+	#question-cycler .filled {
+		background-color: black;
+	}
 </style>
 
 <section>
@@ -267,24 +309,49 @@
 		</fieldset>
 	{/snippet}
 
+	{#snippet submitPage()}
+		<p>Time: {formState.customTime}</p>
+		<p>Location: {formState.selectedSite}</p>
+		<p>Purpose: {formState.selectedPurpose === "Other" ? formState.typedPurpose : formState.selectedPurpose}</p>
+		<button type="submit">Submit</button>
+	{/snippet}
+
 
 
 	<form method="POST" action="?/submitLocation" use:enhance={performClientSideValidation}>
-		{#if currentQuestion % 3 === 0}
+		{#if currentQuestion === 0}
 			{@render timeInput()}
-		{:else if currentQuestion % 3 === 1}
+		{:else if currentQuestion === 1}
 			{@render locationInput()}
-		{:else}
+		{:else if currentQuestion === 2}
 			{@render purposeInput()}
+		{:else if currentQuestion === 3}
+			{@render submitPage()}
+		{:else}
+			<p>uhhhhh</p>
 		{/if}
 
 		<nav id="question-cycler">
-			<button type="button" onclick={() => currentQuestion = 0}>1</button>
-			<button type="button" onclick={() => currentQuestion = 1}>2</button>
-			<button type="button" onclick={() => currentQuestion = 2}>3</button>
+			{#each {length: 4} as _, index}
+				{@const questionNumber = index + 1}
+
+				<!-- TODO: i don't have to use `` here. can i do this elsewhere? -->
+				<button type="button"
+						onclick={() => navigateTo(questionNumber)}
+						aria-label="Navigate to question {questionNumber}"
+						class:filled={currentQuestion > index}
+				>
+				<!-- TODO: update above -->
+					<div class="button-center"></div>
+				</button>
+
+				{#if index !== 3}
+					<div class="progress-bar"
+					     class:filled={currentQuestion > index}></div>
+				{/if}
+			{/each}
 		</nav>
 
-		<button type="submit">Submit</button>
 
 
 		<input name="time-selector" type="hidden" value={formState.customTime}>
