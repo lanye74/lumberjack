@@ -4,11 +4,10 @@
 
 	import EditableTime from "$components/EditableTime.svelte";
 
-	import parseSubmitLocationForm from "$utils/forms/parseSubmitLocationForm.js";
+    import {FormStateManager} from "$utils/forms/FormStateManager.svelte";
 	import {jcsSites, possibleVisitPurposes} from "$utils/forms/options.js";
+	import parseSubmitLocationForm from "$utils/forms/parseSubmitLocationForm.js";
 	import toaster from "$utils/stores/toaster.js";
-
-	import type {TimeSelector} from "$types/forms";
 
 
 
@@ -21,27 +20,9 @@
 
 
 
-	type FormState = {
-		timeInputMethod: "Use current time" | "Input custom time";
-		customTime: TimeSelector;
-		selectedSite: string;
-		selectedPurpose: string;
-		typedPurpose: string;
-	};
+	let formState = new FormStateManager();
 
-	const defaultFormState: FormState = {
-		timeInputMethod: "Use current time",
-		customTime: {hours: NaN, minutes: NaN, period: "AM"},
-		selectedSite: "",
-		selectedPurpose: "",
-		typedPurpose: ""
-	};
-
-
-	let formState: FormState = $state(Object.assign({}, defaultFormState));
 	let exportedTime = $derived(formState.timeInputMethod === "Use current time" ? null : JSON.stringify(formState.customTime));
-
-	let currentQuestion = $state(0);
 
 
 	// my `function` syntax.....
@@ -61,7 +42,7 @@
 			// oh well. i know whom to ask questions to instead of chatgpt now lmao
 			return async ({result, update}) => {
 				if(result.type === "success") {
-					formState = Object.assign({}, defaultFormState);
+					formState.reset();
 				}
 
 
@@ -96,7 +77,7 @@
 
 
 	function navigateTo(question: number) {
-		currentQuestion = question - 1;
+		formState.currentQuestion = question - 1;
 	}
 </script>
 
@@ -262,6 +243,8 @@
 		<fieldset>
 			<legend id="time-legend">Log time</legend>
 
+			<!-- TODO: new FormStateManager Fucking Breaks when you use "Input custom time" ! -->
+			<!-- TODO: un-fuck it!!!!! -->
 			<select aria-labelledby="time-legend" bind:value={formState.timeInputMethod}>
 				<option>Use current time</option>
 				<option>Input custom time</option>
@@ -319,13 +302,13 @@
 
 
 	<form method="POST" action="?/submitLocation" use:enhance={performClientSideValidation}>
-		{#if currentQuestion === 0}
+		{#if formState.currentQuestion === 0}
 			{@render timeInput()}
-		{:else if currentQuestion === 1}
+		{:else if formState.currentQuestion === 1}
 			{@render locationInput()}
-		{:else if currentQuestion === 2}
+		{:else if formState.currentQuestion === 2}
 			{@render purposeInput()}
-		{:else if currentQuestion === 3}
+		{:else if formState.currentQuestion === 3}
 			{@render submitPage()}
 		{:else}
 			<p>uhhhhh</p>
@@ -339,7 +322,7 @@
 				<button type="button"
 						onclick={() => navigateTo(questionNumber)}
 						aria-label="Navigate to question {questionNumber}"
-						class:filled={currentQuestion > index}
+						class:filled={formState.currentQuestion > index}
 				>
 				<!-- TODO: update above -->
 					<div class="button-center"></div>
@@ -347,7 +330,7 @@
 
 				{#if index !== 3}
 					<div class="progress-bar"
-					     class:filled={currentQuestion > index}></div>
+					     class:filled={formState.currentQuestion > index}></div>
 				{/if}
 			{/each}
 		</nav>
