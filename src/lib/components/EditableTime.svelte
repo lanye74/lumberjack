@@ -3,6 +3,15 @@
 
 
 
+	const formatNumber = (number: number) => number.toString().padStart(2, "0");
+
+	// >:(
+	// https://itnext.io/heres-why-mapping-a-constructed-array-doesn-t-work-in-javascript-f1195138615a
+	const possibleHours = Array(12).fill(0).map((_, index) => formatNumber(index + 1));
+	const possibleMinutes = Array(12).fill(0).map((_, index) => formatNumber(index * 5));
+
+
+
 	// TODO: this whole thing sucks
 	type Props = {
 		margin: string;
@@ -21,33 +30,20 @@
 			period: "AM"
 		},
 
-		time: externalTime = $bindable(initialTime)
+		time = $bindable(initialTime)
 	}: Props = $props();
 
 
-	let selectedHour = $state(initialTime.hours.toString().padStart(2, "0"));
-	let selectedMinute = $state(initialTime.minutes.toString().padStart(2, "0"));
-	let selectedPeriod = $state<TimePeriod>(initialTime.period);
-
-
-	let internalTime = $derived<TimeSelector>({
-		hours: parseInt(selectedHour),
-		minutes: parseInt(selectedMinute),
-		period: selectedPeriod
-	});
-
 
 	// https://svelte.dev/docs/svelte/$effect#When-not-to-use-$effect
-	// TODO: figure out if there is a better way to do this
-	$effect(() => {
-		externalTime = internalTime;
-	});
-
-
-	// >:(
-	// https://itnext.io/heres-why-mapping-a-constructed-array-doesn-t-work-in-javascript-f1195138615a
-	const possibleHours = Array(12).fill(0).map((_, index) => (index + 1).toString().padStart(2, "0"));
-	const possibleMinutes = Array(12).fill(0).map((_, index) => (index * 5).toString().padStart(2, "0"));
+	function updateTime(field: keyof TimeSelector, value: string | TimePeriod) {
+		time = {
+			...time,
+			[field]: field === "period" ?
+				value as TimePeriod :
+				parseInt(value as string)
+		}
+	}
 </script>
 
 <style>
@@ -85,7 +81,10 @@
 <div class="editable-time" style:margin={margin}>
 	<!-- TODO: use snippets -->
 	<label hidden for="hours-input">Hours input</label>
-	<select id="hours-input" bind:value={selectedHour}>
+	<select id="hours-input"
+		value={formatNumber(time.hours)}
+		onchange={e => updateTime("hours", e.currentTarget.value)}
+	>
 		<option hidden value="NaN">--</option>
 
 		{#each possibleHours as hour}
@@ -96,7 +95,10 @@
 	<span class="colon">:</span>
 
 	<label hidden for="minutes-input">Minutes input</label>
-	<select id="minutes-input" bind:value={selectedMinute}>
+	<select id="minutes-input"
+		value={formatNumber(time.minutes)}
+		onchange={e => updateTime("minutes", e.currentTarget.value)}
+	>
 		<option hidden value="NaN">--</option>
 
 		{#each possibleMinutes as minute}
@@ -107,7 +109,10 @@
 	<span class="spacer"></span>
 
 	<label hidden for="am-pm-input">AM/PM Selector</label>
-	<select id="am-pm-input" bind:value={selectedPeriod}>
+	<select id="am-pm-input"
+		value={time.period}
+		onchange={e => updateTime("period", e.currentTarget.value)}
+	>
 		<option hidden value="">--</option>
 		<option>AM</option>
 		<option>PM</option>

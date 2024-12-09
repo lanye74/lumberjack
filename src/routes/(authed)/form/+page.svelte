@@ -4,7 +4,7 @@
 
 	import EditableTime from "$components/EditableTime.svelte";
 
-    import {FormStateManager} from "$utils/forms/FormStateManager.svelte";
+    import {FormStateManager} from "$utils/forms/FormStateManager.svelte.js";
 	import {jcsSites, possibleVisitPurposes} from "$utils/forms/options.js";
 	import parseSubmitLocationForm from "$utils/forms/parseSubmitLocationForm.js";
 	import toaster from "$utils/stores/toaster.js";
@@ -243,8 +243,6 @@
 		<fieldset>
 			<legend id="time-legend">Log time</legend>
 
-			<!-- TODO: new FormStateManager Fucking Breaks when you use "Input custom time" ! -->
-			<!-- TODO: un-fuck it!!!!! -->
 			<select aria-labelledby="time-legend" bind:value={formState.timeInputMethod}>
 				<option>Use current time</option>
 				<option>Input custom time</option>
