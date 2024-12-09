@@ -20,7 +20,7 @@
 
 
 
-	let formState = new FormStateManager();
+	let formState = new FormStateManager(currentProfile);
 
 	let exportedTime = $derived(formState.timeInputMethod === "Use current time" ? null : JSON.stringify(formState.customTime));
 
@@ -320,9 +320,9 @@
 
 				<!-- TODO: i don't have to use `` here. can i do this elsewhere? -->
 				<button type="button"
-						onclick={() => navigateTo(questionNumber)}
-						aria-label="Navigate to question {questionNumber}"
-						class:filled={formState.currentQuestion > index}
+				        onclick={() => navigateTo(questionNumber)}
+				        aria-label="Navigate to question {questionNumber}"
+				        class:filled={formState.currentQuestion > index}
 				>
 				<!-- TODO: update above -->
 					<div class="button-center"></div>

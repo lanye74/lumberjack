@@ -1,10 +1,14 @@
+import isTimeSelectorValid from "$utils/forms/isTimeSelectorValid.js";
+import {jcsSites, possibleVisitPurposes} from "$utils/forms/options.js";
+
 import type {TimeSelector} from "$types/forms.js";
+import type {ProfilePrefix} from "$types/profiles.js";
 
 
 
-type QuestionState = "unanswered" | "invalid" | "complete";
+type QuestionStates = "unanswered" | "invalid" | "complete";
 
-type InputState = {
+export type InputState = {
 	timeInputMethod: "Use current time" | "Input custom time";
 	customTime: TimeSelector;
 	selectedSite: string;
@@ -12,7 +16,12 @@ type InputState = {
 	typedPurpose: string;
 };
 
-export {FormStateManager, type InputState};
+type QuestionState = {
+	time: QuestionStates;
+	site: QuestionStates;
+	purpose: QuestionStates;
+	submit: QuestionStates;
+};
 
 
 
@@ -26,16 +35,32 @@ const defaultInputState: InputState = {
 
 
 
-// TODO: name this less generally
-class FormStateManager {
-	currentQuestion: number = $state(0);
-	questionStates: QuestionState[] = $state(new Array(4).fill("unanswered"));
-	inputState: InputState = $state(Object.assign({}, defaultInputState));
+type Validators = Record<keyof InputState, (value: any, prefix: ProfilePrefix) => boolean>;
 
-	constructor() { }
+const validators: Validators = {
+	timeInputMethod: (value: string) => ["Use current time", "Input custom time"].includes(value),
+	customTime: (time: TimeSelector) => isTimeSelectorValid(time),
+	selectedSite: (site: string, prefix: ProfilePrefix) => jcsSites[prefix].includes(site),
+	selectedPurpose: (purpose: string, prefix: ProfilePrefix) => possibleVisitPurposes[prefix].includes(purpose),
+	typedPurpose: () => true
+};
+
+
+
+// TODO: name this less generally
+export class FormStateManager {
+	currentQuestion: number = $state(0);
+	questionStates: QuestionStates[] = $state(new Array(4).fill("unanswered"));
+	inputState: InputState = $state(Object.assign({}, defaultInputState));
+	profile: ProfilePrefix;
+
+	constructor(profile: ProfilePrefix) {
+		this.profile = profile;
+	}
 
 	recomputeQuestionStates() {
-
+		// for(const [input, state] of Object.entries(this.inputState)) {
+		// }
 	}
 
 	reset() {
