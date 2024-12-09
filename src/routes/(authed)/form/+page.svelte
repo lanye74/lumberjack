@@ -251,7 +251,9 @@
 			{#if formState.timeInputMethod === "Input custom time"}
 				<div class="has-bar">
 					<span></span>
-					<EditableTime margin="1rem 2rem" initialTime={formState.customTime} bind:time={formState.customTime} />
+					<EditableTime margin="1rem 2rem"
+						initialTime={formState.customTime}
+						onchange={newTime => formState.customTime = newTime} />
 				</div>
 			{/if}
 		</fieldset>

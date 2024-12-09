@@ -15,34 +15,37 @@
 	// TODO: this whole thing sucks
 	type Props = {
 		margin: string;
-		time: TimeSelector;
-		initialTime?: TimeSelector
+		initialTime?: TimeSelector;
+		onchange: (time: TimeSelector) => unknown;
 	};
 
 
 	let {
 		margin = "0",
 
-		// TODO: a default empty time selector
 		initialTime = {
 			hours: NaN,
 			minutes: NaN,
 			period: "AM"
 		},
 
-		time = $bindable(initialTime)
+		onchange = (time) => {}
 	}: Props = $props();
 
+
+	let internalTime = $state(initialTime);
 
 
 	// https://svelte.dev/docs/svelte/$effect#When-not-to-use-$effect
 	function updateTime(field: keyof TimeSelector, value: string | TimePeriod) {
-		time = {
-			...time,
+		internalTime = {
+			...internalTime,
 			[field]: field === "period" ?
 				value as TimePeriod :
 				parseInt(value as string)
 		}
+
+		onchange(internalTime);
 	}
 </script>
 
@@ -82,7 +85,7 @@
 	<!-- TODO: use snippets -->
 	<label hidden for="hours-input">Hours input</label>
 	<select id="hours-input"
-		value={formatNumber(time.hours)}
+		value={formatNumber(internalTime.hours)}
 		onchange={e => updateTime("hours", e.currentTarget.value)}
 	>
 		<option hidden value="NaN">--</option>
@@ -96,7 +99,7 @@
 
 	<label hidden for="minutes-input">Minutes input</label>
 	<select id="minutes-input"
-		value={formatNumber(time.minutes)}
+		value={formatNumber(internalTime.minutes)}
 		onchange={e => updateTime("minutes", e.currentTarget.value)}
 	>
 		<option hidden value="NaN">--</option>
@@ -110,7 +113,7 @@
 
 	<label hidden for="am-pm-input">AM/PM Selector</label>
 	<select id="am-pm-input"
-		value={time.period}
+		value={internalTime.period}
 		onchange={e => updateTime("period", e.currentTarget.value)}
 	>
 		<option hidden value="">--</option>
