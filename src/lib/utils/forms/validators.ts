@@ -1,56 +1,40 @@
 import {jcsSites, possibleVisitPurposes} from "$utils/forms/options.js";
-import type {InputState} from "$utils/forms/FormStateManager.svelte.js";
 import isTimeSelectorValid from "$utils/forms/isTimeSelectorValid.js";
 
-import type {TimeSelector} from "$types/forms.js";
 import type {ProfilePrefix} from "$types/profiles.js";
+import type {TimeSelector} from "$types/forms.js";
 
 
 
 export type QuestionValidationState = "unanswered" | "invalid" | "complete";
 
-
-
-type ValidatingFunction =
-	((value: string, prefix: ProfilePrefix) => QuestionValidationState) |
-	((value: TimeSelector) => QuestionValidationState) |
-	((value: string) => QuestionValidationState);
-
-type Validators = Record<keyof InputState, ValidatingFunction>;
-
-
-
-export const validators: Validators = {
-	timeInputMethod: (value: string) => validateTimeInputMethod(value),
-	customTime: (time: TimeSelector) => validateCustomTime(time),
-	selectedSite: (site: string, prefix: ProfilePrefix) => validateSelectedSite(site, prefix),
-	selectedPurpose: (purpose: string, prefix: ProfilePrefix) => validateSelectedPurpose(purpose, prefix),
-	typedPurpose: (purpose: string) => purpose !== "" ? "complete" : "unanswered"
+export type ValidationState = {
+	time: QuestionValidationState;
+	site: QuestionValidationState;
+	purpose: QuestionValidationState;
+	submit: QuestionValidationState;
 };
 
 
 
-function validateTimeInputMethod(value: string) {
-	if(value === "") return "unanswered";
-
-	return ["Use current time", "Input custom time"].includes(value) ?
-		"complete" :
-		"invalid";
-}
-
+export function validateTimeInput(dropdownChoice: string, customTime: TimeSelector): QuestionValidationState {
+	// note: this shouldn't happen, so be care
+	if(dropdownChoice === "") return "unanswered";
+	if(dropdownChoice === "Use current time") return "complete";
+	// at this point, input custom time should be the only possibililty
+	if(dropdownChoice !== "Input custom time") return "invalid";
 
 
-function validateCustomTime(time: TimeSelector) {
-	if(isNaN(time.hours) || isNaN(time.minutes)) {
+	if(isNaN(customTime.hours) || isNaN(customTime.minutes)) {
 		return "unanswered";
 	}
 
-	return isTimeSelectorValid(time) ? "invalid" : "complete";
+	return isTimeSelectorValid(customTime) ? "invalid" : "complete";
 }
 
 
 
-function validateSelectedSite(site: string, prefix: ProfilePrefix) {
+export function validateSite(site: string, prefix: ProfilePrefix): QuestionValidationState {
 	if(site === "") return "unanswered";
 
 	return jcsSites[prefix].includes(site) ?
@@ -60,10 +44,28 @@ function validateSelectedSite(site: string, prefix: ProfilePrefix) {
 
 
 
-function validateSelectedPurpose(purpose: string, prefix: ProfilePrefix) {
-	if(purpose === "") return "unanswered";
+export function validatePurpose(dropdownChoice: string, typedPurpose: string, prefix: ProfilePrefix): QuestionValidationState {
+	if(dropdownChoice === "") return "unanswered";
 
-	return possibleVisitPurposes[prefix].includes(purpose) ?
-		"complete" :
-		"invalid";
+	// dropdown is a made-up value it shouldn't be, or "Other" is selected with no input
+	if((dropdownChoice !== "Other" && !possibleVisitPurposes[prefix].includes(typedPurpose)) ||
+	   (dropdownChoice === "Other" && typedPurpose === "")) {
+		return "invalid";
+	}
+
+	return "complete";
+}
+
+
+
+export function validateSubmit(states: QuestionValidationState[]): QuestionValidationState {
+	if(states.includes("unanswered")) {
+		return "unanswered";
+	}
+
+	if(states.includes("invalid")) {
+		return "invalid";
+	}
+
+	return "complete";
 }

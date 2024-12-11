@@ -22,7 +22,13 @@
 
 	let formState = new FormStateManager(currentProfile);
 
-	let exportedTime = $derived(formState.timeInputMethod === "Use current time" ? null : JSON.stringify(formState.customTime));
+	let exportedTime = $derived.by(() => {
+		if(formState.timeInputMethod === "Use current time" || formState.timeInputMethod === "") {
+			return null;
+		}
+
+		return JSON.stringify(formState.customTime);
+	});
 
 
 	// my `function` syntax.....

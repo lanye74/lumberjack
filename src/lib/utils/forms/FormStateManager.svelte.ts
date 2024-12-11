@@ -1,12 +1,13 @@
-import type {QuestionValidationState} from "$utils/forms/validators.js";
+// TODO: this sucks
+import * as validity from "$utils/forms/validators.js";
 
 import type {TimeSelector} from "$types/forms.js";
 import type {ProfilePrefix} from "$types/profiles.js";
 
 
 
-export type InputState = {
-	timeInputMethod: "Use current time" | "Input custom time";
+type InputState = {
+	timeInputMethod: string;
 	customTime: TimeSelector;
 	selectedSite: string;
 	selectedPurpose: string;
@@ -24,9 +25,13 @@ const defaultInputState: InputState = {
 };
 
 
-// TODO: ARGHHHHHHHHHHHH
-const defaultInputValidationState: Record<string, QuestionValidationState> = {
 
+// TODO: ARGHHHHHHHHHHHH
+const defaultInputValidationState: validity.ValidationState = {
+	time: "unanswered",
+	site: "unanswered",
+	purpose: "unanswered",
+	submit: "unanswered"
 };
 
 
@@ -43,25 +48,16 @@ export class FormStateManager {
 	}
 
 	recomputeQuestionStates() {
-
+		this.questionStates.time = validity.validateTimeInput(this.inputState.timeInputMethod, this.customTime);
+		this.questionStates.site = validity.validateSite(this.inputState.selectedSite, this.profile);
+		this.questionStates.purpose = validity.validatePurpose(this.inputState.selectedPurpose, this.typedPurpose, this.profile);
+		this.questionStates.submit = validity.validateSubmit([this.questionStates.time, this.questionStates.submit, this.questionStates.purpose]);
 	}
 
 	reset() {
 		this.inputState = Object.assign({}, defaultInputState);
 		this.recomputeQuestionStates();
 	}
-
-	set state(state: InputState) {
-		this.inputState = state;
-		this.recomputeQuestionStates();
-	}
-
-	get state() {
-		// TODO:
-		return null as unknown as InputState;
-	}
-
-
 
 	// ew
 	get timeInputMethod() {return this.inputState.timeInputMethod}
