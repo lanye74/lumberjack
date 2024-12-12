@@ -2,7 +2,6 @@
 	import BorderBox from "$components/BorderBox.svelte";
     import LinkTile from "$components/LinkTile.svelte";
 
-	import {currentDate} from "$utils/stores/time.js";
 	import generateGreeting from "$utils/generateGreeting.js";
 
 
@@ -10,9 +9,8 @@
 	let {data} = $props();
 	const user = data.user!;
 
-	// this really doesn't need to be reactive but it'll make me feel fancy
-	// there's no way that this is an expensive enough operation i really have to trash it
-	let greeting = $derived(generateGreeting(user, $currentDate));
+
+	const greeting = generateGreeting(user);
 </script>
 
 <style>
@@ -70,7 +68,7 @@
 	<LinkTile background="/tiles/profile.svg"
 	          backgroundSize="3.75rem"
 			  backgroundColor="#003a70"
-	          href="/form"
+	          href="/profile"
 	>
 		View your profile
 	</LinkTile>
@@ -79,7 +77,7 @@
 	<LinkTile background="/tiles/info.svg"
 	          backgroundSize="3.75rem"
 			  backgroundColor="#4c2664"
-	          href="/form"
+	          href="/about"
 	>
 		View Lumberjack info
 	</LinkTile>

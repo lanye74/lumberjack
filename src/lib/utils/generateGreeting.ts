@@ -2,8 +2,8 @@ import type {User} from "@supabase/supabase-js";
 
 
 
-export default function generateGreeting(user: User, currentTime: Date) {
-	const hour = currentTime.getHours();
+export default function generateGreeting(user: User) {
+	const hour = new Date().getHours();
 
 
 	let salutation = "";
