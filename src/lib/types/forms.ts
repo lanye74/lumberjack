@@ -38,3 +38,24 @@ export type TimeSelector = {
 
 
 export type ProfileIndexedList = Record<ProfilePrefix, string[]>;
+
+
+
+export type QuestionValidationState = "unanswered" | "invalid" | "complete";
+
+export type SLFValidationState = {
+	time: QuestionValidationState;
+	site: QuestionValidationState;
+	purpose: QuestionValidationState;
+	submit: QuestionValidationState;
+};
+
+
+
+export type SLFInputState = {
+	timeInputMethod: string;
+	customTime: TimeSelector;
+	selectedSite: string;
+	selectedPurpose: string;
+	typedPurpose: string;
+};

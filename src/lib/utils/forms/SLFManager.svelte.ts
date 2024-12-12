@@ -1,22 +1,11 @@
-// TODO: this sucks
-import * as validity from "$utils/forms/validators.js";
+import {validateTimeInput, validateSite, validatePurpose, validateSubmit} from "$utils/forms/validators.js";
 
-import type {TimeSelector} from "$types/forms.js";
+import type {SLFInputState, SLFValidationState} from "$types/forms.js";
 import type {ProfilePrefix} from "$types/profiles.js";
 
 
 
-type InputState = {
-	timeInputMethod: string;
-	customTime: TimeSelector;
-	selectedSite: string;
-	selectedPurpose: string;
-	typedPurpose: string;
-};
-
-
-
-const defaultInputState: InputState = {
+const defaultInputState: SLFInputState = {
 	timeInputMethod: "Use current time",
 	customTime: {hours: NaN, minutes: NaN, period: "AM"},
 	selectedSite: "",
@@ -24,10 +13,7 @@ const defaultInputState: InputState = {
 	typedPurpose: ""
 };
 
-
-
-// TODO: ARGHHHHHHHHHHHH
-const defaultInputValidationState: validity.ValidationState = {
+const defaultInputValidationState: SLFValidationState = {
 	time: "unanswered",
 	site: "unanswered",
 	purpose: "unanswered",
@@ -36,11 +22,10 @@ const defaultInputValidationState: validity.ValidationState = {
 
 
 
-// TODO: name this less generally
-export class FormStateManager {
+export default class SLFManager {
 	currentQuestion: number = $state(0);
 	questionStates = $state(Object.assign({}, defaultInputValidationState));
-	inputState: InputState = $state(Object.assign({}, defaultInputState));
+	inputState: SLFInputState = $state(Object.assign({}, defaultInputState));
 	profile: ProfilePrefix;
 
 	constructor(profile: ProfilePrefix) {
@@ -48,10 +33,10 @@ export class FormStateManager {
 	}
 
 	recomputeQuestionStates() {
-		this.questionStates.time = validity.validateTimeInput(this.inputState.timeInputMethod, this.customTime);
-		this.questionStates.site = validity.validateSite(this.inputState.selectedSite, this.profile);
-		this.questionStates.purpose = validity.validatePurpose(this.inputState.selectedPurpose, this.typedPurpose, this.profile);
-		this.questionStates.submit = validity.validateSubmit([this.questionStates.time, this.questionStates.submit, this.questionStates.purpose]);
+		this.questionStates.time = validateTimeInput(this.inputState.timeInputMethod, this.customTime);
+		this.questionStates.site = validateSite(this.inputState.selectedSite, this.profile);
+		this.questionStates.purpose = validatePurpose(this.inputState.selectedPurpose, this.typedPurpose, this.profile);
+		this.questionStates.submit = validateSubmit([this.questionStates.time, this.questionStates.submit, this.questionStates.purpose]);
 	}
 
 	reset() {

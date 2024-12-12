@@ -1,12 +1,13 @@
 <script lang="ts">
 	import {applyAction, enhance} from "$app/forms";
+	import {onMount} from "svelte";
 	import type {SubmitFunction} from "@sveltejs/kit";
 
 	import EditableTime from "$components/EditableTime.svelte";
 
-    import {FormStateManager} from "$utils/forms/FormStateManager.svelte.js";
 	import {jcsSites, possibleVisitPurposes} from "$utils/forms/options.js";
 	import parseSubmitLocationForm from "$utils/forms/parseSubmitLocationForm.js";
+    import SLFManager from "$utils/forms/SLFManager.svelte.js";
 	import toaster from "$utils/stores/toaster.js";
 
 
@@ -20,7 +21,9 @@
 
 
 
-	let formState = new FormStateManager(currentProfile);
+	const formState = new SLFManager(currentProfile);
+	onMount(() => formState.recomputeQuestionStates());
+
 
 	let exportedTime = $derived.by(() => {
 		if(formState.timeInputMethod === "Use current time" || formState.timeInputMethod === "") {
@@ -29,6 +32,7 @@
 
 		return JSON.stringify(formState.customTime);
 	});
+
 
 
 	// my `function` syntax.....

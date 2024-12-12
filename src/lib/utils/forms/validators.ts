@@ -2,18 +2,7 @@ import {jcsSites, possibleVisitPurposes} from "$utils/forms/options.js";
 import isTimeSelectorValid from "$utils/forms/isTimeSelectorValid.js";
 
 import type {ProfilePrefix} from "$types/profiles.js";
-import type {TimeSelector} from "$types/forms.js";
-
-
-
-export type QuestionValidationState = "unanswered" | "invalid" | "complete";
-
-export type ValidationState = {
-	time: QuestionValidationState;
-	site: QuestionValidationState;
-	purpose: QuestionValidationState;
-	submit: QuestionValidationState;
-};
+import type {QuestionValidationState, TimeSelector} from "$types/forms.js";
 
 
 
@@ -48,7 +37,7 @@ export function validatePurpose(dropdownChoice: string, typedPurpose: string, pr
 	if(dropdownChoice === "") return "unanswered";
 
 	// dropdown is a made-up value it shouldn't be, or "Other" is selected with no input
-	if((dropdownChoice !== "Other" && !possibleVisitPurposes[prefix].includes(typedPurpose)) ||
+	if((dropdownChoice !== "Other" && !possibleVisitPurposes[prefix].includes(dropdownChoice)) ||
 	   (dropdownChoice === "Other" && typedPurpose === "")) {
 		return "invalid";
 	}
