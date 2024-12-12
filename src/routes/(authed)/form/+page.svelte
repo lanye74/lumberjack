@@ -10,6 +10,8 @@
     import SLFManager from "$utils/forms/SLFManager.svelte.js";
 	import toaster from "$utils/stores/toaster.js";
 
+	import type {SLFValidationState} from "$types/forms.js";
+
 
 
 	let {data, form} = $props();
@@ -230,21 +232,40 @@
 		outline: none;
 
 		box-sizing: border-box;
-		border: 0.25rem solid black;
+		border: 0.25rem solid var(--border-color);
+		padding: 0.25rem;
 		border-radius: 50%;
 		cursor: pointer;
 	}
 
-	#question-cycler > .progress-bar {
+	.nav-dot .button-center {
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+	}
+
+	.nav-dot.invalid > .button-center {
+		background-color: yellow;
+	}
+
+	.nav-dot.unanswered > .button-center {
+		background-color: gray;
+	}
+
+	.nav-dot.complete > .button-center {
+		background-color: green;
+	}
+
+	.nav-dot.current > .button-center {
+		background-color: blue;
+	}
+
+	/* #question-cycler > .progress-bar {
 		width: 2.5rem;
 		height: 0.25rem;
 		background-color: transparent;
 		align-self: center;
-	}
-
-	#question-cycler .filled {
-		background-color: black;
-	}
+	} */
 </style>
 
 <section>
@@ -325,16 +346,20 @@
 		{/if}
 
 		<nav id="question-cycler">
-			{#each {length: 4} as _, index}
+			{#each Object.keys(formState.questionStates) as _questionName, index}
 				{@const questionNumber = index + 1}
+				{@const questionName = _questionName as keyof SLFValidationState}
 
 				<!-- TODO: i don't have to use `` here. can i do this elsewhere? -->
 				<button type="button"
 				        onclick={() => navigateTo(questionNumber)}
 				        aria-label="Navigate to question {questionNumber}"
-				        class:filled={formState.currentQuestion > index}
+				        class="nav-dot"
+				        class:invalid={formState.questionStates[questionName] === "invalid"}
+				        class:unanswered={formState.questionStates[questionName] === "unanswered"}
+				        class:complete={formState.questionStates[questionName] === "complete"}
+				        class:current={formState.currentQuestion === index}
 				>
-				<!-- TODO: update above -->
 					<div class="button-center"></div>
 				</button>
 
