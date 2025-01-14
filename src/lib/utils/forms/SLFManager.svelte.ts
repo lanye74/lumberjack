@@ -8,13 +8,17 @@ import type {ProfilePrefix} from "$types/profiles.js";
 const defaultInputState: SLFInputState = {
 	timeInputMethod: "Use current time",
 	customTime: {hours: NaN, minutes: NaN, period: "AM"},
+
+	dateInputMethod: "Use current date",
+	customDate: {},
+
 	selectedSite: "",
 	selectedPurpose: "",
 	typedPurpose: ""
 };
 
 const defaultInputValidationState: SLFValidationState = {
-	time: "unanswered",
+	timeDate: "unanswered",
 	site: "unanswered",
 	purpose: "unanswered",
 	submit: "unanswered"
@@ -22,6 +26,7 @@ const defaultInputValidationState: SLFValidationState = {
 
 
 
+// TODO: is this awful?
 export default class SLFManager {
 	currentQuestion: number = $state(0);
 	questionStates = $state(Object.assign({}, defaultInputValidationState));
@@ -33,10 +38,11 @@ export default class SLFManager {
 	}
 
 	recomputeQuestionStates() {
-		this.questionStates.time = validateTimeInput(this.inputState.timeInputMethod, this.customTime);
+		// TODO: update this
+		this.questionStates.timeDate = validateTimeInput(this.inputState.timeInputMethod, this.customTime);
 		this.questionStates.site = validateSite(this.inputState.selectedSite, this.profile);
 		this.questionStates.purpose = validatePurpose(this.inputState.selectedPurpose, this.typedPurpose, this.profile);
-		this.questionStates.submit = validateSubmit([this.questionStates.time, this.questionStates.submit, this.questionStates.purpose]);
+		this.questionStates.submit = validateSubmit([this.questionStates.timeDate, this.questionStates.submit, this.questionStates.purpose]);
 	}
 
 	reset() {
@@ -56,6 +62,22 @@ export default class SLFManager {
 		this.inputState.customTime = value;
 		this.recomputeQuestionStates();
 	}
+
+
+
+	get dateInputMethod() {return this.inputState.dateInputMethod}
+	set dateInputMethod(value) {
+		this.inputState.dateInputMethod = value;
+		this.recomputeQuestionStates();
+	}
+
+	get customDate() {return this.inputState.customDate}
+	set customDate(value) {
+		this.inputState.customDate = value;
+		this.recomputeQuestionStates();
+	}
+
+
 
 	get selectedSite() {return this.inputState.selectedSite}
 	set selectedSite(value) {

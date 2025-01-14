@@ -23,6 +23,9 @@ export default function parseSubmitLocationForm(formData: FormData): ParsedSubmi
 	const logTimeInput = formData.get("log-time")?.toString().trim() ?? "";
 	const logTime = JSON.parse(logTimeInput !== "" ? logTimeInput : "null") as TimeSelector | null;
 
+	// TODO: parse and handle log custom date
+
+
 	const timeIsValid = logTime === null ? true : isTimeSelectorValid(logTime);
 
 

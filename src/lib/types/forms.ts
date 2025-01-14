@@ -44,7 +44,7 @@ export type ProfileIndexedList = Record<ProfilePrefix, string[]>;
 export type QuestionValidationState = "unanswered" | "invalid" | "complete";
 
 export type SLFValidationState = {
-	time: QuestionValidationState;
+	timeDate: QuestionValidationState;
 	site: QuestionValidationState;
 	purpose: QuestionValidationState;
 	submit: QuestionValidationState;
@@ -55,7 +55,11 @@ export type SLFValidationState = {
 export type SLFInputState = {
 	timeInputMethod: string;
 	customTime: TimeSelector;
+
+	dateInputMethod: string;
+	customDate: object; // TODO: type this
+
 	selectedSite: string;
 	selectedPurpose: string;
-	typedPurpose: string;
+	typedPurpose: string; // TODO: rename this to customPurpose
 };
