@@ -6,11 +6,11 @@ import type {ProfilePrefix} from "$types/profiles.js";
 
 
 const defaultInputState: SLFInputState = {
-	timeInputMethod: "Use current time",
-	customTime: {hours: NaN, minutes: NaN, period: "AM"},
-
 	dateInputMethod: "Use current date",
 	customDate: {},
+
+	timeInputMethod: "Use current time",
+	customTime: {hours: NaN, minutes: NaN, period: "AM"},
 
 	selectedSite: "",
 	selectedPurpose: "",
@@ -18,7 +18,7 @@ const defaultInputState: SLFInputState = {
 };
 
 const defaultInputValidationState: SLFValidationState = {
-	timeDate: "unanswered",
+	dateTime: "unanswered",
 	site: "unanswered",
 	purpose: "unanswered",
 	submit: "unanswered"
@@ -39,10 +39,10 @@ export default class SLFManager {
 
 	recomputeQuestionStates() {
 		// TODO: update this
-		this.questionStates.timeDate = validateTimeInput(this.inputState.timeInputMethod, this.customTime);
+		this.questionStates.dateTime = validateTimeInput(this.inputState.timeInputMethod, this.customTime);
 		this.questionStates.site = validateSite(this.inputState.selectedSite, this.profile);
 		this.questionStates.purpose = validatePurpose(this.inputState.selectedPurpose, this.typedPurpose, this.profile);
-		this.questionStates.submit = validateSubmit([this.questionStates.timeDate, this.questionStates.submit, this.questionStates.purpose]);
+		this.questionStates.submit = validateSubmit([this.questionStates.dateTime, this.questionStates.submit, this.questionStates.purpose]);
 	}
 
 	reset() {
@@ -51,20 +51,6 @@ export default class SLFManager {
 	}
 
 	// ew
-	get timeInputMethod() {return this.inputState.timeInputMethod}
-	set timeInputMethod(value) {
-		this.inputState.timeInputMethod = value;
-		this.recomputeQuestionStates();
-	}
-
-	get customTime() {return this.inputState.customTime}
-	set customTime(value) {
-		this.inputState.customTime = value;
-		this.recomputeQuestionStates();
-	}
-
-
-
 	get dateInputMethod() {return this.inputState.dateInputMethod}
 	set dateInputMethod(value) {
 		this.inputState.dateInputMethod = value;
@@ -74,6 +60,20 @@ export default class SLFManager {
 	get customDate() {return this.inputState.customDate}
 	set customDate(value) {
 		this.inputState.customDate = value;
+		this.recomputeQuestionStates();
+	}
+
+
+
+	get timeInputMethod() {return this.inputState.timeInputMethod}
+	set timeInputMethod(value) {
+		this.inputState.timeInputMethod = value;
+		this.recomputeQuestionStates();
+	}
+
+	get customTime() {return this.inputState.customTime}
+	set customTime(value) {
+		this.inputState.customTime = value;
 		this.recomputeQuestionStates();
 	}
 

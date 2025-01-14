@@ -277,7 +277,24 @@
 
 <section>
 	<!-- TODO: more a11y here -->
-	{#snippet timeDateInput()}
+	{#snippet dateTimeInput()}
+		<fieldset>
+			<legend id="date-legend">Log date</legend>
+
+			<select aria-labelledby="date-legend" bind:value={formState.dateInputMethod}>
+				<option>Use current date</option>
+				<option>Input custom date</option>
+			</select>
+
+			{#if formState.dateInputMethod === "Input custom date"}
+				<div class="has-bar">
+					<span></span>
+					<!-- womp womp -->
+					<p>uhhhhh</p>
+				</div>
+			{/if}
+		</fieldset>
+
 		<fieldset>
 			<legend id="time-legend">Log time</legend>
 
@@ -292,23 +309,6 @@
 					<EditableTime margin="1rem 2rem"
 						initialTime={formState.customTime}
 						onchange={newTime => formState.customTime = newTime} />
-				</div>
-			{/if}
-		</fieldset>
-
-		<fieldset>
-			<legend id="date-legend">Log date</legend>
-
-			<select aria-labelledby="date-legend" bind:value={formState.dateInputMethod}>
-				<option>Use current date</option>
-				<option>Input custom date</option>
-			</select>
-
-			{#if formState.dateInputMethod === "Input custom date"}
-				<div class="has-bar">
-					<span></span>
-					<!-- womp womp -->
-					<p>uhhhhh</p>
 				</div>
 			{/if}
 		</fieldset>
@@ -358,7 +358,7 @@
 
 	<form method="POST" action="?/submitLocation" use:enhance={performClientSideValidation}>
 		{#if formState.currentQuestion === 0}
-			{@render timeDateInput()}
+			{@render dateTimeInput()}
 		{:else if formState.currentQuestion === 1}
 			{@render locationInput()}
 		{:else if formState.currentQuestion === 2}
@@ -400,8 +400,8 @@
 		<input name="purpose-selector" type="hidden" value={formState.selectedPurpose}>
 		<input name="typed-purpose" type="hidden" value={formState.typedPurpose}>
 
-		<input name="log-time" type="hidden" value={exportedTime}>
 		<input name="log-date" type="hidden" value={exportedDate}>
+		<input name="log-time" type="hidden" value={exportedTime}>
 		<input name="user-profile" type="hidden" value={currentProfile}>
 	</form>
 </section>
