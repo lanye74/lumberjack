@@ -18,6 +18,7 @@ const config = {
 			"$utils": "src/lib/utils/"
 		},
 
+		// TODO: run a manual `updated.check()` instead of polling
 		version: {
 			pollInterval: 10000
 		}

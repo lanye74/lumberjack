@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {onNavigate} from "$app/navigation";
-	import {page, updated} from "$app/stores";
+	import {page, updated} from "$app/state";
 
 	import Header from "$components/Header.svelte";
 	import Navbar from "$components/Navbar.svelte";
@@ -13,16 +13,16 @@
 
 	const {children} = $props();
 
-	let showNav = $derived($page.route.id !== "/(authed)/home");
+	let showNav = $derived(page.route.id !== "/(authed)/home");
 
 
 	// TODO: swipe controls?
 	// TODO: why isn't a bunch of this stuff in  the /routes layout?
 	onNavigate(navigation => {
 		if(!document.startViewTransition ||
-		   navigation.to?.route.id === $page.route.id) return;
+		   navigation.to?.route.id === page.route.id) return;
 
-		return enableCorrectTransitionForNavigation(navigation, $page.route.id);
+		return enableCorrectTransitionForNavigation(navigation, page.route.id);
 	});
 </script>
 
@@ -108,7 +108,7 @@
 
 
 
-{#if $updated}
+{#if updated.current === true}
 	<UpdateModal />
 {/if}
 

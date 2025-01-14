@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {invalidate} from "$app/navigation";
 	import {onMount} from "svelte";
-	import {page} from "$app/stores";
+	import {page} from "$app/state";
 
 	import Toasts from "$components/Toasts.svelte";
 
@@ -12,7 +12,7 @@
 	let {data, children} = $props();
 
 	let {session, supabase} = $derived(data);
-	let title = $derived(mapRouteToPageTitle($page.route.id));
+	let title = $derived(mapRouteToPageTitle(page.route.id));
 
 
 	onMount(() => {
