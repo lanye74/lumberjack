@@ -3,6 +3,7 @@
 	import {onMount} from "svelte";
 	import type {SubmitFunction} from "@sveltejs/kit";
 
+    import EditableDate from "$components/EditableDate.svelte";
 	import EditableTime from "$components/EditableTime.svelte";
 
 	import {jcsSites, possibleVisitPurposes} from "$utils/forms/options.js";
@@ -28,7 +29,9 @@
 
 
 	let exportedTime = $derived.by(() => {
-		if(formState.timeInputMethod === "Use current time" || formState.timeInputMethod === "") {
+		// @ts-ignore
+		// TODO: fix types
+		if(formState.timeInputMethod === "current" || formState.timeInputMethod === "") {
 			return null;
 		}
 
@@ -36,7 +39,7 @@
 	});
 
 	let exportedDate = $derived.by(() => {
-		if(formState.dateInputMethod === "Use current time" || formState.dateInputMethod === "") {
+		if(formState.dateInputMethod === "current" || formState.dateInputMethod === "") {
 			return null;
 		}
 
@@ -45,7 +48,16 @@
 
 
 	// my `function` syntax.....
-	const performClientSideValidation: SubmitFunction = ({formData, cancel}) => {
+	const performClientSideValidation: SubmitFunction = ({formData, submitter, cancel}) => {
+		// i don't even know why this gets triggered half the time
+		if(submitter?.id !== "submit-form-button") {
+			cancel();
+
+			return;
+		}
+
+
+
 		const {isValid, errorMessage} = parseSubmitLocationForm(formData);
 
 
@@ -279,31 +291,30 @@
 	<!-- TODO: more a11y here -->
 	{#snippet dateTimeInput()}
 		<fieldset>
-			<legend id="date-legend">Log date</legend>
-
-			<select aria-labelledby="date-legend" bind:value={formState.dateInputMethod}>
-				<option>Use current date</option>
-				<option>Input custom date</option>
-			</select>
+			<!-- TODO: update this variable -->
+			<button role="checkbox"
+				aria-checked={formState.useCustomTime === true}
+				onclick={() => {formState.useCustomTime = !formState.useCustomTime}}
+			>
+				Use current date
+			</button>
 
 			{#if formState.dateInputMethod === "Input custom date"}
 				<div class="has-bar">
 					<span></span>
-					<!-- womp womp -->
-					<p>uhhhhh</p>
+					<EditableDate margin="1rem 2rem"
+						initialDate={formState.customDate}
+						onchange={newDate => formState.customDate = newDate} />
 				</div>
 			{/if}
-		</fieldset>
 
-		<fieldset>
-			<legend id="time-legend">Log time</legend>
 
-			<select aria-labelledby="time-legend" bind:value={formState.timeInputMethod}>
-				<option>Use current time</option>
-				<option>Input custom time</option>
-			</select>
 
-			{#if formState.timeInputMethod === "Input custom time"}
+			<button role="checkbox" aria-checked={formState.useCustomTime === true}>
+				Use current time
+			</button>
+
+			{#if formState.useCustomTime === true}
 				<div class="has-bar">
 					<span></span>
 					<EditableTime margin="1rem 2rem"
@@ -348,10 +359,10 @@
 	{/snippet}
 
 	{#snippet submitPage()}
-		<p>Time: {formState.customTime}</p>
+		<p>Time: {JSON.stringify(formState.customTime)}</p>
 		<p>Location: {formState.selectedSite}</p>
 		<p>Purpose: {formState.selectedPurpose === "Other" ? formState.typedPurpose : formState.selectedPurpose}</p>
-		<button type="submit">Submit</button>
+		<button id="submit-form-button" type="submit">Submit</button>
 	{/snippet}
 
 

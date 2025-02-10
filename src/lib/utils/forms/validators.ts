@@ -6,12 +6,13 @@ import type {QuestionValidationState, TimeSelector} from "$types/forms.js";
 
 
 
-export function validateTimeInput(dropdownChoice: string, customTime: TimeSelector): QuestionValidationState {
+export function validateTimeInput(useCustomTime: boolean, customTime: TimeSelector): QuestionValidationState {
 	// note: this shouldn't happen, so be care
-	if(dropdownChoice === "") return "unanswered";
-	if(dropdownChoice === "Use current time") return "complete";
+	// TODO: figure out how to better handle types
+	// @ts-ignore
+	if(useCustomTime === false) return "complete";
 	// at this point, input custom time should be the only possibililty
-	if(dropdownChoice !== "Input custom time") return "invalid";
+	// if(useCustomTime !== true && useCustomTime !== false) return "invalid";
 
 
 	if(isNaN(customTime.hours) || isNaN(customTime.minutes)) {

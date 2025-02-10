@@ -1,10 +1,8 @@
 import type {Session} from "@supabase/supabase-js";
 
+import {authedRoutes} from "$utils/routing/maps.js";
+
 import type {AuthedRoute, RedirectableRoute} from "$types/routing.js";
-
-
-
-const authedRoutes: AuthedRoute[] = ["/home", "/form", "/leaderboard", "/profile", "/about"];
 
 
 

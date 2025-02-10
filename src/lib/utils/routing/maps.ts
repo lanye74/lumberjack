@@ -1,8 +1,12 @@
-import type {RoutePageTitleMap, AuthedRoute} from "$types/routing.js";
+import type {AuthedRoute, RedirectableRouteWithGroup} from "$types/routing.js";
 
 
 
-export const routePageTitleMappings: RoutePageTitleMap = {
+// TODO: i wonder if there's ever a world in which i can derive these programmatically
+// like, could i have a function that walks the src/routes tree?
+// maybe each folder gets like a route_metadata.json file that has title, aria label, etc
+// and then these can be compiled into a record from there
+export const routePageTitleMappings: Record<RedirectableRouteWithGroup, string> = {
 	"/(authed)/home": "Home",
 	// "/(authed)/editor": "Log editor",
 	"/(authed)/form": "Form submission",
@@ -32,3 +36,4 @@ export const routeAriaLabelMappings: Record<AuthedRoute, string> = {
 
 
 export const navbarRoutes: AuthedRoute[] = ["/home", "/leaderboard", "/profile", "/about"];
+export const authedRoutes: AuthedRoute[] = ["/home", "/form", "/leaderboard", "/profile", "/about"];

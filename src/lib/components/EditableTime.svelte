@@ -19,7 +19,6 @@
 		onchange: (time: TimeSelector) => unknown;
 	};
 
-
 	let {
 		margin = "0",
 
@@ -80,7 +79,8 @@
 
 
 
-<!-- TODO: perhaps this should be a fieldset(s) -->
+<!-- TODO: perhaps this should be a fieldset(s)
+     counter-TODO: it's already in a fieldset from the form -->
 <div class="editable-time" style:margin={margin}>
 	<!-- TODO: use snippets -->
 	<label hidden for="hours-input">Hours input</label>

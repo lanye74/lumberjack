@@ -1,13 +1,5 @@
 <script lang="ts">
 	import BorderBox from "$components/BorderBox.svelte";
-
-
-
-	const attributes: any[] = [
-		"Version 2.6.0",
-		"Last updated September 26th, 2024\n→ commit 6ae08fe",
-		"Changelog:\n"
-	];
 </script>
 
 <style>

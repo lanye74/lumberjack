@@ -1,56 +1,42 @@
 <script lang="ts">
-	import type {TimePeriod, TimeSelector} from "$types/forms";
-
-
-
-	const formatNumber = (number: number) => number.toString().padStart(2, "0");
-
-	// >:(
-	// https://itnext.io/heres-why-mapping-a-constructed-array-doesn-t-work-in-javascript-f1195138615a
-	const possibleHours = Array(12).fill(0).map((_, index) => formatNumber(index + 1));
-	const possibleMinutes = Array(12).fill(0).map((_, index) => formatNumber(index * 5));
+	import type {DateSelector} from "$types/forms";
 
 
 
 	// TODO: this whole thing sucks
 	type Props = {
 		margin: string;
-		initialTime?: TimeSelector;
-		onchange: (time: TimeSelector) => unknown;
+		initialDate?: DateSelector;
+		onchange: (date: DateSelector) => unknown;
 	};
-
 
 	let {
 		margin = "0",
 
-		initialTime = {
-			hours: NaN,
-			minutes: NaN,
-			period: "AM"
-		},
+		initialDate = {},
 
-		onchange = (time) => {}
+		onchange = (date) => {}
 	}: Props = $props();
 
 
-	let internalTime = $state(initialTime);
+	let internalDate = $state(initialDate);
 
 
 	// https://svelte.dev/docs/svelte/$effect#When-not-to-use-$effect
-	function updateTime(field: keyof TimeSelector, value: string | TimePeriod) {
-		internalTime = {
-			...internalTime,
-			[field]: field === "period" ?
-				value as TimePeriod :
-				parseInt(value as string)
+	function updateDate(field: keyof DateSelector, value: string) {
+		internalDate = {
+			...internalDate,
+			// [field]: field === "period" ?
+			// 	value as TimePeriod :
+			// 	parseInt(value as string)
 		}
 
-		onchange(internalTime);
+		onchange(internalDate);
 	}
 </script>
 
 <style>
-	.editable-time {
+	.editable-date {
 		display: inline-flex;
 		flex-direction: row;
 	}
@@ -80,13 +66,12 @@
 
 
 
-<!-- TODO: perhaps this should be a fieldset(s) -->
-<div class="editable-time" style:margin={margin}>
+<div class="editable-date" style:margin={margin}>
 	<!-- TODO: use snippets -->
 	<label hidden for="hours-input">Hours input</label>
 	<select id="hours-input"
-		value={formatNumber(internalTime.hours)}
-		onchange={e => updateTime("hours", e.currentTarget.value)}
+		value={formatNumber(internalDate.hours)}
+		onchange={e => updateDate("hours", e.currentTarget.value)}
 	>
 		<option hidden value="NaN">--</option>
 
@@ -99,8 +84,8 @@
 
 	<label hidden for="minutes-input">Minutes input</label>
 	<select id="minutes-input"
-		value={formatNumber(internalTime.minutes)}
-		onchange={e => updateTime("minutes", e.currentTarget.value)}
+		value={formatNumber(internalDate.minutes)}
+		onchange={e => updateDate("minutes", e.currentTarget.value)}
 	>
 		<option hidden value="NaN">--</option>
 
@@ -113,8 +98,8 @@
 
 	<label hidden for="am-pm-input">AM/PM Selector</label>
 	<select id="am-pm-input"
-		value={internalTime.period}
-		onchange={e => updateTime("period", e.currentTarget.value)}
+		value={internalDate.period}
+		onchange={e => updateDate("period", e.currentTarget.value)}
 	>
 		<option hidden value="">--</option>
 		<option>AM</option>

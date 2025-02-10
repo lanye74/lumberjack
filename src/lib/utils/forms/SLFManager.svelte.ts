@@ -9,7 +9,7 @@ const defaultInputState: SLFInputState = {
 	dateInputMethod: "Use current date",
 	customDate: {},
 
-	timeInputMethod: "Use current time",
+	useCustomTime: false,
 	customTime: {hours: NaN, minutes: NaN, period: "AM"},
 
 	selectedSite: "",
@@ -39,7 +39,7 @@ export default class SLFManager {
 
 	recomputeQuestionStates() {
 		// TODO: update this
-		this.questionStates.dateTime = validateTimeInput(this.inputState.timeInputMethod, this.customTime);
+		this.questionStates.dateTime = validateTimeInput(this.inputState.useCustomTime, this.customTime);
 		this.questionStates.site = validateSite(this.inputState.selectedSite, this.profile);
 		this.questionStates.purpose = validatePurpose(this.inputState.selectedPurpose, this.typedPurpose, this.profile);
 		this.questionStates.submit = validateSubmit([this.questionStates.dateTime, this.questionStates.submit, this.questionStates.purpose]);
@@ -65,9 +65,9 @@ export default class SLFManager {
 
 
 
-	get timeInputMethod() {return this.inputState.timeInputMethod}
-	set timeInputMethod(value) {
-		this.inputState.timeInputMethod = value;
+	get useCustomTime() {return this.inputState.useCustomTime}
+	set useCustomTime(value) {
+		this.inputState.useCustomTime = value;
 		this.recomputeQuestionStates();
 	}
 

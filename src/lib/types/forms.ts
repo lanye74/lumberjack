@@ -37,6 +37,15 @@ export type TimeSelector = {
 
 
 
+
+// i think
+
+export type DateSelector = {
+	// month: Month;
+};
+
+
+
 export type ProfileIndexedList = Record<ProfilePrefix, string[]>;
 
 
@@ -54,9 +63,9 @@ export type SLFValidationState = {
 
 export type SLFInputState = {
 	dateInputMethod: string;
-	customDate: object; // TODO: type this
+	customDate: DateSelector;
 
-	timeInputMethod: string;
+	useCustomTime: boolean;
 	customTime: TimeSelector;
 
 	selectedSite: string;
