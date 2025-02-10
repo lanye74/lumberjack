@@ -116,11 +116,12 @@
 	form {
 		display: flex;
 		flex-direction: column;
-		gap: 2rem;
+		/* gap: 2rem; */
 
-		margin: 2rem;
+		/* margin: 2rem; */
 		box-sizing: border-box;
 	}
+
 
 	fieldset {
 		border: none;
@@ -131,14 +132,14 @@
 		flex-direction: column;
 	}
 
-	legend {
+	fieldset.dropdown legend {
 		/* i love u variable fonts */
 		font: 600 2rem var(--font-serif);
 		margin-bottom: 0.25rem;
 		padding: 0;
 	}
 
-	select {
+	fieldset.dropdown select {
 		border: 0.25rem solid var(--border-color);
 		border-radius: 0.25rem;
 
@@ -160,6 +161,39 @@
 
 
 
+
+	fieldset.checkbox-button button {
+		border: none;
+		background: none;
+		padding: 1.25rem 2rem;
+
+		font-size: 1.75rem;
+		cursor: pointer;
+
+		width: 100%;
+		text-align: left;
+
+		display: flex;
+		flex-direction: row;
+		gap: 2rem;
+
+		align-items: center;
+
+		color: #000;
+
+
+		border-top: 0.25rem solid var(--border-color);
+		border-bottom: 0.25rem solid var(--border-color);
+	}
+
+	/* double-check this logic is correct */
+	fieldset.checkbox-button [aria-checked="true"] {
+		border-bottom: 0;
+	}
+
+
+
+	/* #region */
 	.has-bar {
 		--gap: 1rem;
 		position: relative;
@@ -285,18 +319,17 @@
 		background-color: transparent;
 		align-self: center;
 	} */
+
+	/* #endregion */
 </style>
 
 <section>
 	<!-- TODO: more a11y here -->
 	{#snippet dateTimeInput()}
-		<fieldset>
+		<fieldset class="checkbox-button">
 			<!-- TODO: update this variable -->
-			<button role="checkbox"
-				aria-checked={formState.useCustomTime === true}
-				onclick={() => {formState.useCustomTime = !formState.useCustomTime}}
-			>
-				Use current date
+			<button role="checkbox" aria-checked="false">
+				<legend id="date-legend">Use current date</legend>
 			</button>
 
 			{#if formState.dateInputMethod === "Input custom date"}
@@ -307,11 +340,15 @@
 						onchange={newDate => formState.customDate = newDate} />
 				</div>
 			{/if}
+		</fieldset>
 
-
-
-			<button role="checkbox" aria-checked={formState.useCustomTime === true}>
-				Use current time
+		<fieldset class="checkbox-button">
+			<button role="checkbox"
+				aria-checked={formState.useCustomTime === true}
+				onclick={() => {formState.useCustomTime = !formState.useCustomTime}}
+			>
+				<!-- TODO: remove legend if unnecessary -->
+				<legend id="time-legend">Use current time</legend>
 			</button>
 
 			{#if formState.useCustomTime === true}
@@ -326,7 +363,7 @@
 	{/snippet}
 
 	{#snippet locationInput()}
-		<fieldset>
+		<fieldset class="dropdown">
 			<legend id="location-legend">Location</legend>
 
 			<select aria-labelledby="location-legend" bind:value={formState.selectedSite}>
@@ -339,7 +376,7 @@
 	{/snippet}
 
 	{#snippet purposeInput()}
-		<fieldset>
+		<fieldset class="dropdown">
 			<legend id="purpose-legend">Purpose for visiting</legend>
 
 			<select aria-labelledby="purpose-legend" bind:value={formState.selectedPurpose}>
