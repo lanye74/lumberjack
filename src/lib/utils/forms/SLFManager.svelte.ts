@@ -6,10 +6,10 @@ import type {ProfilePrefix} from "$types/profiles.js";
 
 
 const defaultInputState: SLFInputState = {
-	dateInputMethod: "Use current date",
+	useCurrentDate: true,
 	customDate: {},
 
-	useCustomTime: false,
+	useCurrentTime: true,
 	customTime: {hours: NaN, minutes: NaN, period: "AM"},
 
 	selectedSite: "",
@@ -39,7 +39,7 @@ export default class SLFManager {
 
 	recomputeQuestionStates() {
 		// TODO: update this
-		this.questionStates.dateTime = validateTimeInput(this.inputState.useCustomTime, this.customTime);
+		this.questionStates.dateTime = validateTimeInput(this.inputState.useCurrentTime, this.customTime);
 		this.questionStates.site = validateSite(this.inputState.selectedSite, this.profile);
 		this.questionStates.purpose = validatePurpose(this.inputState.selectedPurpose, this.typedPurpose, this.profile);
 		this.questionStates.submit = validateSubmit([this.questionStates.dateTime, this.questionStates.submit, this.questionStates.purpose]);
@@ -51,9 +51,9 @@ export default class SLFManager {
 	}
 
 	// ew
-	get dateInputMethod() {return this.inputState.dateInputMethod}
-	set dateInputMethod(value) {
-		this.inputState.dateInputMethod = value;
+	get useCurrentDate() {return this.inputState.useCurrentDate}
+	set useCurrentDate(value) {
+		this.inputState.useCurrentDate = value;
 		this.recomputeQuestionStates();
 	}
 
@@ -65,9 +65,9 @@ export default class SLFManager {
 
 
 
-	get useCustomTime() {return this.inputState.useCustomTime}
-	set useCustomTime(value) {
-		this.inputState.useCustomTime = value;
+	get useCurrentTime() {return this.inputState.useCurrentTime}
+	set useCurrentTime(value) {
+		this.inputState.useCurrentTime = value;
 		this.recomputeQuestionStates();
 	}
 

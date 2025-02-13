@@ -1,6 +1,6 @@
 <script lang="ts">
 	import BorderBox from "$components/BorderBox.svelte";
-    import LinkTile from "$components/LinkTile.svelte";
+    import LinkTile from "./LinkTile.svelte";
 
 	import generateGreeting from "$utils/generateGreeting.js";
 

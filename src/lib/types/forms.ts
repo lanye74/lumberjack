@@ -62,10 +62,10 @@ export type SLFValidationState = {
 
 
 export type SLFInputState = {
-	dateInputMethod: string;
+	useCurrentDate: boolean;
 	customDate: DateSelector;
 
-	useCustomTime: boolean;
+	useCurrentTime: boolean;
 	customTime: TimeSelector;
 
 	selectedSite: string;

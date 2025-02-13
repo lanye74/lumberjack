@@ -28,24 +28,8 @@
 	onMount(() => formState.recomputeQuestionStates());
 
 
-	let exportedTime = $derived.by(() => {
-		// @ts-ignore
-		// TODO: fix types
-		if(formState.timeInputMethod === "current" || formState.timeInputMethod === "") {
-			return null;
-		}
-
-		return JSON.stringify(formState.customTime);
-	});
-
-	let exportedDate = $derived.by(() => {
-		if(formState.dateInputMethod === "current" || formState.dateInputMethod === "") {
-			return null;
-		}
-
-		return JSON.stringify(formState.customDate);
-	});
-
+	let exportedTime = $derived(formState.useCurrentTime === true ? null : JSON.stringify(formState.customTime));
+	let exportedDate = $derived(formState.useCurrentDate === true ? null : JSON.stringify(formState.customDate));
 
 	// my `function` syntax.....
 	const performClientSideValidation: SubmitFunction = ({formData, submitter, cancel}) => {
@@ -158,7 +142,6 @@
 	select, option, input[type="text"] {
 		font-size: 1.5rem;
 	}
-
 
 
 
@@ -332,7 +315,7 @@
 				<legend id="date-legend">Use current date</legend>
 			</button>
 
-			{#if formState.dateInputMethod === "Input custom date"}
+			{#if formState.useCurrentDate === false}
 				<div class="has-bar">
 					<span></span>
 					<EditableDate margin="1rem 2rem"
@@ -344,14 +327,14 @@
 
 		<fieldset class="checkbox-button">
 			<button role="checkbox"
-				aria-checked={formState.useCustomTime === true}
-				onclick={() => {formState.useCustomTime = !formState.useCustomTime}}
+				aria-checked={formState.useCurrentTime === true}
+				onclick={() => {formState.useCurrentTime = !formState.useCurrentTime}}
 			>
 				<!-- TODO: remove legend if unnecessary -->
 				<legend id="time-legend">Use current time</legend>
 			</button>
 
-			{#if formState.useCustomTime === true}
+			{#if formState.useCurrentTime === true}
 				<div class="has-bar">
 					<span></span>
 					<EditableTime margin="1rem 2rem"

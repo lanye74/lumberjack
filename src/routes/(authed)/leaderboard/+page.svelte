@@ -2,10 +2,10 @@
 	import {onDestroy} from "svelte";
 
 	import BorderBox from "$components/BorderBox.svelte";
-	import LeaderboardEntry from "$components/LeaderboardEntry.svelte";
-	import Podium from "$components/Podium.svelte";
+	import LeaderboardEntry from "./LeaderboardEntry.svelte";
+	import Podium from "./Podium.svelte";
 
-	import type {UserNameWithPoints, UserDataWithPoints} from "$types/database.js";
+	import type {UserNameWithPoints} from "$types/database.js";
 
 
 
