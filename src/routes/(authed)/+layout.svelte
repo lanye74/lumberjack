@@ -3,7 +3,7 @@
 	import {page, updated} from "$app/state";
 
 	import Header from "$components/Header.svelte";
-	import Navbar from "$components/Navbar.svelte";
+	import LinkNavbar from "$components/navbar/LinkNavbar.svelte";
 	import UpdateModal from "$components/UpdateModal.svelte";
 
 	import {enableCorrectTransitionForNavigation} from "$utils/routing/routes.js";
@@ -124,5 +124,5 @@
 
 
 {#if showNav}
-	<Navbar bind:height={$navbarHeight} />
+	<LinkNavbar bind:height={$navbarHeight} />
 {/if}

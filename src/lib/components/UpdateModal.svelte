@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {onMount} from "svelte";
 
-    import {iconComponentMap} from "$utils/icons.js";
+	import {iconComponentMap} from "$utils/icons.js";
 
 
 

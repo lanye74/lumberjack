@@ -1,6 +1,8 @@
 <script lang="ts">
 	import {formatPixels} from "$utils/formatters.js";
-    import {iconComponentMap} from "$utils/icons.js";
+	import {iconComponentMap} from "$utils/icons.js";
+
+	import "$globalStyles/AvatarFromAtlas.css";
 
 
 
@@ -69,12 +71,6 @@
 
 		/* whatever */
 		aspect-ratio: 1 / 1;
-	}
-
-
-
-	:global(.image-wrapper svg) {
-		height: min-content;
 	}
 </style>
 

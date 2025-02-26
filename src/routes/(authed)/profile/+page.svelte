@@ -1,7 +1,7 @@
 <script lang="ts">
-    import {applyAction, enhance} from "$app/forms";
+	import {applyAction, enhance} from "$app/forms";
 	import {invalidateAll} from "$app/navigation";
-    import type {SubmitFunction} from "@sveltejs/kit";
+	import type {SubmitFunction} from "@sveltejs/kit";
 
 	import BorderBox from "$components/BorderBox.svelte";
 	import UserAvatar from "$components/UserAvatar.svelte";
@@ -9,10 +9,10 @@
 	import {currentProfile, nextProfile, profilePrefixes} from "$utils/profiles.js";
 	import {formatPoints} from "$utils/formatters.js";
 	import resizeGoogleAvatarUrl from "$utils/resizeGoogleAvatarUrl.js";
-    import toaster from "$utils/stores/toaster.js";
-    import {iconComponentMap} from "$utils/icons.js";
+	import toaster from "$utils/stores/toaster.js";
+	import {iconComponentMap} from "$utils/icons.js";
 
-    import type {ProfilePrefix} from "$types/profiles.js";
+	import type {ProfilePrefix} from "$types/profiles.js";
 
 
 

@@ -3,12 +3,12 @@
 	import {onMount} from "svelte";
 	import type {SubmitFunction} from "@sveltejs/kit";
 
-    import EditableDate from "$components/EditableDate.svelte";
+	import EditableDate from "$components/EditableDate.svelte";
 	import EditableTime from "$components/EditableTime.svelte";
 
 	import {jcsSites, possibleVisitPurposes} from "$utils/forms/options.js";
 	import parseSubmitLocationForm from "$utils/forms/parseSubmitLocationForm.js";
-    import SLFManager from "$utils/forms/SLFManager.svelte.js";
+	import SLFManager from "$utils/forms/SLFManager.svelte.js";
 	import toaster from "$utils/stores/toaster.js";
 
 	import type {SLFValidationState} from "$types/forms.js";
