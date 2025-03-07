@@ -12,6 +12,7 @@
 	import toaster from "$utils/stores/toaster.js";
 
 	import type {SLFValidationState} from "$types/forms.js";
+    import CheckboxIcon from "$components/CheckboxIcon.svelte";
 
 
 
@@ -310,12 +311,21 @@
 	<!-- TODO: more a11y here -->
 	{#snippet dateTimeInput()}
 		<fieldset class="checkbox-button">
-			<!-- TODO: update this variable -->
-			<button role="checkbox" aria-checked="false">
+			<button role="checkbox"
+				aria-checked={formState.useCurrentDate === true}
+				onclick={() => {formState.useCurrentDate = !formState.useCurrentDate}}
+			>
+				<CheckboxIcon
+					checked={formState.useCurrentDate === true}
+					color="var(--gray-4)" />
+
 				<legend id="date-legend">Use current date</legend>
 			</button>
 
-			{#if formState.useCurrentDate === false}
+
+
+			<!-- TODO: uncomment the && false -->
+			{#if formState.useCurrentDate === false && false}
 				<div class="has-bar">
 					<span></span>
 					<EditableDate margin="1rem 2rem"

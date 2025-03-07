@@ -7,6 +7,11 @@ import ExchangeAlt from "virtual:icons/fa-solid/exchange-alt";
 import SignOutAlt from "virtual:icons/fa-solid/sign-out-alt";
 import RedoIcon from "virtual:icons/fa-solid/redo-alt";
 
+import CheckboxUnchecked from "virtual:icons/fa-regular/square";
+import CheckboxChecked from "virtual:icons/fa-solid/check-square";
+
+
+
 import type {AuthedRoute} from "$types/routing.js";
 
 
@@ -17,7 +22,9 @@ export const iconComponentMap: Record<string, IconComponent> = {
 	"user-circle": ProfileIcon,
 	"exchange-alt": ExchangeAlt,
 	"sign-out-alt": SignOutAlt,
-	"redo-alt": RedoIcon
+	"redo-alt": RedoIcon,
+	"checkbox-unchecked": CheckboxUnchecked,
+	"checkbox-checked": CheckboxChecked
 };
 
 export type IconComponentId = keyof typeof iconComponentMap;
