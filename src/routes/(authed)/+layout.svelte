@@ -11,7 +11,7 @@
 
 
 
-	const {children} = $props();
+	let {children} = $props();
 
 	let showNav = $derived(page.route.id !== "/(authed)/home");
 

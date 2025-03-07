@@ -10,7 +10,7 @@
 		percentageSize?: number;
 	};
 
-	const {src, absoluteSize, percentageSize}: Props = $props();
+	let {src, absoluteSize, percentageSize}: Props = $props();
 
 
 	if(absoluteSize === undefined && percentageSize === undefined) {

@@ -20,7 +20,7 @@
 		percentageSize?: number;
 	};
 
-	const {
+	let {
 		src,
 		positionIndex,
 		atlasTiles,

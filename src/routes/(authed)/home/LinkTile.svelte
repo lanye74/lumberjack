@@ -12,7 +12,7 @@
 		children?: Snippet;
 	};
 
-	const {
+	let {
 		href,
 		background,
 		backgroundSize,

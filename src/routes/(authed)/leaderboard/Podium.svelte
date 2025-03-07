@@ -15,7 +15,7 @@
 	};
 
 
-	const {users, atlasSrc, avatarErrors}: Props = $props();
+	let {users, atlasSrc, avatarErrors}: Props = $props();
 
 	let numberPlaces = $derived(Math.min(users.length, 3));
 </script>

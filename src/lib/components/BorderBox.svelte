@@ -15,7 +15,7 @@
 		children: Snippet;
 	};
 
-	const {
+	let {
 		direction,
 		alignItems = "normal",
 		justifyContent = "normal",

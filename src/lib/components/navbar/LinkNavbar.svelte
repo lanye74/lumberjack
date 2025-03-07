@@ -7,9 +7,7 @@
 
 
 
-	let {
-		height = $bindable(0)
-	}: {height: number} = $props();
+	let {height = $bindable(0)} = $props();
 </script>
 
 <style>

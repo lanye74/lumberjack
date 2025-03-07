@@ -13,7 +13,7 @@
 	};
 
 	// TODO: rename this to "inputSrc" or something
-	const {src, alt, iconId}: Props = $props();
+	let {src, alt, iconId}: Props = $props();
 
 	const IconFallback = iconComponentMap[iconId];
 

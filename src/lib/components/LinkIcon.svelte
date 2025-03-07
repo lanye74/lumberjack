@@ -6,7 +6,7 @@
 
 
 
-	const {path}: {path: AuthedRoute} = $props();
+	let {path}: {path: AuthedRoute} = $props();
 
 	const Icon = routeIconMappings[path];
 	const mappedAriaLabel = routeAriaLabelMappings[path];

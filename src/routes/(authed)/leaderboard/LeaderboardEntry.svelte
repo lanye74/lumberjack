@@ -13,7 +13,7 @@
 		hasAvatarError?: boolean
 	};
 
-	const {
+	let {
 		user,
 		index,
 		atlasSrc,
