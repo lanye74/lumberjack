@@ -55,7 +55,7 @@
 		border-top-left-radius: 0.5rem;
 		border-top-right-radius: 0.5rem;
 		border: 0.25rem solid var(--jcs-blue);
-		border-bottom: 0;
+		border-bottom: none;
 
 		padding: 0.25rem 0.75rem;
 	}

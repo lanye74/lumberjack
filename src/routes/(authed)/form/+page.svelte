@@ -172,7 +172,11 @@
 
 	/* double-check this logic is correct */
 	fieldset.checkbox-button [aria-checked="true"] {
-		border-bottom: 0;
+		border-bottom: none;
+	}
+
+	form fieldset:first-child > button {
+		border-top: none;
 	}
 
 
@@ -317,7 +321,8 @@
 			>
 				<CheckboxIcon
 					checked={formState.useCurrentDate === true}
-					color="var(--gray-4)" />
+					color="var(--gray-4)"
+					size="2rem" />
 
 				<legend id="date-legend">Use current date</legend>
 			</button>
@@ -340,6 +345,11 @@
 				aria-checked={formState.useCurrentTime === true}
 				onclick={() => {formState.useCurrentTime = !formState.useCurrentTime}}
 			>
+				<CheckboxIcon
+					checked={formState.useCurrentTime === true}
+					color="var(--gray-4)"
+					size="2rem" />
+
 				<!-- TODO: remove legend if unnecessary -->
 				<legend id="time-legend">Use current time</legend>
 			</button>

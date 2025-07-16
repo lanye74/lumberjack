@@ -6,11 +6,13 @@
 	type Props = {
 		checked: boolean;
 		color: string;
+		size: string;
 	};
 
 	let {
 		checked,
-		color
+		color,
+		size
 	}: Props = $props();
 
 
@@ -27,7 +29,10 @@
 
 
 
-<div class="checkbox-container" style:color={color}>
+<div class="checkbox-container"
+     style:color={color}
+     style:font-size={size}
+>
 	{#if checked === true}
 		<CheckedIcon />
 	{:else}

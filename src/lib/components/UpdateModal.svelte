@@ -78,7 +78,7 @@
 		border-radius: inherit;
 		border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;
-		border-bottom: 0;
+		border-bottom: none;
 
 		padding: 2rem;
 
