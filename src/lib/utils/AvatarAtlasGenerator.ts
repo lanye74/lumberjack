@@ -21,7 +21,9 @@ export default class AvatarAtlasGenerator {
 	}
 
 	async getAtlasFromLeaderboardData(leaderboardData: UserDataWithPoints[] | null) {
-		if(leaderboardData === null) return null;
+		if(leaderboardData === null || leaderboardData.length === 0) {
+			return null;
+		}
 
 		const urls = leaderboardData.map(user => user.avatarUrl);
 		const hash = this.generateURLsHash(urls);
