@@ -72,15 +72,14 @@ export default class AvatarAtlasGenerator {
 	}
 
 	async fetchUserAvatars(urls: AvatarURL[]): Promise<UserAvatar[]> {
-		return (
-			// collect all promise results, succeed or fail
-			await Promise.allSettled(
-				// pre-emptively don't call loadImage on null urls, just map to null
-				urls.map(url => url !== null ? loadImage(url) : null)
-			)
-		).map(result => {
-			return result.status === "fulfilled" ? result.value : null;
-		});
+		// collect all promise results, succeed or fail
+		const imageResults = await Promise.allSettled(
+			// pre-emptively don't call loadImage on null urls, just map to null
+			urls.map(url => url !== null ? loadImage(url) : null)
+		);
+
+		// typescript type's inferencing is awesome
+		return imageResults.map(result => result.status === "fulfilled" ? result.value : null);
 	}
 }
 
