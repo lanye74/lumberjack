@@ -56,8 +56,8 @@ export default class AvatarAtlasGenerator {
 
 
 		userAvatars.forEach((profilePicture, index) => {
-			if(profilePicture.image) {
-				context.drawImage(profilePicture.image, this.width * index, 0);
+			if(profilePicture !== null) {
+				context.drawImage(profilePicture, this.width * index, 0);
 			}
 		});
 
@@ -66,33 +66,21 @@ export default class AvatarAtlasGenerator {
 			// re: returning buffer directly: this would only work on a +page.ts file, not a server file
 			imageData: await canvas.toDataURL("jpg", {quality: this.quality}),
 			// TODO: it'd be really funny to return this as an n-bit binary-encoded number
-			avatarErrors: userAvatars.map(avatar => avatar.error),
-			hasErrors: userAvatars.some(avatar => avatar.error === true)
+			avatarErrors: userAvatars.map(avatar => avatar === null),
+			hasErrors: userAvatars.some(avatar => avatar === null)
 		};
 	}
 
 	async fetchUserAvatars(urls: AvatarURL[]): Promise<UserAvatar[]> {
-		return await Promise.all(urls.map(async url => {
-			if(url === null) {
-				return {
-					error: true,
-					image: null
-				};
-			}
-
-			try {
-				const image = await loadImage(url);
-				return {
-					error: false,
-					image
-				};
-			} catch {
-				return {
-					error: true,
-					image: null
-				};
-			}
-		}));
+		return (
+			// collect all promise results, succeed or fail
+			await Promise.allSettled(
+				// pre-emptively don't call loadImage on null urls, just map to null
+				urls.map(url => url !== null ? loadImage(url) : null)
+			)
+		).map(result => {
+			return result.status === "fulfilled" ? result.value : null;
+		});
 	}
 }
 
@@ -106,17 +94,9 @@ type AvatarAtlasGeneratorOptions = {
 
 
 
+type UserAvatar = Image | null;
+
 type AvatarURL = string | null;
-
-
-
-type UserAvatar = {
-	error: false;
-	image: Image;
-} | {
-	error: true;
-	image: null;
-};
 
 
 
