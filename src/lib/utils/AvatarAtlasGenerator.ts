@@ -12,10 +12,10 @@ export default class AvatarAtlasGenerator {
 
 	storedAtlases: Map<string, GeneratedAtlas>;
 
-	constructor({width, height, quality = 0.8}: AAGConstructor) {
-		this.width = width;
-		this.height = height;
-		this.quality = quality;
+	constructor(options: AvatarAtlasGeneratorOptions) {
+		this.width = options.width;
+		this.height = options.height;
+		this.quality = options.quality ?? 0.8;
 
 		this.storedAtlases = new Map();
 	}
@@ -25,7 +25,7 @@ export default class AvatarAtlasGenerator {
 			return null;
 		}
 
-		const urls = leaderboardData.map(user => user.avatarUrl);
+		const urls: AvatarURL[] = leaderboardData.map(user => user.avatarUrl);
 		const hash = this.generateURLsHash(urls);
 
 		const storedAtlas = this.storedAtlases.get(hash);
@@ -42,13 +42,13 @@ export default class AvatarAtlasGenerator {
 		return atlas;
 	}
 
-	generateURLsHash(urls: URLs) {
+	generateURLsHash(urls: AvatarURL[]) {
 		return createHash("md5")
 			.update(JSON.stringify(urls))
 			.digest("hex");
 	}
 
-	async buildAtlasFromAvatarURLs(urls: URLs): Promise<GeneratedAtlas> {
+	async buildAtlasFromAvatarURLs(urls: AvatarURL[]): Promise<GeneratedAtlas> {
 		const userAvatars = await this.fetchUserAvatars(urls);
 
 		const canvas = new Canvas(this.width * userAvatars.length, this.height);
@@ -63,33 +63,34 @@ export default class AvatarAtlasGenerator {
 
 
 		return {
-			// TODO: investigate returning the buffer directly, but sveltekit throws some errors when it tries to load the buffer on the client
+			// re: returning buffer directly: this would only work on a +page.ts file, not a server file
 			imageData: await canvas.toDataURL("jpg", {quality: this.quality}),
+			// TODO: it'd be really funny to return this as an n-bit binary-encoded number
 			avatarErrors: userAvatars.map(avatar => avatar.error),
 			hasErrors: userAvatars.some(avatar => avatar.error === true)
 		};
 	}
 
-	async fetchUserAvatars(urls: URLs): Promise<UserAvatar[]> {
+	async fetchUserAvatars(urls: AvatarURL[]): Promise<UserAvatar[]> {
 		return await Promise.all(urls.map(async url => {
 			if(url === null) {
-				return ({
+				return {
 					error: true,
 					image: null
-				});
+				};
 			}
 
 			try {
 				const image = await loadImage(url);
-				return ({
+				return {
 					error: false,
 					image
-				}) satisfies UserAvatar;
+				};
 			} catch {
-				return ({
+				return {
 					error: true,
 					image: null
-				}) satisfies UserAvatar;
+				};
 			}
 		}));
 	}
@@ -97,7 +98,7 @@ export default class AvatarAtlasGenerator {
 
 
 
-type AAGConstructor = {
+type AvatarAtlasGeneratorOptions = {
 	width: number;
 	height: number;
 	quality?: number;
@@ -105,7 +106,7 @@ type AAGConstructor = {
 
 
 
-type URLs = (string | null)[];
+type AvatarURL = string | null;
 
 
 
