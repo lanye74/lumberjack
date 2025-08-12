@@ -13,12 +13,18 @@ export const jcsSites: ProfileIndexedList = {
 
 export const possibleVisitPurposes: ProfileIndexedList = {
 	ast: [
-		"Administration team meeting",
-		"Check-in visit",
-		"Problem-solving support",
-		"Scheduled walkthrough",
-		"Unannounced walkthrough",
-		"Other"
+		"Arts walk",
+		"CKLA walk",
+		"enVision walk",
+		"iReady walk",
+		"OpenSciEd walk",
+		"PBIS walk",
+		"PLC visit",
+		"SDI/MSD walk",
+		"StudySync walk",
+		"Superintendent walk",
+		"Testing walk",
+		"Unannounced walk",
 	],
 
 	maint: [
