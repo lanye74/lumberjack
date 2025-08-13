@@ -75,7 +75,7 @@ export default class AvatarAtlasGenerator {
 		// collect all promise results, succeed or fail
 		const imageResults = await Promise.allSettled(
 			// pre-emptively don't call loadImage on null urls, just map to null
-			urls.map(url => url !== null ? loadImage(url) : null)
+			urls.map(url => url !== null ? loadImage(url) : Promise.reject(null))
 		);
 
 		// typescript type's inferencing is awesome
