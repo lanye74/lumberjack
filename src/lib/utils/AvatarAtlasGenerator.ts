@@ -6,9 +6,10 @@ import type {UserDataWithPoints} from "$types/database.js";
 
 
 export default class AvatarAtlasGenerator {
-	avatarWidth: number;
-	avatarHeight: number;
-	quality: number;
+	// avatars are square, no need for a second dimension
+	avatarSize: number;
+	// if undefined, skia-canvas defaults to 0.92
+	renderQuality: number | undefined;
 
 	canvas: Canvas;
 	context: CanvasRenderingContext2D;
@@ -16,11 +17,11 @@ export default class AvatarAtlasGenerator {
 	storedAtlases: Map<string, GeneratedAtlas>;
 
 	constructor(options: AvatarAtlasGeneratorOptions) {
-		this.avatarWidth = options.avatarWidth;
-		this.avatarHeight = options.avatarHeight;
-		this.quality = options.quality ?? 0.8;
+		this.avatarSize = options.avatarSize;
+		this.renderQuality = options.renderQuality;
 
-		this.canvas = new Canvas(this.avatarWidth, this.avatarHeight);
+		// default width is unimportant, will get set later anyway
+		this.canvas = new Canvas(this.avatarSize, this.avatarSize);
 		this.context = this.canvas.getContext("2d");
 
 		this.storedAtlases = new Map();
@@ -57,19 +58,19 @@ export default class AvatarAtlasGenerator {
 	async buildAtlasFromAvatarURLs(urls: AvatarURL[]): Promise<GeneratedAtlas> {
 		const userAvatars = await this.fetchUserAvatars(urls);
 
-		this.canvas.width = this.avatarWidth * userAvatars.length;
+		this.canvas.width = this.avatarSize * userAvatars.length;
 		this.context.reset();
 
 		userAvatars.forEach((profilePicture, index) => {
 			if(profilePicture !== null) {
-				this.context.drawImage(profilePicture, this.avatarWidth * index, 0);
+				this.context.drawImage(profilePicture, this.avatarSize * index, 0);
 			}
 		});
 
 
 		return {
 			// re: returning buffer directly: this would only work on a +page.ts file, not a server file
-			imageData: await this.canvas.toDataURL("jpg", {quality: this.quality}),
+			imageData: await this.canvas.toDataURL("jpg", {quality: this.renderQuality}),
 			// TODO: it'd be really funny to return this as an n-bit binary-encoded number
 			avatarErrors: userAvatars.map(avatar => avatar === null),
 			hasErrors: userAvatars.some(avatar => avatar === null)
@@ -91,9 +92,8 @@ export default class AvatarAtlasGenerator {
 
 
 type AvatarAtlasGeneratorOptions = {
-	avatarWidth: number;
-	avatarHeight: number;
-	quality?: number;
+	avatarSize: number;
+	renderQuality?: number;
 };
 
 
