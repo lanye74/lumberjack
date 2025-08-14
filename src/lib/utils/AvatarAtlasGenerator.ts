@@ -1,4 +1,4 @@
-import {Canvas, type Image, loadImage} from "skia-canvas";
+import {Canvas, type CanvasRenderingContext2D, type Image, loadImage} from "skia-canvas";
 import {createHash} from "node:crypto";
 
 import type {UserDataWithPoints} from "$types/database.js";
@@ -6,16 +6,22 @@ import type {UserDataWithPoints} from "$types/database.js";
 
 
 export default class AvatarAtlasGenerator {
-	width: number;
-	height: number;
+	avatarWidth: number;
+	avatarHeight: number;
 	quality: number;
+
+	canvas: Canvas;
+	context: CanvasRenderingContext2D;
 
 	storedAtlases: Map<string, GeneratedAtlas>;
 
 	constructor(options: AvatarAtlasGeneratorOptions) {
-		this.width = options.width;
-		this.height = options.height;
+		this.avatarWidth = options.avatarWidth;
+		this.avatarHeight = options.avatarHeight;
 		this.quality = options.quality ?? 0.8;
+
+		this.canvas = new Canvas(this.avatarWidth, this.avatarHeight);
+		this.context = this.canvas.getContext("2d");
 
 		this.storedAtlases = new Map();
 	}
@@ -51,20 +57,19 @@ export default class AvatarAtlasGenerator {
 	async buildAtlasFromAvatarURLs(urls: AvatarURL[]): Promise<GeneratedAtlas> {
 		const userAvatars = await this.fetchUserAvatars(urls);
 
-		const canvas = new Canvas(this.width * userAvatars.length, this.height);
-		const context = canvas.getContext("2d");
-
+		this.canvas.width = this.avatarWidth * userAvatars.length;
+		this.context.reset();
 
 		userAvatars.forEach((profilePicture, index) => {
 			if(profilePicture !== null) {
-				context.drawImage(profilePicture, this.width * index, 0);
+				this.context.drawImage(profilePicture, this.avatarWidth * index, 0);
 			}
 		});
 
 
 		return {
 			// re: returning buffer directly: this would only work on a +page.ts file, not a server file
-			imageData: await canvas.toDataURL("jpg", {quality: this.quality}),
+			imageData: await this.canvas.toDataURL("jpg", {quality: this.quality}),
 			// TODO: it'd be really funny to return this as an n-bit binary-encoded number
 			avatarErrors: userAvatars.map(avatar => avatar === null),
 			hasErrors: userAvatars.some(avatar => avatar === null)
@@ -86,8 +91,8 @@ export default class AvatarAtlasGenerator {
 
 
 type AvatarAtlasGeneratorOptions = {
-	width: number;
-	height: number;
+	avatarWidth: number;
+	avatarHeight: number;
 	quality?: number;
 };
 

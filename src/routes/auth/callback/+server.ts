@@ -26,6 +26,7 @@ export async function GET({cookies, locals: {supabase}, url}) {
 	const user = data.user!;
 
 
+	// TODO: don't allow students
 	if(!user.email?.endsWith("@jessamine.kyschools.us") &&
 	   !user.email?.endsWith("@stu.jessamine.kyschools.us")) {
 		// TODO: use return new Response(message, {status: 403})

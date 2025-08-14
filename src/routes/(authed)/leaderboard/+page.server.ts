@@ -27,8 +27,8 @@ const leaderboards: LeaderboardCache = {
 const autoRefreshPeriod = 1e3 * 60 * 3; // 3 mins
 
 const avatarAtlasGenerator = new AvatarAtlasGenerator({
-	width: avatarSize,
-	height: avatarSize,
+	avatarWidth: avatarSize,
+	avatarHeight: avatarSize,
 	quality: 0.8
 });
 
