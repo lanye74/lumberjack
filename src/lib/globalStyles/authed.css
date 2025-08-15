@@ -4,9 +4,9 @@
 	font-size: clamp(12px, calc(60% + 0.8vmin), 20px);
 
 	--fallback-fonts: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, "Roboto", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-	--font-serif: "Lora", var(--fallback-fonts);
+	--font-serif: "Lora Variable", var(--fallback-fonts);
 	--font-sans-serif: "Avenir", var(--fallback-fonts);
-	--time-font: "Cascadia Code", var(--fallback-fonts);
+	--time-font: "Cascadia Mono Variable", var(--fallback-fonts);
 
 	--jcs-blue: #003a70;
 	--jcs-cyan: #69b3e7;
@@ -39,22 +39,8 @@ body {
 
 
 @font-face {
-	font-family: "Lora";
-	src: url("/Lora-Variable.ttf") format("truetype-variations");
-	font-weight: 400 700;
-	font-display: swap;
-}
-
-@font-face {
 	font-family: "Avenir";
 	src: url("/AvenirNext_Variable.ttf") format("truetype-variations");
 	font-weight: 400 1000;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "Cascadia Code";
-	src: url("/Cascadia-Code-Semibold.ttf") format("truetype");
-	font-weight: 600;
 	font-display: swap;
 }

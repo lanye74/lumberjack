@@ -43,6 +43,7 @@
 
 	span, select, option {
 		font: 1.8rem var(--time-font);
+		font-weight: 600;
 	}
 
 	span, select {

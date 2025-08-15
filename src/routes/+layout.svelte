@@ -7,6 +7,13 @@
 
 	import {mapRouteToPageTitle} from "$utils/routing/routes.js";
 
+	// could use the static 600 weight here, but that's 17.4kb versus dynamic serving 29.1kb.
+	// i care about optimizing delivery a lot—see AAG, written to cut ~300kb down to ~40—
+	// but i'm really not losing sleep over 12kb for the mildly easier development experience
+	// meh. maybe i should care more.
+	import "@fontsource-variable/cascadia-mono";
+	import "@fontsource-variable/lora";
+
 	import "$globalStyles/authed.css";
 
 
