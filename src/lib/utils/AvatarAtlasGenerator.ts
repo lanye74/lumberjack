@@ -63,6 +63,10 @@ export default class AvatarAtlasGenerator {
 
 		userAvatars.forEach((profilePicture, index) => {
 			if(profilePicture !== null) {
+				if(profilePicture.width !== profilePicture.height) {
+					console.log(`Loaded profile picture with non-square dimensions: ${profilePicture.src}`);
+				}
+
 				this.context.drawImage(profilePicture, this.avatarSize * index, 0);
 			}
 		});

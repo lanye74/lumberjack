@@ -24,6 +24,10 @@ const leaderboards: LeaderboardCache = {
 
 
 
+const ALWAYS_OVERRIDE_CACHE: boolean = false;
+
+
+
 const autoRefreshPeriod = 1e3 * 60 * 3; // 3 mins
 
 const avatarAtlasGenerator = new AvatarAtlasGenerator({
@@ -72,7 +76,8 @@ async function loadLeaderboardData(supabase: TypedSupabaseClient, currentProfile
 	if((hasSubmittedPointsRecently === false) &&
 	   leaderboard.cachedState !== null &&
 		// true if we are not at the forced refresh period yet
-		currentTime < (leaderboard.lastRefreshTime + autoRefreshPeriod)
+		currentTime < (leaderboard.lastRefreshTime + autoRefreshPeriod) &&
+		ALWAYS_OVERRIDE_CACHE !== true
 	) {
 		return leaderboard.cachedState;
 	}
