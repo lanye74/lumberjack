@@ -74,7 +74,9 @@ export default class AvatarAtlasGenerator {
 
 		return {
 			// re: returning buffer directly: this would only work on a +page.ts file, not a server file
-			imageData: await this.canvas.toDataURL("jpg", {quality: this.renderQuality}),
+			// also investigate the `toURL` method; i think it may have better options
+			// https://skia-canvas.org/api/canvas#tourl
+			imageData: this.canvas.toDataURL("jpeg", this.renderQuality),
 			// TODO: it'd be really funny to return this as an n-bit binary-encoded number
 			avatarErrors: userAvatars.map(avatar => avatar === null),
 			hasErrors: userAvatars.some(avatar => avatar === null)
