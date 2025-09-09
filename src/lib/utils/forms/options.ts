@@ -20,11 +20,13 @@ export const possibleVisitPurposes: ProfileIndexedList = {
 		"OpenSciEd walk",
 		"PBIS walk",
 		"PLC visit",
+		"SBDM meeting",
 		"SDI/MSD walk",
 		"StudySync walk",
 		"Superintendent walk",
 		"Testing walk",
 		"Unannounced walk",
+		"Other"
 	],
 
 	maint: [
